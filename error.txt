@@ -1,0 +1,62 @@
+1st
+error:  cannot upload video (Error: Unauthorized request)
+
+soluion : need to login 1st to authenticate user, so that we get to know about the video that is getting uploaded is published by which user
+
+
+2nd
+return (
+        {Array.isArray(videos) &&
+          videos.map((video, index) => (
+            <>
+            <Link key={`${video._id}_${index}`} to={`/videoplayer/${video._id}`}>
+            <div
+              className="p-4 cursor-pointer"
+            >
+            </Link>
+            </>
+          ))}
+      </div>
+    </div>
+  );
+
+error: Warning: Each child in a list should have a unique "key" prop.
+
+context: Here we have given Each child a unique video._id but sill getting the problem
+
+solution: just remove the empty fragments (<> </>).
+
+solved code:
+return (
+        {Array.isArray(videos) &&
+          videos.map((video, index) => (
+            <Link key={`${video._id}_${index}`} to={`/videoplayer/${video._id}`}>
+            <div
+              className="p-4 cursor-pointer"
+            >
+            </Link>
+          ))}
+      </div>
+    </div>
+  );
+
+
+
+
+3rd
+<video controls width="60%" height="auto">
+  <source src={videoFile} type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+error context:"the video was not getting played"
+
+solution: " check Conditionally if the "videoFile" is not null. before it was playing the videoFile in null state. even useeffect was used to update the videoFile link, without checking condtionally it was unable to run"
+
+solved:
+  {videoFile && ( // Conditionally render if videoFile is not null
+      <video controls width="60%" height="auto">
+        <source src={videoFile} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    )}
