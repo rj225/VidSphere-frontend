@@ -15,6 +15,7 @@ import VideoUpload from "./components/video/VideoUpload";
 import DisplayAll from "./components/video/DisplayAll";
 import VideoPlayer from "./components/video/VideoPlayer";
 import EditVideoDetails from "./components/video/update/EditVideoDetails";
+import DeleteVideo from "./components/video/update/DeleteVideo";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
     <Route path="/dropdown" element={<Dropdown />} />
 
     <Route path="/editvideo/:video" element={<EditVideoDetails />} />
+    <Route path="/delete" element={<DeleteVideo />} />
     <Route path="/videoupload" element={<VideoUpload />} />
     <Route path="/displayall" element={<DisplayAll />} />
     <Route path="/videoplayer/:id" element={<VideoPlayer />} />

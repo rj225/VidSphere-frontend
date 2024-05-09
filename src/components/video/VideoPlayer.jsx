@@ -12,8 +12,8 @@ const VideoPlayer = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [views , setViews] = useState("");
-  const [created , setCreated] = useState("");
+  const [views, setViews] = useState("");
+  const [created, setCreated] = useState("");
   const [auth, setAuth] = useState(false);
   const { id } = useParams(); // Get the videoFilePath from URL parameter
   const [likes, setLikes] = useState(0);
@@ -25,10 +25,38 @@ const VideoPlayer = () => {
   const [subscribeClicked, setSubscribeClicked] = useState(false);
   const navigate = useNavigate();
 
-  const handleLike = () => {
+  console.log("likes " , likes);
+  console.log("dislike: ",dislikeClicked);
+  console.log("like: ",likeClicked);
+
+  const handleLikeToggle = async () => {
     if (auth) {
-      setLikes(likes + 1);
-      setLikeClicked(true);
+      try {
+        // Make a request to the API endpoint
+        const response = await fetch(`/api/v1/like/toggle/v/${id}`, {
+          method: "POST",
+          // Add any necessary headers, such as authorization tokens
+          headers: {
+            "Content-Type": "application/json",
+            // Add any authorization headers if required
+          },
+        });
+
+        // Check if the request was successful
+        if (response.ok) {
+          setLikeClicked(!likeClicked);
+          if (dislikeClicked) {
+            localStorage.setItem("dislikeStatus", false);
+            setDislikeClicked(false)
+          }
+        } else {
+          // Handle errors if any
+          console.error("Failed to toggle like");
+        }
+      } catch (error) {
+        // Handle network errors or other exceptions
+        console.error("Error toggling like:", error);
+      }
     } else {
       navigate("/login");
     }
@@ -36,11 +64,19 @@ const VideoPlayer = () => {
 
   const handleDislike = () => {
     if (auth) {
-      setDislikeClicked(true);
+      // Toggle dislike status in local storage
+      const currentDislikeStatus = localStorage.getItem("dislikeStatus") === "true";
+      localStorage.setItem("dislikeStatus", !currentDislikeStatus);
+      setDislikeClicked(!dislikeClicked);
+      if (likeClicked) {
+        handleLikeToggle();
+        setLikeClicked(false)
+      }
     } else {
       navigate("/login");
     }
   };
+  
 
   const handleComment = () => {
     if (auth) {
@@ -86,17 +122,30 @@ const VideoPlayer = () => {
       setDescription(response.data.data.description);
       setViews(response.data.data.views);
       setCreated(response.data.data.createdAt);
-
-
+      setLikes(response.data.data.likes);
+      console.log(response.data.data.likes);
+      console.log(likeClicked);
+      await fetchLikedVideos();
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const fetchLikedVideos = async () => {
+    try {
+      const response = await axios.get("/api/v1/like/videos");
+      const likedVideoIds = response.data.data.map((video) => video._id);
+      setLikeClicked(likedVideoIds.includes(id));
+    } catch (error) {
+      console.error("Error fetching liked videos:", error);
     }
   };
 
   useEffect(() => {
     fetchUser();
     fetchVideo();
-  }, []);
+    fetchLikedVideos();
+  }, [likeClicked , dislikeClicked , likes]);
 
   return (
     <div>
@@ -121,9 +170,9 @@ const VideoPlayer = () => {
             {/* Like and Dislike */}
             <div className="flex items-center cursor-pointer space-x-1 bg-cyan-800 bg-opacity-15 text-white text-lg py-1 px-3 rounded-xl ring-[0.5px] ring-cyan-800">
               <button
-                onClick={handleLike}
+                onClick={handleLikeToggle}
                 className={`space-x-1 mr-2 border-r-2 px-2 pr-3 hover:text-cyan-400 border-cyan-800 bg-transparent focus:outline-none ${
-                  likeClicked ? "text-cyan-600" : "text-white"
+                  likeClicked ? "text-cyan-500" : "text-white"
                 }`}
               >
                 <div className="flex items-center hover:scale-125 duration-300">
@@ -134,7 +183,10 @@ const VideoPlayer = () => {
               <button
                 onClick={handleDislike}
                 className={`flex items-center hover:scale-125 duration-300 space-x-1 px-2 bg-transparent hover:text-red-400 focus:outline-none ${
-                  dislikeClicked ? "text-red-600" : "text-white"
+                  dislikeClicked ||
+                  localStorage.getItem("dislikeStatus") === "true"
+                    ? "text-red-600"
+                    : "text-white"
                 }`}
               >
                 <FaThumbsDown className="text-2xl" />
@@ -183,14 +235,12 @@ const VideoPlayer = () => {
         </div>
       ) : (
         <div className="md:mx-6 md:mt-5 w-8/12 md:h-[500px] rounded-xl ring-[0.5px] ring-cyan-200 shadow-3xl flex flex-col text-white justify-center items-center">
-          
-          <MdSlowMotionVideo className="text-6xl text-cyan-200"/>
+          <MdSlowMotionVideo className="text-6xl text-cyan-200" />
           <h1 className="text-3xl my-3">Apologies!</h1>
           <p className="text-lg text-slate-300">
             Currently, the video you are looking for is not available. Please
             try again later.
           </p>
-          
         </div>
       )}
     </div>

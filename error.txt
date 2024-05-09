@@ -60,3 +60,34 @@ solved:
         Your browser does not support the video tag.
       </video>
     )}
+
+
+
+4th
+error context : current user like not getting fetched on initial reload.
+tried1 : useEffect(() => {
+    fetchUser();
+    fetchVideo();
+    fetchLikedVideos();
+  }, [likeClicked , dislikeClicked , likes]); 
+
+tried2 : useEffect(() => {
+    fetchUser();
+    fetchVideo();
+    fetchLikedVideos();
+  }, []);
+
+solution: still not very clear. But as far as i got, i called the fetchLikedVideos() inside the fetchvideo() as video was getting fetched on initial reload.
+solved:
+const fetchVideo = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/video/${id}`
+      );
+     
+      setLikes(response.data.data.likes);
+      await fetchLikedVideos();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
