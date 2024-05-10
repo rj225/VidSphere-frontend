@@ -16,6 +16,7 @@ import DisplayAll from "./components/video/DisplayAll";
 import VideoPlayer from "./components/video/VideoPlayer";
 import EditVideoDetails from "./components/video/update/EditVideoDetails";
 import DeleteVideo from "./components/video/update/DeleteVideo";
+import Comments from "./components/Comments/Comments";
 
 export default function App() {
   return (
@@ -39,6 +40,8 @@ export default function App() {
     <Route path="/videoupload" element={<VideoUpload />} />
     <Route path="/displayall" element={<DisplayAll />} />
     <Route path="/videoplayer/:id" element={<VideoPlayer />} />
+
+    <Route path="/comment" element={<Comments/>}/>
     
 </Routes>
 </BrowserRouter>

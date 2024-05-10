@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { HiUpload } from 'react-icons/hi';
 import { FiEdit } from "react-icons/fi";
 import { FaSave, FaTimes } from "react-icons/fa";
 import image from "./assets/videoEdit.png";
@@ -221,11 +222,12 @@ function EditVideoDetails() {
                   </div>
                 )}
               </div>
-              <div className="text-center">
+              <div className="flex justify-center">
                 <button
                   onClick={handleUpdate}
-                  className="bg-cyan-600 hover:bg-cyan-400 hover:scale-105 transition duration-200 text-xl text-bold active:ring-1 active:ring-cyan-400 hover:text-slate-700 text-slate-200 px-4 py-2 rounded"
+                  className="bg-cyan-600 hover:bg-cyan-400 hover:scale-105 transition duration-200 flex items-center text-xl text-bold active:ring-1 active:ring-cyan-400 hover:text-slate-700 text-slate-200 px-4 py-2 rounded"
                 >
+                  < HiUpload />
                   Update Video Details
                 </button>
               </div>

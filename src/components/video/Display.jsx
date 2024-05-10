@@ -36,15 +36,15 @@ function Display({ auth }) {
     };
   };
 
-  useEffect(() => {
-    if (isDelete) {
-      // Prevent scrolling when DeleteVideo component is open
-      document.body.style.overflow = "hidden";
-    } else {
-      // Re-enable scrolling when DeleteVideo component is closed
-      document.body.style.overflow = "visible";
-    }
-  }, [isDelete]);
+  // useEffect(() => {
+  //   if (isDelete) {
+  //     // Prevent scrolling when DeleteVideo component is open
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     // Re-enable scrolling when DeleteVideo component is closed
+  //     document.body.style.overflow = "visible";
+  //   }
+  // }, [isDelete]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -62,6 +62,13 @@ function Display({ auth }) {
   useEffect(() => {
     if (auth) {
       fetchVideos();
+    }
+    if (isDelete) {
+      // Prevent scrolling when DeleteVideo component is open
+      document.body.style.overflow = "hidden";
+    } else {
+      // Re-enable scrolling when DeleteVideo component is closed
+      document.body.style.overflow = "visible";
     }
   }, [auth, isDelete , isVideo]);
 

@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { HiUpload } from 'react-icons/hi';
 import bg from "./assets/videoUpload.png"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function VideoUpload(){
   const [title, setTitle] = useState("");
@@ -66,7 +68,7 @@ function VideoUpload(){
         />
       </div>
 
-      <div className="w-1/2 bg-gradient-to-r font-serif from-cyan-500 p-4 to-cyan-600 rounded-2xl">
+      <div className="w-1/2 bg-gradient-to-r font-serif from-cyan-200 p-4 to-cyan-500 rounded-2xl">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
@@ -107,7 +109,7 @@ function VideoUpload(){
               id="thumbnail"
               accept="image/*"
               onChange={handleThumbnailChange}
-              className="mt-1 p-2 w-full border border-cyan-300 rounded-md"
+              className="mt-1 p-2 w-full border border-cyan-500 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -122,14 +124,15 @@ function VideoUpload(){
               id="video"
               accept="video/*"
               onChange={handleVideoChange}
-              className="mt-1 p-2 w-full border border-cyan-300 rounded-md"
+              className="mt-1 p-2 w-full border border-cyan-500 rounded-md"
             />
           </div>
-          <div className="text-center mt-8 mb-4">
+          <div className="flex justify-center mt-8 mb-4">
             <button
-              className="bg-red-400 shadow-5xl text-md font-bold text-white px-4 py-2 rounded-md hover:bg-cyan-200 hover:text-black"
+              className="bg-red-600 shadow-md shadow-red-800 hover:ring-0 text-md flex items-center font-bold text-slate-50 px-4 py-2 rounded-md hover:scale-105 transition-all duration-200"
               type="submit"
             >
+             < HiUpload />
               Upload
             </button>
           </div>
