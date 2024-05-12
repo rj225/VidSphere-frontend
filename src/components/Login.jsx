@@ -5,6 +5,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navtest from "./Navtest";
+import PreviousLocation from "./utils/PreviousLocation";
 
 export default function Login() {
 
@@ -34,8 +35,14 @@ export default function Login() {
 			position: "top-right"
 		});
 
+     // Retrieve previous location from utility class
+     const previousLocation = PreviousLocation.retrieve();
+
+     // Clear previous location after retrieving
+     PreviousLocation.clear();
+
 		setTimeout(() => {
-			navigate("/");
+			navigate(previousLocation || "/");
 		  }, 4000);
 
       })

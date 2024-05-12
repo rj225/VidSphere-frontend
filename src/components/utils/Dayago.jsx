@@ -13,7 +13,7 @@ function Dayago(timestamp) {
     if (days > 1) {
       return `${days} days ago`;
     } else if (days === 1) {
-      return "one day ago";
+      return "1 day ago";
     } else if (hours > 0) {
       return `${hours} hours ago`;
     } else if (minutes > 0) {

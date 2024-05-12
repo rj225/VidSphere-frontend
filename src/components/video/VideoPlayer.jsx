@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar";
 import Navtest from "../Navtest";
-import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
+import { FaThumbsUp, FaComment , FaRegComment , FaRegThumbsUp } from "react-icons/fa";
 import { BiSolidBellRing } from "react-icons/bi";
 import { IoMdArrowDropupCircle, IoMdArrowDropdownCircle } from "react-icons/io";
 import { MdSlowMotionVideo, MdReadMore } from "react-icons/md";
@@ -13,6 +13,8 @@ import { FaSave, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comments from "../Comments/Comments";
+import { useLocation } from "react-router-dom";
+import PreviousLocation from "../utils/PreviousLocation";
 
 const VideoPlayer = () => {
   const [videoFile, setVideoFile] = useState(null);
@@ -25,7 +27,6 @@ const VideoPlayer = () => {
   const [likes, setLikes] = useState(0);
   const [subscribed, setSubscribed] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
-  const [dislikeClicked, setDislikeClicked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
   const [subscribeClicked, setSubscribeClicked] = useState(false);
   const [owner, setOwner] = useState("owner");
@@ -34,7 +35,17 @@ const VideoPlayer = () => {
   const textareaRef = useRef(null);
   const [commentContent, setCommentContent] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [refreshCommentsKey, setRefreshCommentsKey] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const prevlocation = PreviousLocation.retrieve();
+  if (prevlocation) {
+    PreviousLocation.clear();
+    PreviousLocation.store(location.pathname);
+  } else {
+    PreviousLocation.store(location.pathname);
+  }
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -56,10 +67,6 @@ const VideoPlayer = () => {
         // Check if the request was successful
         if (response.ok) {
           setLikeClicked(!likeClicked);
-          if (dislikeClicked) {
-            localStorage.setItem("dislikeStatus", false);
-            setDislikeClicked(false);
-          }
         } else {
           // Handle errors if any
           console.error("Failed to toggle like");
@@ -79,22 +86,6 @@ const VideoPlayer = () => {
     setCommentContent("");
   };
 
-  const handleDislike = () => {
-    if (auth) {
-      // Toggle dislike status in local storage
-      const currentDislikeStatus =
-        localStorage.getItem("dislikeStatus") === "true";
-      localStorage.setItem("dislikeStatus", !currentDislikeStatus);
-      setDislikeClicked(!dislikeClicked);
-      if (likeClicked) {
-        handleLikeToggle();
-        setLikeClicked(false);
-      }
-    } else {
-      navigate("/login");
-    }
-  };
-
   const handleTextareaInput = () => {
     const textarea = textareaRef.current;
     textarea.style.height = "auto"; // Reset height to auto
@@ -103,7 +94,8 @@ const VideoPlayer = () => {
   };
 
   const HandeEnterButton = (e) => {
-    if (e && e.keyCode === 13 && !e.shiftKey) { // Ensure that 'e' is not undefined
+    if (e && e.keyCode === 13 && !e.shiftKey) {
+      // Ensure that 'e' is not undefined
       e.preventDefault(); // Prevent default behavior (adding a new line)
       handleCommentPost(e); // Submit the form
     }
@@ -120,7 +112,7 @@ const VideoPlayer = () => {
     try {
       const response = await axios.post(
         `/api/v1/comment/v/${id}`,
-        { content: commentContent.split('\n').join(' ') }, // Send the comment content as an object
+        { content: commentContent.split("\n").join(" ") }, // Send the comment content as an object
         {
           headers: {
             "Content-Type": "application/json",
@@ -131,6 +123,7 @@ const VideoPlayer = () => {
       toast.success("Comment posted successfully");
       textareaRef.current.value = "";
       textareaRef.current.rows = 1;
+      setRefreshCommentsKey((prevKey) => prevKey + 1);
       fetchVideo();
     } catch (error) {
       console.error("Error uploading video:", error);
@@ -219,15 +212,18 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     fetchUser();
+  },[])
+
+  useEffect(() => {
     fetchVideo();
     fetchLikedVideos();
-  }, [likeClicked, dislikeClicked, likes]);
+  }, [likeClicked]);
 
   if (loading) {
     return (
       <div className=" h-screen w-screen flex justify-center items-center">
         <div className="w-64 h-64 border-t-8 border-b-8 border-t-cyan-500 border-r-[0.1px] border-r-red-400 border-l-[0.1px] border-l-red-400 border-b-cyan-500 rounded-full animate-spin"></div>
-        &nbsp;&nbsp;&nbsp;{" "}
+        &nbsp;&nbsp;&nbsp;
         <h3 className="text-2xl animate-pulse text-cyan-500">Loading...</h3>
       </div>
     );
@@ -277,45 +273,38 @@ const VideoPlayer = () => {
           </div>
 
           <div className="flex justify-start space-x-4 md:w-2/3">
-            {/* Like and Dislike */}
-            <div className="flex items-center cursor-pointer space-x-1 bg-cyan-800 bg-opacity-15 text-white text-lg py-1 px-3 rounded-xl ring-[0.5px] ring-cyan-800">
+            {/* Like */}
+            <div className="flex items-center hover:bg-cyan-700 hover:scale-110 transition-all duration-500 cursor-pointer space-x-1 bg-cyan-800 bg-opacity-15 text-white text-lg py-1 pl-3 pr-1 rounded-xl ring-[0.5px] ring-cyan-800">
               <button
                 onClick={handleLikeToggle}
-                className={`space-x-1 mr-2 border-r-2 px-2 pr-3 hover:text-cyan-400 border-cyan-800 bg-transparent focus:outline-none ${
+                className={`space-x-1 mr-2 bg-transparent focus:outline-none ${
                   likeClicked ? "text-cyan-500" : "text-white"
                 }`}
               >
-                <div className="flex items-center hover:scale-125 duration-300">
-                  <FaThumbsUp className=" text-2xl" />
-                  <span className="font-sans"> &nbsp;{likes}</span>
+                <div className="flex items-center">
+                  {likeClicked ? (
+                    <FaThumbsUp className=" text-2xl" />
+                  ) : (
+                    <FaRegThumbsUp className="text-2xl" />
+                  )}
+                  <span className="font-sans">&nbsp;{likes}</span>
                 </div>
-              </button>
-              <button
-                onClick={handleDislike}
-                className={`flex items-center hover:scale-125 duration-300 space-x-1 px-2 bg-transparent hover:text-red-400 focus:outline-none ${
-                  dislikeClicked ||
-                  localStorage.getItem("dislikeStatus") === "true"
-                    ? "text-red-600"
-                    : "text-white"
-                }`}
-              >
-                <FaThumbsDown className="text-2xl" />
               </button>
             </div>
 
             {/* Comment */}
             <div
-              className={`flex items-center cursor-pointer hover:bg-teal-600 hover:bg-opacity-60 space-x-1 hover:scale-105 duration-300 ${
-                commentClicked ? "bg-cyan-600" : "bg-cyan-800 bg-opacity-15"
+              onClick={handleComment}
+              className={`flex items-center cursor-pointer space-x-1 hover:scale-105 active:scale-100 active:ring-1 active:ring-cyan-400 duration-300 ${
+                commentClicked ? "bg-cyan-600 hover:bg-cyan-600" : "bg-cyan-800 bg-opacity-15 hover:bg-teal-600 hover:bg-opacity-60"
               } text-white text-lg py-2 px-4 rounded-xl ring-[0.5px] ring-cyan-800`}
             >
               <button
-                onClick={handleComment}
                 className={`flex items-center space-x-1 bg-transparent focus:outline-none`}
               >
-                <FaComment className=" text-2xl" />
+                {commentClicked ? <FaComment className=" text-2xl" /> : <FaRegComment className=" text-2xl" />}
                 <span className="transition duration-500 font-sans">
-                Comments 
+                  Comments
                 </span>
               </button>
             </div>
@@ -337,23 +326,25 @@ const VideoPlayer = () => {
           </div>
 
           {/* description */}
-          <div className="text-slate-200 bg-slate-50 bg-opacity-10 px-2 rounded-lg pt-3 font-normal mt-5 pb-3 text-lg">
+          <div className="text-slate-200 bg-slate-50 bg-opacity-10 px-2 rounded-lg py-5 font-normal my-5 mb-8 text-lg">
             {showFullDescription || description.split("\n").length <= 3 ? (
               <div className="mb-0">
                 {" "}
                 <h4>Description - {description} </h4>
-                <button
-                  onClick={toggleDescription}
-                  className="text-cyan-400 flex items-center text-md ml-2 py-2 mt-4 mb-2 hover:underline"
-                >
-                  Show less &nbsp;{" "}
-                  <IoMdArrowDropupCircle className="text-cyan-500" />
-                </button>
+                {showFullDescription && (
+                  <button
+                    onClick={toggleDescription}
+                    className="text-cyan-400 flex items-center text-md ml-2 py-2 mt-4 mb-2 hover:underline"
+                  >
+                    Show less &nbsp;
+                    <IoMdArrowDropupCircle className="text-cyan-500" />
+                  </button>
+                )}
               </div>
             ) : (
               <div onClick={toggleDescription} className="cursor-pointer">
                 <h4 className=" flex">
-                  <span>Description - </span>
+                  <span>Description -&nbsp; </span>
                   {description.split("\n").slice(0, 3).join("\n")}
                   {"  "}{" "}
                   <span className="text-cyan-400 text-md hover:underline ml-3 flex items-center">
@@ -366,7 +357,7 @@ const VideoPlayer = () => {
           </div>
 
           {commentClicked && (
-            <div className="flex items-start my-4">
+            <div className="flex items-start my-4 mt-8">
               {/* currentuser avatar*/}
               <div className="mr-5">
                 <img
@@ -408,9 +399,7 @@ const VideoPlayer = () => {
             </div>
           )}
 
-          {commentClicked && (
-            <Comments videoId={id}/>
-          )}
+          {commentClicked && <Comments videoId={id} currentuser={currentuser} auth={auth} key={refreshCommentsKey} />}
         </div>
       ) : (
         <div className="md:mx-6 md:mt-5 w-8/12 md:h-[500px] rounded-xl ring-[0.5px] ring-cyan-200 shadow-3xl flex flex-col text-white justify-center items-center">
