@@ -5,11 +5,14 @@ import FirstCapital from "../utils/FirstCapital";
 import { FaHeart } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+import Dayago from "../utils/Dayago";
+import { FaCommentSlash } from "react-icons/fa";
 
-function Comments({ postId }) {
+function Comments({ videoId }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalComments , setTotalComments] = useState(0)
   const [hasMore, setHasMore] = useState(true);
   const [heartClicked , setHeartClicked] = useState([])
   const [editClicked , setEditClicked] = useState([])
@@ -41,14 +44,36 @@ function Comments({ postId }) {
     setEditClicked(updatedEditClicked);
   }
 
+  const countComments = async () => {
+    try {
+      let allComments = [];
+      let currentPage = 1;
+      let totalPages = 1;
+  
+      // Fetch comments until all pages have been retrieved
+      while (currentPage <= totalPages) {
+        const response = await axios.get(`/api/v1/comment/v/${videoId}?page=${currentPage}`);
+        const { docs, totalPages: total } = response.data.data;
+        allComments = [...allComments, ...docs];
+        totalPages = total;
+        currentPage++;
+      }
+  
+      // Update the total number of comments
+      setTotalComments(allComments.length);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  }
+
   const fetchComments = async () => {
+
     try {
       setLoading(true);
       const response = await axios.get(
-        `/api/v1/comment/v/662d4b61eabf4fcb93b0c25c?page=${page}`
+        `/api/v1/comment/v/${videoId}?page=${page}`
       );
       const newComments = response.data.data.docs;
-
       // Fetch user details and avatars for each comment
       const commentsWithUsers = await Promise.all(
         newComments.map(async (comment) => {
@@ -63,7 +88,7 @@ function Comments({ postId }) {
       );
 
       setComments((prevComments) => [...prevComments, ...commentsWithUsers]);
-      setHasMore(newComments.length > 0); // Set hasMore based on whether new comments were fetched
+      setHasMore(response.data.data.hasNextPage); // Set hasMore based on whether new comments were fetched
       setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -74,6 +99,7 @@ function Comments({ postId }) {
 
   useEffect(() => {
     fetchComments();
+    countComments();
   }, []);
 
   const handleSeeMore = () => {
@@ -81,19 +107,22 @@ function Comments({ postId }) {
   };
 
   return (
-    <div className="mt-4 w-10/12">
-      <h2 className="text-lg font-bold mb-2">
-        <FaComment className="inline mr-2" />
+    <div className={`mt-4 w-10/12 py-1 ${comments.length === 0 ? "flex justify-center items-center" : "block"}`}>
+      {comments.length === 0 ? null : <h2 className="text-2xl flex items-center text-white font-semibold p-2 mb-2">
+      <p className="text-md mr-2 font-mono text-cyan-300">{totalComments}</p>
         Comments
-      </h2>
+      </h2>}
       {comments.length === 0 ? (
-        <p>No comments yet.</p>
+        <div className="text-3xl flex flex-col justify-center text-center py-5 text-white">
+        Be the first to share your thoughts
+        <p className="text-lg flex justify-center items-center text-slate-400">No comments yet. <FaCommentSlash className="text-cyan-500 ml-2"/></p>
+      </div>
       ) : (
         <ul>
           {comments.map((comment, index) => (
             <li
               key={`${comment.id}-${index}`}
-              className="mb-2 bg-slate-400 p-3 rounded-md bg-opacity-60"
+              className="mb-2 bg-slate-800 p-3 font-sans text-white rounded-md bg-opacity-30"
             >
               <div className="flex items-center">
                 {/* user avatar */}
@@ -111,11 +140,15 @@ function Comments({ postId }) {
 
                 {/* user name and comment */}
                   <div>
-                    <p className="font-semibold">
+                    <div className="flex">
+                      <p className="font-md font-semibold">
                       {/* Display username */}
                       {comment.user && FirstCapital(comment.user.username)}
                     </p>
-                    <p>{comment.content}</p>
+                    <h3 className="text-sm text-slate-400 mx-4">{Dayago(comment.createdAt)}</h3>
+                    </div>
+
+                    <p className="text-lg font-medium">{FirstCapital(comment.content)}</p>
                   </div>
               </div>
 

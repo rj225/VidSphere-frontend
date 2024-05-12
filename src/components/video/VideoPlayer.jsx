@@ -12,6 +12,7 @@ import FirstCapital from "../utils/FirstCapital";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Comments from "../Comments/Comments";
 
 const VideoPlayer = () => {
   const [videoFile, setVideoFile] = useState(null);
@@ -22,7 +23,6 @@ const VideoPlayer = () => {
   const [auth, setAuth] = useState(false);
   const { id } = useParams(); // Get the videoFilePath from URL parameter
   const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState(0);
   const [subscribed, setSubscribed] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
   const [dislikeClicked, setDislikeClicked] = useState(false);
@@ -102,6 +102,13 @@ const VideoPlayer = () => {
     setCommentContent(textarea.value);
   };
 
+  const HandeEnterButton = (e) => {
+    if (e && e.keyCode === 13 && !e.shiftKey) { // Ensure that 'e' is not undefined
+      e.preventDefault(); // Prevent default behavior (adding a new line)
+      handleCommentPost(e); // Submit the form
+    }
+  };
+
   const handleCommentPost = async (e) => {
     e.preventDefault();
     // Trim to remove leading and trailing whitespace
@@ -111,13 +118,15 @@ const VideoPlayer = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("content", commentContent);
-      const response = await axios.post(`/api/v1/comment/v/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `/api/v1/comment/v/${id}`,
+        { content: commentContent.split('\n').join(' ') }, // Send the comment content as an object
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       toast.success("Comment posted successfully");
       textareaRef.current.value = "";
@@ -131,7 +140,6 @@ const VideoPlayer = () => {
 
   const handleComment = () => {
     if (auth) {
-      setComments(comments + 1);
       setCommentClicked(!commentClicked);
       if (commentClicked) {
         document.getElementById("textarea").scrollIntoView({
@@ -307,7 +315,7 @@ const VideoPlayer = () => {
               >
                 <FaComment className=" text-2xl" />
                 <span className="transition duration-500 font-sans">
-                  Comments &nbsp;{comments}{" "}
+                Comments 
                 </span>
               </button>
             </div>
@@ -377,6 +385,7 @@ const VideoPlayer = () => {
                   placeholder="Add your comment..."
                   className="w-full text-md font-medium overflow-y-hidden p-2 resize-none text-cyan-500 bg-transparent border-b-2 focus:outline-none"
                   onInput={handleTextareaInput}
+                  onKeyDown={HandeEnterButton}
                 />
                 <div className="flex justify-end mt-2 space-x-4">
                   <button
@@ -400,22 +409,7 @@ const VideoPlayer = () => {
           )}
 
           {commentClicked && (
-            <div className="flex items-start my-4">
-              {/* currentuser avatar*/}
-              <div className="mr-5">
-                <img
-                  src={currentuser.avatar}
-                  className="w-12 h-12 text-cyan-600 object-cover rounded-full"
-                  alt="Avatar"
-                />
-              </div>
-
-              
-              <div className="w-full flex flex-col">
-                
-                
-              </div>
-            </div>
+            <Comments videoId={id}/>
           )}
         </div>
       ) : (
