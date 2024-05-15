@@ -3,7 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar";
 import Navtest from "../Navtest";
-import { FaThumbsUp, FaComment , FaRegComment , FaRegThumbsUp } from "react-icons/fa";
+import {
+  FaThumbsUp,
+  FaComment,
+  FaRegComment,
+  FaRegThumbsUp,
+} from "react-icons/fa";
 import { BiSolidBellRing } from "react-icons/bi";
 import { IoMdArrowDropupCircle, IoMdArrowDropdownCircle } from "react-icons/io";
 import { MdSlowMotionVideo, MdReadMore } from "react-icons/md";
@@ -28,8 +33,9 @@ const VideoPlayer = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
+  const [subscribers, setSubscribers] = useState("");
   const [subscribeClicked, setSubscribeClicked] = useState(false);
-  const [owner, setOwner] = useState("owner");
+  const [owner, setOwner] = useState({});
   const [currentuser, setCurrentUser] = useState("");
   const [loading, setLoading] = useState(true);
   const textareaRef = useRef(null);
@@ -145,12 +151,39 @@ const VideoPlayer = () => {
     }
   };
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (auth) {
-      setSubscribed(!subscribed);
-      setSubscribeClicked(true);
+      try {
+        // Toggle subscription status
+        const response = await axios.post(`/api/v1/subscribe/c/${owner._id}`);
+        // Update state and UI based on the subscription status
+        setSubscribed(!subscribed);
+        // setTimeout(() => {setSubscribeClicked(true)},4000);
+      } catch (error) {
+        console.error("Error toggling subscription:", error);
+        // Handle error if necessary
+      }
     } else {
       navigate("/login");
+    }
+  };
+
+  const fetchSubscribers = async () => {
+    try {
+      const response = await axios.get(`/api/v1/subscribe/c/${owner._id}`);
+      setSubscribers(response.data.data);
+      console.log("subscribers", response.data.data);
+      console.log("current user id ", currentuser._id);
+      if (Array.isArray(response.data.data.subscribers)) {
+        const isSubscribed = response.data.data.subscribers.some(
+          (subscription) => subscription.subscriber._id === currentuser._id
+        );
+        setSubscribed(isSubscribed);
+      }
+      console.log("subscribed? ", subscribed);
+    } catch (error) {
+      console.error(`Error fetching owner with ID ${owner._id}:`, error);
+      return null;
     }
   };
 
@@ -181,8 +214,11 @@ const VideoPlayer = () => {
       setViews(response.data.data.views);
       setCreated(response.data.data.createdAt);
       setLikes(response.data.data.likes);
-      await fetchOwner(response.data.data.owner);
+      const ownerId = response.data.data.owner;
+      console.log("OwnerId:", ownerId);
+      await fetchOwner(ownerId);
       await fetchLikedVideos();
+      await fetchSubscribers();
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -212,7 +248,11 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     fetchUser();
-  },[])
+  }, []);
+
+  useEffect(() => {
+    fetchSubscribers();
+  }, [subscribed]);
 
   useEffect(() => {
     fetchVideo();
@@ -296,13 +336,19 @@ const VideoPlayer = () => {
             <div
               onClick={handleComment}
               className={`flex items-center cursor-pointer space-x-1 hover:scale-105 active:scale-100 active:ring-1 active:ring-cyan-400 duration-300 ${
-                commentClicked ? "bg-cyan-600 hover:bg-cyan-600" : "bg-cyan-800 bg-opacity-15 hover:bg-teal-600 hover:bg-opacity-60"
+                commentClicked
+                  ? "bg-cyan-600 hover:bg-cyan-600"
+                  : "bg-cyan-800 bg-opacity-15 hover:bg-teal-600 hover:bg-opacity-60"
               } text-white text-lg py-2 px-4 rounded-xl ring-[0.5px] ring-cyan-800`}
             >
               <button
                 className={`flex items-center space-x-1 bg-transparent focus:outline-none`}
               >
-                {commentClicked ? <FaComment className=" text-2xl" /> : <FaRegComment className=" text-2xl" />}
+                {commentClicked ? (
+                  <FaComment className=" text-2xl" />
+                ) : (
+                  <FaRegComment className=" text-2xl" />
+                )}
                 <span className="transition duration-500 font-sans">
                   Comments
                 </span>
@@ -314,7 +360,7 @@ const VideoPlayer = () => {
               <button
                 onClick={handleSubscribe}
                 className={`flex items-center space-x-1 bg-transparent focus:outline-none ${
-                  subscribeClicked ? "text-cyan-600" : "text-white"
+                  subscribed ? "text-cyan-600" : "text-white"
                 }`}
               >
                 <BiSolidBellRing className="text-2xl" />
@@ -399,7 +445,14 @@ const VideoPlayer = () => {
             </div>
           )}
 
-          {commentClicked && <Comments videoId={id} currentuser={currentuser} auth={auth} key={refreshCommentsKey} />}
+          {commentClicked && (
+            <Comments
+              videoId={id}
+              currentuser={currentuser}
+              auth={auth}
+              key={refreshCommentsKey}
+            />
+          )}
         </div>
       ) : (
         <div className="md:mx-6 md:mt-5 w-8/12 md:h-[500px] rounded-xl ring-[0.5px] ring-cyan-200 shadow-3xl flex flex-col text-white justify-center items-center">
