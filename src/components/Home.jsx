@@ -56,7 +56,15 @@ export default function Home() {
     </div>
     </Link>
 
-    <DisplayAll />
+    <div className="w-full">
+      <DisplayAll 
+        width={`w-2/6`} 
+        direction={`flex flex-wrap`} 
+        height={`h-60`} 
+        content={`flex flex-col`} 
+        channelOwnerShow={false}/>
+    </div>
+    
   </div>
   )
   

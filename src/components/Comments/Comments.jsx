@@ -9,6 +9,7 @@ import Dayago from "../utils/Dayago";
 import { FaCommentSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Count from "../utils/Count";
 
 function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
   const [comments, setComments] = useState([]);
@@ -161,7 +162,7 @@ function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
       {comments.length === 0 ? null : (
         <h2 className="text-2xl flex items-center text-white font-semibold p-2 mb-2">
           <p className="text-md mr-2 font-mono text-cyan-300">
-            {totalComments}
+            {Count(totalComments)}
           </p>
           Comments
         </h2>

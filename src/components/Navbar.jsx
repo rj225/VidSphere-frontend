@@ -5,6 +5,7 @@ import axios from "axios";
 import { RiSearchLine } from "react-icons/ri";
 import { RiNotification2Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
+import { RiVideoUploadFill } from "react-icons/ri";
 
 function Navbar() {
   const [name, setName] = useState("");
@@ -107,10 +108,11 @@ function Navbar() {
         <div className="md:w-1/12">
           <Link to="/videoupload" >
         <button
-          className="bg-cyan-600 text-white px-2 py-3 rounded-lg shadow-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50"
+          className="bg-cyan-600 text-white px-2 py-3 flex items-center rounded-lg shadow-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50"
         
         >
-          Upload Video
+          Upload&nbsp;
+          <RiVideoUploadFill className="text-xl ml-1"/>
         </button>
         </Link>
     </div>         

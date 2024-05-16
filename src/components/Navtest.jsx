@@ -12,7 +12,9 @@ function Navtest({ showSignInButton = true }) {
         <div className="flex items-center md:w-screen md:pr-1 md:h-24 justify-between">
           {/* <!-- Logo --> */}
           <div className="md:flex md:justify-center md:items-center h-full md:w-2/12">
-            <img src={logo} alt="logo" className="md:h-20 " />
+            <Link to="/" className="cursor-pointer">
+              <img src={logo} alt="logo" className="md:h-20 " />
+            </Link>
           </div>
 
           {/* <!-- Search Bar --> */}

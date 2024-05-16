@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Dayago from "../utils/Dayago";
 import Formattime from "../utils/Formattime";
-import FirstCapital from "../utils/FirstCapital"
+import FirstCapital from "../utils/FirstCapital";
 
-function DisplayAll() {
+function DisplayAll({ direction, width, height, content, thumb_width, channelOwnerShow ,id}) {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [owners, setOwners] = useState({});
-
 
   function shuffleVideos(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -23,12 +21,22 @@ function DisplayAll() {
 
   useEffect(() => {
     fetchVideos();
-  }, []);
+  }, [id]);
+
+  const handleRefresh = () =>{
+    console.log("new video clicked");
+  }
 
   async function fetchVideos() {
     try {
       const response = await axios.get("/api/v1/video/get-all-videos");
-      const shuffledVideos = shuffleVideos(response.data.data.docs);
+      let filteredVideos = response.data.data.docs;
+      if(id){
+        filteredVideos = response.data.data.docs.filter(
+        (video) => video._id !== id
+      );
+    }
+      const shuffledVideos = shuffleVideos(filteredVideos);
       setVideos(shuffledVideos);
       const ownerIds = shuffledVideos.map((video) => video.owner);
       const ownersData = await Promise.all(
@@ -71,39 +79,43 @@ function DisplayAll() {
   }
 
   return (
-    <div className="bg-cur p-6 py-4">
-      <div className="grid grid-cols-3 gap-4">
+    <div className="bg-cur px-6 py-0">
+      <div className={direction}>
         {Array.isArray(videos) &&
           videos.map((video, index) => (
-            <div key={`${video._id}_${index}`}>
-              <Link to={`/videoplayer/${video._id}`}>
-                <div className="p-4 cursor-pointer hover:scale-105 transition-all duration-500">
-                  <div className="relative">
+            <div key={`${video._id}_${index}`} className={`${width}`}>
+              <Link to={`/videoplayer/${video._id}`} onClick={handleRefresh}>
+                <div
+                  className={`p-4 cursor-pointer hover:scale-105 ${content} transition-all duration-500`}
+                >
+                  <div className={`relative ${thumb_width}`}>
                     <img
                       src={video.thumbnail}
                       alt={FirstCapital(video.title)}
-                      className="w-full h-60 object-cover z-0 rounded-md relative mb-2"
+                      className={`w-full object-cover z-0 rounded-md relative mb-2 ${height}`}
+                      loading="lazy"
                     />
-                    <p className="text-gray-50 font-sans bg-black px-[4px] font-semibold py-[1.5px] text-sm bg-opacity-55 rounded-lg absolute bottom-2 z-20 right-2">
+                    <p className="text-gray-50 font-sans bg-black px-[4px] font-semibold py-[1.5px] text-sm bg-opacity-55 rounded-lg absolute bottom-3 z-20 right-2">
                       {Formattime(video.duration)}
                     </p>
                   </div>
                   <div className="flex">
-                    <div className="mr-4">
-                      <img
-                        src={owners[video.owner]?.avatar}
-                        className="w-12 h-12 object-cover rounded-full"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <h2 className="text-lg text-white font-semibold mb-1">
+                    {!channelOwnerShow && <div className="mr-2">
+                        <img
+                          src={owners[video.owner]?.avatar}
+                          className="w-12 h-12 object-cover rounded-full"
+                          alt=""
+                        />
+                      </div>
+                    }
+                    <div className={`flex flex-col ml-2`}>
+                      <h2 className="text-lg text-white font-semibold mb-2">
                         {FirstCapital(video.title)}
                       </h2>
-                      <p className="text-slate-300 text-md mb-2">
+                      <p className="text-slate-300 text-md mb-1">
                         {FirstCapital(owners[video.owner]?.username)}
                       </p>
-                      <div className="flex space-x-3 font-sans text-slate-300 text-sm mb-2">
+                      <div className="flex space-x-3 font-sans text-slate-300 text-sm">
                         <p>{video.views} Views</p>
                         <p>{Dayago(video.createdAt)}</p>
                       </div>
