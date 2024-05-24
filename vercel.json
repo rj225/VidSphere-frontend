@@ -1,6 +1,6 @@
 {
     "routes": [
-      { "src": "/api/v1/*", "dest": "https://vidsphere-backend.vercel.app/api/v1/:splat" }
+      { "src": "/api/v1/(.*)", "dest": "https://vidsphere-backend.vercel.app/api/v1/$1" }
     ]
   }
   
