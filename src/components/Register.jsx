@@ -3,6 +3,7 @@ import { useNavigate , Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaUser, FaEnvelope, FaLock, FaCamera, FaImage, FaUserPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { LinearGradient } from 'react-text-gradients';
 
 const Register = () => {
   const [fullname, setFullname] = useState('');
@@ -59,7 +60,12 @@ const Register = () => {
     <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-slate-900">
       <div>
         <h3 className="md:text-4xl sm:text-3xl text-xl font-bold text-cyan-400">
-          Welcome to VidSphere 🚀
+          Welcome to <LinearGradient
+   					  gradient={['to left', 'rgb(8 145 178) , white']}
+					  fallbackColor="black"
+  				 	>
+					 VidSphere
+					</LinearGradient> 🚀
         </h3>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
