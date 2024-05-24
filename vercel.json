@@ -1,0 +1,5 @@
+{
+    "routes": [
+      { "src": "/api/v1/video/get-all-videos", "dest": "https://vidsphere-backend.vercel.app/api/v1/video/get-all-videos" }
+    ]
+  }
