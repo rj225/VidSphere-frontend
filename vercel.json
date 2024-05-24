@@ -1,5 +1,6 @@
 {
     "routes": [
-      { "src": "/api/v1/video/get-all-videos", "dest": "https://vidsphere-backend.vercel.app/api/v1/video/get-all-videos" }
+      { "src": "/api/v1/*", "dest": "https://vidsphere-backend.vercel.app/api/v1/:splat" }
     ]
   }
+  
