@@ -17,6 +17,11 @@ import VideoPlayer from "./components/video/VideoPlayer";
 import EditVideoDetails from "./components/video/update/EditVideoDetails";
 import DeleteVideo from "./components/video/update/DeleteVideo";
 import Comments from "./components/Comments/Comments";
+import WatchHistory from "./components/profile/WatchHistory";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import Playlist from "./components/profile/Playlist";
+import Navbarnew from "./components/testing";
 
 export default function App() {
   return (
@@ -40,10 +45,11 @@ export default function App() {
     <Route path="/videoupload" element={<VideoUpload />} />
     <Route path="/displayall" element={<DisplayAll />} />
     <Route path="/videoplayer/:id" element={<VideoPlayer />} />
-
+    <Route path="/play" element={<Playlist/>}/>
     <Route path="/comment" element={<Comments/>}/>
-    
+    {/* <Route path="/test" element={</>}/> */}
 </Routes>
+<ToastContainer pauseOnHover={false} theme="colored" />
 </BrowserRouter>
     
   )

@@ -7,7 +7,7 @@ import { FaSave, FaTimes } from "react-icons/fa";
 import image from "./assets/videoEdit.png";
 import FirstCapital from "../../utils/FirstCapital";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 function EditVideoDetails() {
   const { video } = useParams();
@@ -36,7 +36,7 @@ function EditVideoDetails() {
   const fetchVideo = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/v1/video/${video}`
+        `/api/v1/video/${video}`
       );
       setTitle(response.data.data.title);
       setOriginalTitle(response.data.data.title);
@@ -235,7 +235,7 @@ function EditVideoDetails() {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

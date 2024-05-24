@@ -5,7 +5,7 @@ import { MdCancel } from "react-icons/md";
 import { IoIosSave } from "react-icons/io";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import updatename from "./assets/full.png";
 
 function UpdateName() {
@@ -133,7 +133,7 @@ function UpdateName() {
                   </div>
                 </>
               )}
-              <ToastContainer />
+              {/* <ToastContainer /> */}
             </div>
           </form>
         </div>

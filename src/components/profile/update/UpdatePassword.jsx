@@ -4,7 +4,7 @@ import { GrUpdate } from "react-icons/gr";
 import { MdCancel } from "react-icons/md";
 import { IoIosSave } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import updatename from "./assets/password.png";
 import Navbar from "../../Navbar";
 
@@ -130,7 +130,7 @@ function UpdatePassword() {
                   </div>
                 </>
               )}
-              <ToastContainer />
+              {/* <ToastContainer /> */}
             
           </form>
         </div>

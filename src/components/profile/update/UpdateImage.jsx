@@ -4,7 +4,7 @@ import { GrUpdate } from "react-icons/gr";
 import { MdCancel } from "react-icons/md";
 import { IoIosSave } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import updatename from "./assets/cover.png";
 
 export default function UpdateImage() {
@@ -292,7 +292,7 @@ export default function UpdateImage() {
           </form>
         </div>
         
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     </>
   );

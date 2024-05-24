@@ -5,8 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VidSphere</title>
+    <style>
+      /* Hide vertical scrollbar */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      /* .no-scrollbar {
+        -ms-overflow-style: none;  
+        scrollbar-width: none; 
+      } */
+    </style>
   </head>
-  <body style="background-color: #0D141A; font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; overflow-x: hidden;">
+  <body class="no-scrollbar" style="background-color: #0D141A; font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

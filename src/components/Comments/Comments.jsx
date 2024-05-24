@@ -7,8 +7,8 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import Dayago from "../utils/Dayago";
 import { FaCommentSlash } from "react-icons/fa";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import Count from "../utils/Count";
 
 function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
@@ -160,7 +160,7 @@ function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
       }`}
     >
       {comments.length === 0 ? null : (
-        <h2 className="text-2xl flex items-center text-white font-semibold p-2 mb-2">
+        <h2 className="sm:text-2xl text-lg flex items-center text-white font-semibold p-2 mb-2">
           <p className="text-md mr-2 font-mono text-cyan-300">
             {Count(totalComments)}
           </p>
@@ -198,7 +198,7 @@ function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
                 {/* user name and comment */}
                 <div>
                   <div className="flex">
-                    <p className="font-md font-semibold">
+                    <p className="sm:text-base text-xs font-semibold">
                       {/* Display username */}
                       {comment.user && FirstCapital(comment.user.username)}
                     </p>
@@ -207,7 +207,7 @@ function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
                     </h3>
                   </div>
 
-                  <p className="text-lg font-medium">
+                  <p className="sm:text-lg text-sm font-medium">
                     {FirstCapital(comment.content)}
                   </p>
                 </div>
@@ -261,6 +261,7 @@ function Comments({ videoId, auth, refreshCommentsKey,currentuser }) {
           See More Comments
         </button>
       )}
+      {/* <ToastContainer theme="colored" pauseOnHover={false}/> */}
     </div>
   );
 }

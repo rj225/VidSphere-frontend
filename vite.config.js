@@ -7,7 +7,7 @@ export default defineConfig({
     port:5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000/', // Replace with your backend server URL
+        target: 'https://vidsphere-backend.vercel.app/', // Always remember to Replace your backend server URL
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api'),
       },

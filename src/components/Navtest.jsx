@@ -4,10 +4,12 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
+import TestingInfoBar from "./testing";
 
 function Navtest({ showSignInButton = true }) {
   return (
     <>
+    <TestingInfoBar message="This isn't the complete version. It is still in testing mode." />
       <nav className="bg-cur font-serif w-full z-10">
         <div className="flex items-center md:w-screen md:pr-1 md:h-24 justify-between">
           {/* <!-- Logo --> */}

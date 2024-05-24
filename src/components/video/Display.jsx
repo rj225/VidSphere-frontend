@@ -2,13 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
 import DeleteVideo from "./update/DeleteVideo";
+import { IoMdEye } from "react-icons/io";
 import { AiOutlineUpload, AiOutlineVideoCamera } from "react-icons/ai";
 import { BsFilm } from "react-icons/bs";
+import {FaThumbsUp} from "react-icons/fa";
 
-function Display({ auth }) {
+function Display({ auth  , id , modify}) {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -60,9 +63,7 @@ function Display({ auth }) {
   }, []);
 
   useEffect(() => {
-    if (auth) {
-      fetchVideos();
-    }
+    fetchVideos();
     if (isDelete) {
       // Prevent scrolling when DeleteVideo component is open
       document.body.style.overflow = "hidden";
@@ -74,8 +75,8 @@ function Display({ auth }) {
 
   async function fetchVideos() {
     try {
-      const response = await axios.get("/api/v1/video/get-user-videos");
-      setVideos(response.data.videos.docs); // Update here to access response.data.videos.docs
+      const response = await axios.get(`/api/v1/video/${id}/videos`);
+      setVideos(response.data.data); // Update here to access response.data.videos.docs
       setIsVideo(true);
     } catch (error) {
       setError(error.response.data.message);
@@ -110,39 +111,40 @@ function Display({ auth }) {
     <>
       {isVideo ? (
         <div className="my-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="flex sm:flex-wrap sm:flex-row flex-col w-full items-center gap-4">
             {Array.isArray(videos) &&
               videos.map((video) => (
                 <div
                   key={video._id}
-                  className="relative"
+                  className="relative hover:scale-105 duration-300 sm:w-1/4 w-full"
                   onMouseEnter={toggleDots(video._id)}
                   onMouseLeave={toggleDots(null)}
                 >
                   <Link to={`/videoplayer/${video._id}`}>
-                    <div className="p-4 bg-cyan-50 rounded-2xl z-0 bg-opacity-35 filter shadow-lg relative">
+                    <div className="p-4 bg-cyan-50 rounded-2xl z-0 bg-opacity-25 filter shadow-lg relative">
                       <div className="relative">
                         <img
                           src={video.thumbnail}
                           alt={FirstCapital(video.title)}
-                          className="w-full h-60 object-cover z-0 rounded-md relative mb-2"
+                          className="w-full h-40 object-cover z-0 rounded-md relative mb-2"
                         />
                         <p className="text-gray-50 font-sans bg-black px-[4px] font-semibold py-[1.5px] text-sm bg-opacity-55 rounded-lg absolute bottom-2 z-20 right-2">
                           {Formattime(video.duration)}
                         </p>
                       </div>
-                      <h2 className="text-xl font-semibold mb-2">
+                      <h2 className="sm:text-xl text-md font-semibold text-slate-800 mb-1">
                         {FirstCapital(video.title)}
                       </h2>
-                      <p className="text-gray-700 mb-2">
-                        {FirstCapital(video.description)}
-                      </p>
+                      <div className="text-gray-700 flex font-mono">
+                        <div className="flex items-center mr-3 text-md"><IoMdEye className="mr-1"/> {video.views}</div>
+                        <div className="flex items-center mr-2 text-md"><FaThumbsUp className="text-md text-cyan-800 mr-1"/>{video.likes}</div>
+                      </div>
                       {/* Add more video details here as needed */}
                     </div>
                   </Link>
 
                   <div className="z-10 cursor-pointer">
-                    {visibleVideoId === video._id && (
+                    {modify && visibleVideoId === video._id && (
                       <div
                         onClick={toggleMenu(video._id)}
                         className="absolute top-1 right-1 cursor-pointer z-10 justify-center items-center flex flex-col h-12 w-3"
@@ -218,7 +220,7 @@ function Display({ auth }) {
           </div>
         </div>
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </>
   );
 }

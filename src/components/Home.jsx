@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Navtest from "./Navtest";
 import axios from "axios";
 import DisplayAll from "./video/DisplayAll";
+import PreviousLocation from "./utils/PreviousLocation";
 
 export default function Home() {
   const [auth, setAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser , setCurrentUser] = useState("");
+  const location = useLocation();
+
+  const prevlocation = PreviousLocation.retrieve();
+  if (prevlocation) {
+    PreviousLocation.clear();
+    PreviousLocation.store(location.pathname);
+  } else {
+    PreviousLocation.store(location.pathname);
+  }
 
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/v1/user/current-user");
       console.log("Response:", response.data);
       setAuth(true);
+      setCurrentUser(response.data.data)
       setIsLoading(false);
     } catch (error) {
       console.error("Error:", error.response.data);
@@ -26,11 +38,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const handleUpload = () => {
-    // Add code to handle video upload
-    // You can use libraries like react-dropzone or implement your own upload functionality
-    console.log("Upload button clicked");
-  };
 
   if (isLoading) {
     return (
@@ -44,25 +51,17 @@ export default function Home() {
 
   return(
   <div>
-  {auth ? <Navbar /> : <Navtest />}
-  <Link to="/videoupload" >
-  <div className="fixed bottom-8 right-8">
-        <button
-          className="bg-cyan-600 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50"
-          onClick={handleUpload}
-        >
-          Upload Video
-        </button>
-    </div>
-    </Link>
+  {auth ? <Navbar uploadbutton={true} nospacebar={true} showuser={true}/> : <Navtest />}
 
-    <div className="w-full">
+    <div className="w-screen mt-1">
       <DisplayAll 
-        width={`w-2/6`} 
-        direction={`flex flex-wrap`} 
-        height={`h-60`} 
+        width={`sm:w-4/12 w-full `} 
+        direction={`flex flex-col sm:flex-row sm:flex-wrap`} 
+        height={`sm:h-60 h-40`} 
         content={`flex flex-col`} 
-        channelOwnerShow={false}/>
+        channelOwnerShow={false}
+        auth={auth}
+        currentUser={currentUser} />
     </div>
     
   </div>

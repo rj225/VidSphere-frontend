@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar";
 import Navtest from "../Navtest";
@@ -16,13 +16,17 @@ import Dayago from "../utils/Dayago";
 import FirstCapital from "../utils/FirstCapital";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Comments from "../Comments/Comments";
 import { useLocation } from "react-router-dom";
 import PreviousLocation from "../utils/PreviousLocation";
 import DisplayAll from "./DisplayAll";
 import Count from "../utils/Count";
 import { FaRegBell } from "react-icons/fa6";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { BiSolidPlaylist } from "react-icons/bi";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoMdRemoveCircle } from "react-icons/io";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 const VideoPlayer = () => {
   const [videoFile, setVideoFile] = useState(null);
@@ -44,6 +48,11 @@ const VideoPlayer = () => {
   const [commentContent, setCommentContent] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [refreshCommentsKey, setRefreshCommentsKey] = useState(0);
+  const [view, setView] = useState(false);
+  const [playlists, setPlaylists] = useState([]);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [inPlaylist, setInPlaylist] = useState(false);
+  const videoRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -58,6 +67,23 @@ const VideoPlayer = () => {
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
+
+  async function postView(PLocation) {
+    console.log("postView called");
+    const CLocation = location.pathname;
+    if (!view) {
+      if (CLocation === PLocation) {
+        try {
+          const response = await axios.post(`/api/v1/view/${id}/view`);
+          console.log(response);
+          setViews((pview) => pview + 1);
+          setView(false);
+        } catch (error) {
+          console.error("Error posting view:", error);
+        }
+      }
+    }
+  }
 
   const handleLikeToggle = async () => {
     if (auth) {
@@ -84,7 +110,7 @@ const VideoPlayer = () => {
         console.error("Error toggling like:", error);
       }
     } else {
-      navigate("/login");
+      toast.error("Login to like");
     }
   };
 
@@ -112,6 +138,7 @@ const VideoPlayer = () => {
   const handleCommentPost = async (e) => {
     e.preventDefault();
     // Trim to remove leading and trailing whitespace
+
     if (!commentContent.trim()) {
       toast.error("Please enter a comment");
       return;
@@ -141,51 +168,55 @@ const VideoPlayer = () => {
 
   const handleComment = () => {
     if (auth) {
-      setCommentClicked(!commentClicked);
       if (commentClicked) {
         document.getElementById("textarea").scrollIntoView({
           behavior: "smooth",
         });
       }
+      setCommentClicked(!commentClicked);
     } else {
-      navigate("/login");
+      toast.error("Login to see comments");
     }
   };
 
   const handleSubscribe = async () => {
     if (auth) {
       try {
-        // Toggle subscription status
-        const response = await axios.post(`/api/v1/subscribe/c/${owner._id}`);
-        // Update state and UI based on the subscription status
-        setSubscribed(!subscribed);
-        // setTimeout(() => {setSubscribeClicked(true)},4000);
+        const promise = axios.post(`/api/v1/subscribe/c/${owner._id}`);
+
+        if (promise) {
+          promise.then(() => {
+            setSubscribed(!subscribed);
+          });
+        }
+
+        await toast.promise(promise, {
+          pending: `${subscribed ? "Unsubscribing..." : "Subscribing..."}`,
+          success: `${
+            subscribed
+              ? "Unubscribed successfully! 👌"
+              : "Subscribed successfully! 🔥"
+          }`,
+          error: "Failed to subscribe! 🤯 Contact Admin",
+        });
       } catch (error) {
         console.error("Error toggling subscription:", error);
-        // Handle error if necessary
       }
     } else {
-      navigate("/login");
+      toast.error("Login to subscribe");
     }
   };
 
   const fetchSubscribers = async (ownerId) => {
-    console.log("subscribers called");
-    console.log("current user id ", currentuser._id);
     if (ownerId && currentuser._id) {
-      console.log("fetch cuurent user in subscriber called", currentuser._id);
       try {
         const response = await axios.get(`/api/v1/subscribe/c/${ownerId}`);
-        // setSubscribers(response.data.data);
-        console.log("subscribers", response.data.data);
-        console.log("current user id ", currentuser._id);
         if (Array.isArray(response.data.data.subscribers)) {
           const isSubscribed = response.data.data.subscribers.some(
             (subscription) => subscription.subscriber._id === currentuser._id
           );
           setSubscribed(isSubscribed);
         }
-        console.log("subscribed? ", subscribed);
       } catch (error) {
         console.error(`Error fetching owner with ID ${ownerId}:`, error);
         return null;
@@ -207,12 +238,9 @@ const VideoPlayer = () => {
 
   const fetchVideo = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/v1/video/${id}`
-      );
+      const response = await axios.get(`/api/v1/video/${id}`);
       console.log("Response:", response.data);
       const videoFilePath = response.data.data.videoFile;
-      console.log("video file path", videoFilePath);
       setVideoFile(videoFilePath);
       const heading = response.data.data.title;
       setTitle(FirstCapital(heading));
@@ -220,11 +248,27 @@ const VideoPlayer = () => {
       setViews(response.data.data.views);
       setCreated(response.data.data.createdAt);
       setLikes(response.data.data.likes);
-      console.log(response.data.data.owner);
       setOwnerId(response.data.data.owner);
       await fetchOwner(response.data.data.owner);
       await fetchLikedVideos();
       await fetchSubscribers(response.data.data.owner);
+      const PLocation = location.pathname;
+      let timeoutDuration = 10;
+      if (response.data.data.duration > 120) {
+        const percent2ofTotalDuration = (response.data.data.duration * 2) / 100;
+        timeoutDuration = percent2ofTotalDuration * 1000;
+      } else if (response.data.data.duration > 60) {
+        const percent2ofTotalDuration = (response.data.data.duration * 5) / 100;
+        timeoutDuration = percent2ofTotalDuration * 1000;
+      } else {
+        const percent2ofTotalDuration =
+          (response.data.data.duration * 10) / 100;
+        timeoutDuration = percent2ofTotalDuration * 1000;
+      }
+
+      setTimeout(() => {
+        postView(PLocation);
+      }, timeoutDuration);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -255,19 +299,90 @@ const VideoPlayer = () => {
     }
   };
 
+  async function fetchUserPlaylists() {
+    if (!auth) {
+      return;
+    }
+    try {
+      const response = await axios.get(`/api/v1/playlist/user/${ownerId}`);
+      setPlaylists(response.data.data);
+      console.log("Playlists data:", playlists);
+      setInPlaylist(
+        Array.isArray(response.data.data) &&
+          response.data.data.some((playlist) => playlist.videos.includes(id))
+      );
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+    }
+  }
+
+  const openPlaylistModal = () => {
+    if (auth) {
+      setShowPlaylistModal(!showPlaylistModal);
+      fetchUserPlaylists();
+    } else {
+      toast.error("Login to add video to playlist");
+    }
+  };
+
+  const closePlaylistModal = () => {
+    setShowPlaylistModal(!showPlaylistModal);
+  };
+
+  const handleAddToPlaylist = async (playlistId) => {
+    try {
+      const promise = axios.patch(`/api/v1/playlist/add/${id}/${playlistId}`);
+      if (promise) {
+        promise.then(() => {
+          fetchUserPlaylists();
+        });
+      }
+      await toast.promise(promise, {
+        pending: "Adding video to playlist...",
+        success: "Video added to the playlist!",
+        error: "Failed to add! 🤯 (contact admin)",
+      });
+    } catch (error) {
+      console.error("Error adding video to playlist:", error);
+    }
+  };
+
+  const handleRemoveFromPlaylist = async (playlistId) => {
+    try {
+      const promise = axios.patch(
+        `/api/v1/playlist/remove/${id}/${playlistId}`
+      );
+      if (promise) {
+        promise.then(() => {
+          fetchUserPlaylists();
+        });
+      }
+      await toast.promise(promise, {
+        pending: "Removing video from playlist...",
+        success: "Video removed from the playlist!",
+        error: "Failed to remove! 🤯 (contact admin)",
+      });
+    } catch (error) {
+      console.error("Error removing video from playlist:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserPlaylists();
+  }, [ownerId]);
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   useEffect(() => {
     fetchSubscribers(ownerId);
-  }, [subscribed, id,ownerId]);
+  }, [subscribed, id, ownerId]);
 
   useEffect(() => {
     fetchVideo();
     fetchLikedVideos();
   }, [likeClicked, id]);
-
 
   useEffect(() => {
     if (id) {
@@ -275,6 +390,14 @@ const VideoPlayer = () => {
       setCommentClicked(false);
     }
   }, [id]);
+
+  // useEffect(() => {
+  //   if (commentClicked) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "auto";
+  //   }
+  // }, [commentClicked]);
 
   if (loading) {
     return (
@@ -288,13 +411,19 @@ const VideoPlayer = () => {
 
   return (
     <div>
-      {auth ? <Navbar /> : <Navtest />}
-      <div className="flex">
+      {auth ? (
+        <Navbar uploadbutton={true} nospacebar={true} showuser={true} />
+      ) : (
+        <Navtest />
+      )}
+      <div className="flex flex-col sm:flex-row">
         {videoFile ? (
-          <div className="md:px-7 md:pt-5 w-8/12">
+          <div className="sm:px-7 px-3 pt-5 sm:w-8/12 w-screen">
             <div>
               {videoFile && ( // Conditionally render if videoFile is not null
                 <video
+                  ref={videoRef}
+                  id="video-player"
                   key={videoFile}
                   controls
                   height="auto"
@@ -310,31 +439,36 @@ const VideoPlayer = () => {
               {title && <h1>{title}</h1>}
             </div>
 
-            {/* owner */}
-            <div className="flex items-center mb-5">
-              <div className="mr-2">
-                <img
-                  src={owner.avatar}
-                  className="w-12 h-12 text-cyan-600 object-cover rounded-full"
-                  alt="Avatar"
-                />
-              </div>
-              <p className="text-slate-300 text-md mb-2">
-                {FirstCapital(owner.username)}
-              </p>
-
-              {/* views */}
-              <div className="flex space-x-3 font-sans mx-4 text-slate-300 text-sm mb-2">
-                <h4>{views} views</h4>
-                <h4 className="text-cyan-200">{Dayago(created)}</h4>
+            {/* owner and views */}
+            <div className="flex mb-5">
+              <Link to={`/dashboard/${owner.username}`}>
+                <div className="mr-2">
+                  <img
+                    src={owner.avatar}
+                    className="w-12 h-12 text-cyan-600 object-cover rounded-full"
+                    alt="Avatar"
+                  />
+                </div>
+              </Link>
+              <div className="flex-col">
+                <Link to={`/dashboard/${owner.username}`}>
+                  <p className="text-slate-300 text-md mb-1">
+                    {FirstCapital(owner.fullname)}
+                  </p>
+                </Link>
+                {/* views */}
+                <div className="flex space-x-3 font-sans text-slate-300 text-sm mb-2">
+                  <h4>{views} views</h4>
+                  <h4 className="text-cyan-200">{Dayago(created)}</h4>
+                </div>
               </div>
             </div>
 
-            <div className="flex justify-start space-x-4 md:w-2/3">
+            <div className="flex flex-wrap justify-start space-x-4 sm:w-full w-screen">
               {/* Like */}
               <div
                 onClick={handleLikeToggle}
-                className="flex items-center hover:bg-cyan-700 hover:scale-110 transition-all duration-500 cursor-pointer space-x-1 bg-cyan-800 bg-opacity-15 text-white text-lg py-1 pl-3 pr-1 rounded-xl ring-[0.5px] ring-cyan-800"
+                className="flex items-center sm:my-2 my-2 hover:bg-cyan-700 hover:scale-110 transition-all duration-500 cursor-pointer space-x-1 bg-cyan-800 bg-opacity-15 text-white text-lg py-1 pl-3 pr-1 rounded-xl ring-[0.5px] ring-cyan-800"
               >
                 <button
                   className={`space-x-1 mr-2 bg-transparent focus:outline-none ${
@@ -343,11 +477,13 @@ const VideoPlayer = () => {
                 >
                   <div className="flex items-center">
                     {likeClicked ? (
-                      <FaThumbsUp className=" text-2xl" />
+                      <FaThumbsUp className=" sm:text-2xl text-lg" />
                     ) : (
-                      <FaRegThumbsUp className="text-2xl" />
+                      <FaRegThumbsUp className="sm:text-2xl text-lg" />
                     )}
-                    <span className="font-sans">&nbsp;{Count(likes)}</span>
+                    <span className="font-sans text-lg sm:text-xl">
+                      &nbsp;{Count(likes)}
+                    </span>
                   </div>
                 </button>
               </div>
@@ -355,45 +491,143 @@ const VideoPlayer = () => {
               {/* Comment */}
               <div
                 onClick={handleComment}
-                className={`flex items-center cursor-pointer space-x-1 hover:scale-105 active:scale-100 active:ring-1 active:ring-cyan-400 duration-300 ${
+                className={` relative flex items-center sm:my-2 my-2 cursor-pointer space-x-1 hover:scale-105 active:scale-100 active:ring-1 active:ring-cyan-400 duration-300 ${
                   commentClicked
                     ? "bg-cyan-600 hover:bg-cyan-600"
                     : "bg-cyan-800 bg-opacity-15 hover:bg-teal-600 hover:bg-opacity-60"
-                } text-white text-lg py-2 px-4 rounded-xl ring-[0.5px] ring-cyan-800`}
+                } text-white text-lg py-2 px-4 rounded-xl ring-[0.5px] ring-cyan-800 z-40`}
               >
                 <button
-                  className={`flex items-center space-x-1 bg-transparent focus:outline-none`}
+                  className={`flex items-center space-x-2 bg-transparent focus:outline-none`}
                 >
                   {commentClicked ? (
-                    <FaComment className=" text-2xl" />
+                    <FaComment className="text-lg sm:text-2xl" />
                   ) : (
-                    <FaRegComment className=" text-2xl" />
+                    <FaRegComment className="text-lg sm:text-2xl" />
                   )}
-                  <span className="transition duration-500 font-sans">
+                  <span className="transition duration-500 text-lg sm:text-xl font-sans">
                     Comments
                   </span>
                 </button>
+
+                {commentClicked && (
+                  <div className="absolute sm:hidden -top-10 -left-20 w-[98vw] flex items-center justify-center z-20">
+                    <div className="bg-cyan-900 relative rounded-xl shadow-lg p-4 w-full max-w-md overflow-y-auto h-96 z-20">
+                      <div className="flex justify-end z-30 relative">
+                        <button
+                          onClick={() => setCommentClicked(!commentClicked)}
+                          className="text-gray-900 absolute border-2 rounded-full hover:animate-spin-once bg-slate-400 top-0 right-0 hover:text-gray-800 "
+                        >
+                          <FaTimes className="text-2xl" />
+                        </button>
+                      </div>
+                      <div className="flex sm:hidden items-start my-4 mt-8">
+                        {/* currentuser avatar*/}
+                        <div className="mr-5">
+                          <img
+                            src={currentuser.avatar}
+                            className="w-8 h-8 text-cyan-600 object-cover rounded-full"
+                            alt="Avatar"
+                          />
+                        </div>
+
+                        {/* currentuser comment */}
+                        <div className="w-full relative flex flex-col">
+                          <textarea
+                            ref={textareaRef}
+                            rows={1}
+                            id="textarea"
+                            placeholder="Add your comment..."
+                            className="w-full text-md font-medium overflow-y-hidden p-2 resize-none text-cyan-500 bg-transparent border-b-2 focus:outline-none"
+                            onInput={handleTextareaInput}
+                            onKeyDown={HandeEnterButton}
+                          />
+                          <div className="flex justify-end mt-2 space-x-4">
+                            <button
+                              onClick={handleClearTextarea}
+                              className="hover:ring-cyan-700 hover:ring-1 hover:scale-105 transition duration-200 rounded-full p-3 text-slate-300 hover:animate-spin-once"
+                            >
+                              <FaTimes className="sm:text-2xl hover:animate-spin-once" />
+                            </button>
+                            <button
+                              onClick={handleCommentPost}
+                              className="bg-cyan-400 hover:scale-105 transition duration-200 flex items-center sm:text-xl text-base text-bold text-slate-900 px-4 py-2 font-medium rounded-3xl"
+                              type="submit"
+                              disabled={!commentContent.trim()}
+                            >
+                              <FaSave className="mr-2" />
+                              Comment
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Comments
+                        videoId={id}
+                        currentuser={currentuser}
+                        auth={auth}
+                        key={refreshCommentsKey}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Subscribe */}
               <div
-              onClick={handleSubscribe}
-              className={`flex items-center cursor-pointer ${subscribed ? "hover:bg-cyan-400 bg-cyan-400 text-cyan-950 " : "hover:bg-red-600 hover:bg-opacity-75 bg-cyan-800 bg-opacity-15 text-white "} hover:scale-105 duration-500 space-x-1 text-lg py-1 px-3 rounded-xl ring-[0.5px] ring-cyan-800`}>
+                onClick={handleSubscribe}
+                className={`flex items-center active:scale-110 z-10 sm:my-2 my-2 cursor-pointer ${
+                  subscribed
+                    ? "hover:bg-red-500 hover:bg-opacity-80 bg-red-500 bg-opacity-75 text-white "
+                    : "hover:bg-teal-600 hover:bg-opacity-60 bg-cyan-800 bg-opacity-15 text-white "
+                } hover:scale-105 duration-500 space-x-1 text-lg py-1 px-3 rounded-xl ring-[0.5px] ring-cyan-800`}
+              >
                 <button
-                  className={`flex items-center space-x-1 bg-transparent focus:outline-none ${
-                    subscribed ? "text-cyan-900 " : "text-white"
+                  className={`flex items-center space-x-1 bg-transparent relative z-10 focus:outline-none ${
+                    subscribed ? " text-white" : "text-white"
                   }`}
                 >
-                  {subscribed ? <BiSolidBellRing className="text-2xl" /> : <FaRegBell className="text-2xl" />}
-                  <span className="transition duration-500 transform">
+                  {subscribed ? (
+                    <BiSolidBellRing className="text-lg sm:text-2xl" />
+                  ) : (
+                    <FaRegBell className="text-lg sm:text-2xl" />
+                  )}
+                  <span className="transition duration-500 text-lg relative z-10 sm:text-xl transform">
                     &nbsp; {subscribed ? "Subscribed" : "Subscribe"}
+                  </span>
+                </button>
+              </div>
+
+              {/* add to playlist */}
+
+              <div
+                onClick={openPlaylistModal}
+                className={`flex items-center z-auto sm:my-2 my-2 cursor-pointer ${
+                  inPlaylist
+                    ? "bg-cyan-700 bg-opacity-80 hover:bg-cyan-700 "
+                    : "hover:bg-teal-600 hover:bg-opacity-60 bg-cyan-800 bg-opacity-15 "
+                } hover:scale-105 duration-500 space-x-1 text-lg py-1 px-3 rounded-xl ring-[0.5px] ring-cyan-800`}
+              >
+                <button
+                  className={`flex items-center space-x-1 bg-transparent focus:outline-none ${
+                    inPlaylist ? "text-cyan-200 " : "text-white"
+                  }`}
+                >
+                  {inPlaylist ? (
+                    <BiSolidPlaylist className="text-xl sm:text-2xl" />
+                  ) : (
+                    <IoIosAddCircleOutline className="text-xl sm:text-2xl" />
+                  )}
+                  <span className="transition text-lg sm:text-xl duration-500 transform ">
+                    &nbsp;{" "}
+                    {inPlaylist ? "Added to playlist" : "Add to playlist"}
                   </span>
                 </button>
               </div>
             </div>
 
             {/* description */}
-            <div className="text-slate-200 bg-slate-50 bg-opacity-10 px-2 rounded-lg py-5 font-normal my-5 mb-8 text-lg">
+            <div className="text-slate-200 text-wrap bg-slate-50 bg-opacity-10 px-2 rounded-lg py-5 font-normal my-5 mb-8 text-lg">
               {showFullDescription || description.split("\n").length <= 3 ? (
                 <div className="mb-0">
                   {" "}
@@ -410,10 +644,11 @@ const VideoPlayer = () => {
                 </div>
               ) : (
                 <div onClick={toggleDescription} className="cursor-pointer">
-                  <h4 className=" flex">
-                    <span>Description -&nbsp; </span>
-                    {description.split("\n").slice(0, 3).join("\n")}
-                    {"  "}{" "}
+                  <h4 className="flex flex-wrap flex-row">
+                    <span className="flex flex-wrap">
+                      Description -&nbsp;
+                      {description.split("\n").slice(0, 3).join("\n")}
+                    </span>
                     <span className="text-cyan-400 text-md hover:underline ml-3 flex items-center">
                       ...read more&nbsp;
                       <IoMdArrowDropdownCircle />
@@ -424,7 +659,7 @@ const VideoPlayer = () => {
             </div>
 
             {commentClicked && (
-              <div className="flex items-start my-4 mt-8">
+              <div className="sm:flex hidden items-start my-4 mt-8">
                 {/* currentuser avatar*/}
                 <div className="mr-5">
                   <img
@@ -435,7 +670,7 @@ const VideoPlayer = () => {
                 </div>
 
                 {/* currentuser comment */}
-                <div className="w-full flex flex-col">
+                <div className="w-full relative flex flex-col">
                   <textarea
                     ref={textareaRef}
                     rows={1}
@@ -467,12 +702,14 @@ const VideoPlayer = () => {
             )}
 
             {commentClicked && (
-              <Comments
-                videoId={id}
-                currentuser={currentuser}
-                auth={auth}
-                key={refreshCommentsKey}
-              />
+              <div className="sm:block hidden">
+                <Comments
+                  videoId={id}
+                  currentuser={currentuser}
+                  auth={auth}
+                  key={refreshCommentsKey}
+                />
+              </div>
             )}
           </div>
         ) : (
@@ -485,18 +722,69 @@ const VideoPlayer = () => {
             </p>
           </div>
         )}
-        <div className="w-4/12 mt-2">
+        <div className="sm:w-4/12 w-screen mt-2">
           <DisplayAll
             direction={`flex flex-col`}
-            width={`w-full`}
-            thumb_width={`w-1/2`}
-            height={`h-32`}
-            content={`flex`}
+            width={`sm:w-full`}
+            thumb_width={`sm:w-1/2 w-full`}
+            height={`sm:h-32 h-60`}
+            content={`flex sm:flex-row flex-col`}
             channelOwnerShow={true}
             id={id}
+            auth={auth}
+            currentUser={currentuser}
           />
         </div>
       </div>
+
+      {showPlaylistModal && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-gray-800 p-4 w-4/12 h-3/6 overflow-auto rounded shadow-lg text-white relative">
+            <button
+              onClick={closePlaylistModal}
+              className="absolute top-1 right-1 text-red-500 py-1 px-3 rounded"
+            >
+              <FaTimes className="sm:text-xl text-base hover:animate-spin-once" />
+            </button>
+            <h3 className="text-3xl text-cyan-200 text-center p-4 mb-4">
+              Manage Playlists
+            </h3>
+            {playlists.map((playlist) => (
+              <div
+                key={playlist._id}
+                className="flex items-center w-full pl-2 mb-2"
+              >
+                <span className="w-2/4 text-xl">
+                  {FirstCapital(playlist.name)}
+                </span>
+                {playlist.videos.includes(id) ? (
+                  <button
+                    onClick={() => handleRemoveFromPlaylist(playlist._id)}
+                    className=" flex items-center cursor-default w-2/4 mb-2 mx-4 rounded"
+                  >
+                    <IoCheckmarkCircleSharp className="text-xl shadow-inner shadow-green-700 rounded-full text-green-400 text-opacity-55 mr-1" />
+                    <span className="text-sm text-slate-500 italic mr-3">
+                      Added!
+                    </span>
+                    <IoMdRemoveCircle className="hover:text-red-600 text-2xl text-red-500 mr-2 cursor-pointer" />
+                    <span className="text-base text-slate-100">Remove</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddToPlaylist(playlist._id)}
+                    className="cursor-default flex items-center w-2/4 mb-2  mx-4 rounded"
+                  >
+                    <IoAddCircleSharp className="hover:text-cyan-600 text-2xl mr-2 text-cyan-500 cursor-pointer" />
+                    <span className="text-base text-slate-100">
+                      Add to playlist
+                    </span>
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

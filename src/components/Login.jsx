@@ -3,7 +3,7 @@ import { LinearGradient, RadialGradient } from "react-text-gradients";
 import { Link , useNavigate } from 'react-router-dom';
 import axios from "axios"; 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 import Navtest from "./Navtest";
 import PreviousLocation from "./utils/PreviousLocation";
 
@@ -18,7 +18,7 @@ export default function Login() {
   const handlePasswordChange = (e) => setPassword(e.target.value);
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
 	e.preventDefault();
 
 	const postData = {
@@ -26,35 +26,28 @@ export default function Login() {
 		password: password
 	  };
 
-	axios.post('/api/v1/user/login', postData)
-      .then(response => {
-        console.log('Response:', response.data);
-        
-		const toastMessage = `${response.data.message}. Hold on, Redirecting..  🚀`;
-		toast.success(toastMessage ,{
-			position: "top-right"
-		});
+    try {
+      await toast.promise(
+        axios.post('/api/v1/user/login', postData),
+        {
+          pending: 'Logging In.... ',
+          success: 'Logged In successfully! Hold on, Redirecting..  🚀',
+          error: 'Error logging in'
+        }
+      );
 
-     // Retrieve previous location from utility class
-     const previousLocation = PreviousLocation.retrieve();
+      setTimeout(() => {
+        navigate(previousLocation || "/");
+        }, 4000);
 
-     // Clear previous location after retrieving
-     PreviousLocation.clear();
+        const previousLocation = PreviousLocation.retrieve();
 
-		setTimeout(() => {
-			navigate(previousLocation || "/");
-		  }, 4000);
-
-      })
-      .catch(error => {
-        console.error('Error:', error.response.data);
-
-		//  setAuth(true)
-		const errorMessage = error.response.data.match(/Error:.*?(?=<br>)/)[0];
-		toast.error(errorMessage, {
-			position: "top-right"
-		  });
-      });
+        PreviousLocation.clear();
+      
+    } catch (error) {
+      console.error('Error:', error.response.data);
+    }
+    
   }
 
   return (
@@ -65,7 +58,7 @@ export default function Login() {
           <div className="absolute inset-0 bg-gradient-to-r from-red-100 to-cyan-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
           <div className="relative px-4 py-10 bg-gradient-to-r from-teal-200 to-orange-100  shadow-lg sm:rounded-3xl sm:p-20">
             <div className="max-w-md mx-auto">
-              <div>Are U Ready?</div>
+              {/* <div>Are U Ready?</div> */}
               <div>
                 <h1 className="text-4xl font-extrabold">
                 Login to&nbsp;
@@ -136,7 +129,6 @@ export default function Login() {
                     <button type="submit" className="bg-cyan-500 w-3/5 text-white hover:drop-shadow-3xl hover:ring-[1.5px] hover:ring-cyan-800 rounded-md px-2 py-1 hover:bg-cyan-100 transition  hover:text-cyan-800">
                       Submit
                     </button>
-					<ToastContainer />
                   </div>
                 </div>
               </div>
