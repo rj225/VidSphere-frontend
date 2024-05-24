@@ -19,6 +19,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Navbar from "../Navbar";
 import { RiVideoUploadFill } from "react-icons/ri";
 import Navtest from "../Navtest";
+import coverimage from './update/assets/cover.jpg'
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -205,7 +206,7 @@ function Dashboard() {
                 <div className="bg-slate-100 w-full rounded-lg shadow-xl pb-8 ">
                   <div className="w-full sm:h-72 h-48">
                     <img
-                      src={cover}
+                      src={cover ? cover : coverimage}
                       className="w-full h-full rounded-tl-lg rounded-tr-lg"
                     />
                   </div>
