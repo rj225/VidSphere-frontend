@@ -1,6 +1,6 @@
 {
     "routes": [
-      { "src": "/api/v1/(.*)", "dest": "https://vidsphere-backend-rishabh-rajs-projects.vercel.app/api/v1/$1" }
+      { "src": "/api/v1/(.*)", "dest": "https://vidsphere-backend.onrender.com/api/v1/$1" }
     ]
   }
   
