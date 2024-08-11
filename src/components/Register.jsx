@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaUser, FaEnvelope, FaLock, FaCamera, FaImage, FaUserPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { LinearGradient } from 'react-text-gradients';
+import PreviousLocation from './utils/PreviousLocation';
 
 const Register = () => {
   const [fullname, setFullname] = useState('');
@@ -33,10 +34,15 @@ const Register = () => {
     data.append('avatar', avatar);
     data.append('coverImage', coverPhoto);
 
-    // Log the FormData entries
-    for (const pair of data.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
+    const postData = {
+      email: email,
+      password: password
+      };
+      
+    // // Log the FormData entries
+    // for (const pair of data.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
 
     toast.promise(
       axios.post('/api/v1/user/register', data, {
@@ -49,8 +55,16 @@ const Register = () => {
         success: 'Registration successful! 🎉',
         error: 'Registration failed. Please try again.',
       }
-    ).then(() => {
-      navigate('/');
+    ).then( async() => {
+      try {
+          await axios.post('/api/v1/user/login', postData)
+          const previousLocation = PreviousLocation.retrieve();
+          navigate(previousLocation || "/");
+          PreviousLocation.clear();
+        
+      } catch (error) {
+        console.error('Registered succesfully, Error in logging in:', error.response.data);
+      }
     }).catch((error) => {
       console.error('There was an error registering!', error);
     });

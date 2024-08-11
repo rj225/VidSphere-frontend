@@ -20,6 +20,7 @@ import Navbar from "../Navbar";
 import { RiVideoUploadFill } from "react-icons/ri";
 import Navtest from "../Navtest";
 import coverimage from './update/assets/cover.jpg'
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -61,7 +62,7 @@ function Dashboard() {
         // Handle error if necessary
       }
     } else {
-      navigate("/login");
+      toast.error("Login to subscribe")
     }
   };
 
@@ -213,7 +214,7 @@ function Dashboard() {
                   <div className="flex flex-col items-center -mt-20">
                     <img
                       src={profile}
-                      className="w-32 h-32 border-4 object-cover cursor-pointer border-cyan-200 shadow-3xl rounded-full"
+                      className="w-32 h-32 md:w-48 md:h-48 sm:w-40 sm:h-40 border-4 object-cover cursor-pointer border-cyan-200 shadow-3xl rounded-full"
                       onClick={openModal}
                     />
                     <div className="flex items-center space-x-2 mt-2">

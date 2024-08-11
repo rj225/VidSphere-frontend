@@ -13,13 +13,15 @@ import {
   RiCloseLine,
 } from "react-icons/ri";
 import TestingInfoBar from "./testing";
+import { RiAccountCircleFill } from "react-icons/ri";
+import { BiSupport } from "react-icons/bi";
 
 function Navbar({
   uploadbutton = true,
   bg = "bg-cur",
-  nospacebar = true,
-  showuser = true,
-  onlyshowlogout = false
+  nosearchbar = true,
+  onlyshowlogout = false,
+  showSignInButton = true
 }) {
   const [name, setName] = useState("");
   const [username, setUserame] = useState("");
@@ -28,6 +30,7 @@ function Navbar({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  const [auth, setAuth] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -72,7 +75,7 @@ function Navbar({
       try {
         const response = await axios.get("/api/v1/user/current-user");
         console.log("Response:", response.data);
-
+        setAuth(true)
         setUserame(response.data.data.username);
         setName(response.data.data.fullname.toUpperCase());
         setProfile(response.data.data.avatar);
@@ -93,13 +96,6 @@ function Navbar({
     }
   }, [isHamburgerOpen]);
 
-  // useEffect(() => {
-  //   const loadingTimer = setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 120000); // 2 minutes in milliseconds
-
-  //   return () => clearTimeout(loadingTimer);
-  // }, []);
 
   return (
     <>
@@ -117,21 +113,21 @@ function Navbar({
               <img
                 src={logo}
                 alt="logo"
-                className="lg:h-16 md:h-12 sm:h-10 h-10 "
+                className="lg:h-20 md:h-12 h-10 "
               />
             </Link>
           </div>
 
           {/* <!-- Search Bar --> */}
           <div className="lg:w-6/12 md:5/12 w-5/12 h-3/6 flex justify-center">
-            {nospacebar && (
+            {nosearchbar && (
               <input
                 type="text"
                 placeholder="Search"
-                className="w-3/4 py-2 h-full text-xs px-4 rounded-tl-full rounded-bl-full bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
+                className="w-3/4 py-2 h-full md:text-base text-xs px-4 rounded-tl-full rounded-bl-full bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
               />
             )}
-            {nospacebar && (
+            {nosearchbar && (
               <RiSearchLine className="text-gray-400 flex bg-gray-800 h-full w-10 rounded-tr-full border-l-[0.1px] border-gray-700 cursor-pointer sm:p-2 p-1 rounded-br-full " />
             )}{" "}
           </div>
@@ -152,16 +148,17 @@ function Navbar({
           {/* user */}
           <div className="flex justify-end w-3/12 p-1 pr-7">
             {/* Notification Icon */}
-            {showuser && (
+            {/* {auth && (
               <div className="sm:relative hidden mr-2 cursor-pointer">
                 <RiNotification2Line className="text-cyan-500 xl:h-10 xl:w-10 lg:h-8 lg:w-8 h-6 w-6 " />
-                {/* Notification Badge */}
                 <div className="absolute top-0 right-0 lg:h-3 lg:w-3 h-2 w-2 bg-cyan-400 text-xs font-bold rounded-full flex items-center justify-center">
                   <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-cyan-100 opacity-75"></span>
                 </div>
               </div>
-            )}
-            {showuser && (
+            )} */}
+
+
+            {auth ? (
               <div
                 className="md:flex hidden md:flex-col items-end md:mx-2 cursor-pointer text-white"
                 onClick={toggleMenu}
@@ -173,9 +170,34 @@ function Navbar({
                   {username}
                 </div>
               </div>
+            ): (
+              <div className="flex flex-col items-end md:mx-2 cursor-pointer text-white">
+            {showSignInButton ? (
+              <Link to="/login">
+                <div className="justify-center flex hover:scale-105 transition-all duration-300">
+                  <div className="flex items-center justify-center  px-2 py-1 rounded-2xl text-cyan-500 ring-[1px] ring-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+                    <h3 className="md:text-3xl text-xl">
+                      <RiAccountCircleFill />
+                    </h3>
+                    <span className="md:block md:text-base hidden mx-2">Sign In</span>
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <div className="justify-center flex cursor-pointer">
+                <div className="flex items-center justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-500 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+                  <h3 className="text-3xl ">
+                    <BiSupport/>
+                  </h3>
+                  <span className="text-base mx-2 cursor-pointer">Need Help?</span>
+                
+                </div>
+              </div>
+            )}
+          </div>
             )}
 
-            {showuser && (
+            {auth && (
               <>
               {/* pc menu */}
                 <div
