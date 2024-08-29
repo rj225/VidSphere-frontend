@@ -3,7 +3,6 @@ import { LinearGradient, RadialGradient } from "react-text-gradients";
 import { Link , useNavigate } from 'react-router-dom';
 import axios from "axios"; 
 import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 import Navtest from "./Navtest";
 import PreviousLocation from "./utils/PreviousLocation";
 
@@ -38,7 +37,7 @@ export default function Login() {
 
       setTimeout(() => {
         navigate(previousLocation || "/");
-        }, 4000);
+        }, 2000);
 
         const previousLocation = PreviousLocation.retrieve();
 

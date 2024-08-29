@@ -16,6 +16,8 @@ export default {
         ]
       },
       boxShadow: {
+        'left-top':'5px 5px 1px 2px rgb(8 145 178)',
+        'right-top':'-5px 5px 1px 2px #5FB7AB',
         '3xl': '0 0 5px 2px rgb(8 145 178)',
         '4xl': '8px -8px 2px rgb(8 145 178)',
         '5xl': '0 0 9px 5px #0891b2',

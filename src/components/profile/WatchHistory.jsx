@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
+import { MdOutlineVideoLibrary } from "react-icons/md";
 
 const WatchHistory = ({ id }) => {
   const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -18,34 +18,42 @@ const WatchHistory = ({ id }) => {
         const response = await axios.get(`/api/v1/user/history/${id}`);
         console.log(response.data.data);
         const removenull = response.data.data.filter((history) => history.video !== null)
-        console.log(removenull);
         setHistory(removenull);
       } catch (error) {
         setError("Failed to fetch watch history");
-      } finally {
-        setLoading(false);
       }}
     };
 
     fetchHistory();
   }, [id]);
 
-  if (loading) return <div className="text-center py-6">Loading...</div>;
   if (error)
     return <div className="text-center py-6 text-red-500">{error}</div>;
 
   return (
-    <div className="watch-history p-1 md:p-8">
-      <h2 className="text-2xl font-bold mb-4">Your Watch History</h2>
+    <div className="p-1 md:p-8">
+      <h2 className="text-2xl font-bold text-cyan-900 text-center mb-8"><span className=" bg-gradient-to-br from-cyan-100 from-5% to-gray-100 p-4 rounded-3xl shadow-left-top">Your Watch History</span></h2>
       {history.length === 0 ? (
-        <p className="text-gray-600">No watch history available.</p>
+         <div className="flex flex-col items-center justify-center lg:mt-36 h-full p-6 text-center">
+         <MdOutlineVideoLibrary className="w-24 h-24 text-gray-700 mb-4" />
+         <h3 className="text-xl font-semibold mb-2">No Watch History Available</h3>
+         <p className="text-gray-700 italic font-bold mb-4">
+           It seems like you haven't watched any videos yet. Start exploring now and enjoy your favorite content!
+         </p>
+         <Link
+           to="/"
+           className="text-cyan-700 font-bold underline hover:text-cyan-500 transition-all"
+         >
+           Go to Home
+         </Link>
+       </div>
       ) : (
-        <ul className="space-y-4 sm:relative flex flex-col justify-center items-center">
+        <ul className="space-y-6 mt-10 sm:relative flex md:flex-row flex-wrap flex-col justify-center items-center">
           {Array.isArray(history) &&
             history.map((item) => (
               <li
                 key={item?._id}
-                className=" p-4 bg-white w-3/4 backdrop-blur-lg bg-opacity-50 shadow-lg rounded-lg"
+                className=" p-4 bg-white w-10/12 border-2 border-cyan-600 backdrop-blur-lg bg-opacity-50 shadow-right-top rounded-lg"
               >
                 {item.video && <Link to={`/videoplayer/${item.video._id}`} className="flex sm:flex-row flex-col">
                   <div className="sm:w-1/3 w-full relative">

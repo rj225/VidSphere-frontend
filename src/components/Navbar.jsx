@@ -4,17 +4,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   RiSearchLine,
-  RiNotification2Line,
   RiVideoUploadFill,
   RiDashboardLine,
   RiBugLine,
   RiLogoutBoxRLine,
-  RiMenu3Line,
   RiCloseLine,
 } from "react-icons/ri";
 import TestingInfoBar from "./testing";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 function Navbar({
   uploadbutton = true,
@@ -31,6 +30,8 @@ function Navbar({
   const [isLoading, setIsLoading] = useState(false);
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [auth, setAuth] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -56,10 +57,7 @@ function Navbar({
       setIsLoading(true);
       const response = await axios.post("/api/v1/user/logout");
       if (response.data.success) {
-        window.location.reload();
-        // Handle success, navigate, or show a success toast message
-      } else {
-        // Handle error, show an error toast message, or redirect
+        navigate("/")
       }
     } catch (error) {
       toast.error("Error logging out");

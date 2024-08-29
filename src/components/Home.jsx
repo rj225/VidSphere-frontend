@@ -13,7 +13,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState("");
   const location = useLocation();
-  const [scrollbarVisible, setScrollbarVisible] = useState(false);
 
   const prevlocation = PreviousLocation.retrieve();
   if (prevlocation) {
@@ -41,10 +40,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const toggleVisiblity = () => {
-    setScrollbarVisible(!scrollbarVisible); 
-  };
-
 
 
   if (isLoading) {
@@ -61,123 +56,13 @@ export default function Home() {
     <div>
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="w-screen flex">
-        <div 
-          onMouseEnter={toggleVisiblity}
-          onMouseLeave={toggleVisiblity}
+        <div
           style={{ height: "83vh" }}
-        className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 ${
-          scrollbarVisible ? `overflow-auto` : `overflow-hidden`
-        }`}>
-          {/* <div class="grid grid-cols-1 text-lg py-3">
-            <div className=" mb-4 space-y-4 ">
-              <div className="flex items-center space-x-4">
-                <span>
-                  <HiHome />
-                </span>
-                <span>Home</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaHistory />
-                </span>
-                <span>Watch History</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <MdSubscriptions />
-                </span>
-                <span>Subscriptions</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <BiSolidVideos />
-                </span>
-                <span>Your Videos</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <RiPlayList2Fill />
-                </span>
-                <span>Playlist</span>
-              </div>
-            </div>
-
-            <hr className="border-t border-gray-400 border-1"/>
-
-            <div className=" mt-4 mb-2 space-y-6">
-              <div className="flex items-center space-x-4">
-                <span>
-                  <AiOutlineCompass />
-                </span>
-                <span>Explore</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <MdTrendingUp />
-                </span>
-                <span>Trending</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaShoppingCart />
-                </span>
-                <span>Shopping</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaMusic />
-                </span>
-                <span>Music</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaFilm />
-                </span>
-                <span>Films</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <RiGamepadFill />
-                </span>
-                <span>Gaming</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaNewspaper />
-                </span>
-                <span>News</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <MdSportsSoccer />
-                </span>
-                <span>Sport</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <BiCategory />
-                </span>
-                <span>Courses</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <GiClothes />
-                </span>
-                <span>Fashion & Beauty</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>
-                  <FaPodcast />
-                </span>
-                <span>Podcasts</span>
-              </div>
-            </div>
-          </div> */}
-
-          <Sidebar/>
+        className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
+          <Sidebar auth={auth}/>
         </div>
 
-        <div className="md:w-10/12 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:w-11/12 sm:w-11/12 w-10/12 mt-1">
           <DisplayAll
             width={`sm:w-4/12 w-full `}
             direction={`flex flex-col sm:flex-row sm:flex-wrap`}
