@@ -10,7 +10,6 @@ import Sidebar from "./Sidebar";
 
 export default function Home() {
   const [auth, setAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState("");
   const location = useLocation();
 
@@ -28,29 +27,16 @@ export default function Home() {
       console.log("Response:", response.data);
       setAuth(true);
       setCurrentUser(response.data.data);
-      setIsLoading(false);
+     
     } catch (error) {
       console.error("Error:", error.response.data);
       console.warn("error at home.jsx");
-    } finally {
-      setIsLoading(false); // Set isLoading to false in the finally block
     }
   };
   useEffect(() => {
     fetchData();
   }, []);
 
-
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center bg-cur min-h-screen">
-        <div className="w-64 h-64 border-t-8 border-b-8 border-t-red-500 border-r-[0.5px] border-r-yellow-400 border-l-[0.5px] border-l-green-400 border-b-blue-500 rounded-full animate-spin"></div>
-        &nbsp;&nbsp;&nbsp;
-        <h3 className="text-2xl animate-pulse text-cyan-800">Loading...</h3>
-      </div>
-    );
-  }
 
   return (
     <div>
