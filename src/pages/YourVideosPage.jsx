@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import axios from "axios";
-import DisplayAll from "./video/DisplayAll";
-import PreviousLocation from "./utils/PreviousLocation";
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
+import MyVideos from "../components/profile/MyVideos";
 
 
-export default function Home() {
+export default function YourVideosPage() {
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const location = useLocation();
-
-  const prevlocation = PreviousLocation.retrieve();
-  if (prevlocation) {
-    PreviousLocation.clear();
-    PreviousLocation.store(location.pathname);
-  } else {
-    PreviousLocation.store(location.pathname);
-  }
 
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/v1/user/current-user");
       console.log("Response:", response.data);
       setAuth(true);
-      setCurrentUser(response.data.data);
+      setCurrentUser(response.data.data._id);
      
     } catch (error) {
       console.error("Error:", error.response.data);
@@ -36,9 +26,8 @@ export default function Home() {
     fetchData();
   }, []);
 
-
   return (
-    <div className="bg-gradient-to-l from-cyan-900 to-45% to-cur">
+    <div className="">
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="w-screen flex items-start">
         <div
@@ -47,17 +36,9 @@ export default function Home() {
         </div>
 
         <div className="md:full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
-          <DisplayAll
-            width={`sm:w-4/12 w-full `}
-            direction={`flex flex-col sm:flex-row sm:flex-wrap`}
-            height={`sm:h-56 h-48`}
-            content={`flex flex-col`}
-            channelOwnerShow={false}
-            auth={auth}
-            currentUser={currentUser}
-          />
+         <MyVideos auth={auth} id={currentUser}/>
         </div>
       </div>
     </div>
-  );
+  )
 }

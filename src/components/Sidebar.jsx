@@ -16,9 +16,9 @@ const Sidebar = ({ auth }) => {
     { name: "Home", icon: <HiHome />, path: "/" },
     { name: "Watch History", icon: <FaHistory />, path: "/watchhistory" },
     { name: "Subscriptions", icon: <MdSubscriptions />, path: "/subscriptions" },
-    { name: "Your Videos", icon: <BiSolidVideos />, path: "/your-videos" },
+    { name: "Your Videos", icon: <BiSolidVideos />, path: "/yourvideos" },
     { name: "Playlist", icon: <RiPlayList2Fill />, path: "/playlist" },
-    { name: "Explore", icon: <AiOutlineCompass />, path: "/explore" },
+    { name: "About us", icon: <AiOutlineCompass />, path: "/aboutus" },
   ];
 
   const handleNavigation = (tab) => {

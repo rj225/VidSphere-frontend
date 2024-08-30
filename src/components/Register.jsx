@@ -5,6 +5,7 @@ import { FaUser, FaEnvelope, FaLock, FaCamera, FaImage, FaUserPlus } from 'react
 import { toast } from 'react-toastify';
 import { LinearGradient } from 'react-text-gradients';
 import PreviousLocation from './utils/PreviousLocation';
+import Navbar from './Navbar';
 
 const Register = () => {
   const [fullname, setFullname] = useState('');
@@ -71,7 +72,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-slate-900">
+    <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0">
+      <Navbar showSignInButton={false} uploadbutton={false}/>
       <div>
         <h3 className="md:text-4xl sm:text-3xl text-xl font-bold text-cyan-400">
           Welcome to <LinearGradient

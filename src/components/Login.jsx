@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { LinearGradient, RadialGradient } from "react-text-gradients";
 import { Link , useNavigate } from 'react-router-dom';
 import axios from "axios"; 
-import { ToastContainer, toast } from 'react-toastify';
-import Navtest from "./Navtest";
+import { toast } from 'react-toastify';
 import PreviousLocation from "./utils/PreviousLocation";
+import Navbar from "./Navbar";
 
 export default function Login() {
 
@@ -51,8 +51,8 @@ export default function Login() {
 
   return (
     <>
-    <Navtest showSignInButton={false} />
-      <div className="min-h-full overflow-hidden bg-cur py-4 flex flex-col justify-center items-center font-serif sm:py-12">
+    <Navbar showSignInButton={false} uploadbutton={false}/>
+      <div className="min-h-full overflow-hidden py-4 flex flex-col justify-center items-center font-serif sm:py-12">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
           <div className="absolute inset-0 bg-gradient-to-r from-red-100 to-cyan-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
           <div className="relative px-4 py-10 bg-gradient-to-r from-teal-200 to-orange-100  shadow-lg sm:rounded-3xl sm:p-20">

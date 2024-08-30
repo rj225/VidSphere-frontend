@@ -295,7 +295,7 @@ function DisplayAll({
 
   if (loading) {
     return (
-      <div className="h-screen w-screen flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center">
         <div className="w-64 h-64 border-t-8 border-b-8 border-t-cyan-500 border-r-[0.1px] border-r-red-400 border-l-[0.1px] border-l-red-400 border-b-cyan-500 rounded-full animate-spin"></div>
         &nbsp;&nbsp;&nbsp;{" "}
         <h3 className="text-2xl animate-pulse text-cyan-500">Loading...</h3>
@@ -308,7 +308,7 @@ function DisplayAll({
   }
 
   return (
-    <div className="bg-cur w-full px-6 py-0">
+    <div className=" w-full px-6 pt-0 pb-4">
       <div className={direction}>
         {Array.isArray(videos) &&
           videos.map((video, index) => (
@@ -316,7 +316,7 @@ function DisplayAll({
               <div className="relative my-5 sm:my-0">
                 <Link to={`/videoplayer/${video._id}`} onClick={handleRefresh}>
                   <div
-                    className={`sm:p-4 cursor-pointer hover:ring-1 hover:ring-cyan-950 ${content} rounded-xl transition-all duration-500`}
+                    className={`sm:p-4 cursor-pointer hover:bg-cyan-100 hover:bg-opacity-10 hover:ring-1 hover:ring-cyan-950 ${content} rounded-xl transition-all duration-500`}
                   >
                     <div className={`relative ${thumb_width}`}>
                       <img

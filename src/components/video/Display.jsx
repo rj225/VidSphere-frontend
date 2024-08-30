@@ -7,14 +7,13 @@ import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
 import DeleteVideo from "./update/DeleteVideo";
 import { IoMdEye } from "react-icons/io";
-import { AiOutlineUpload, AiOutlineVideoCamera } from "react-icons/ai";
-import { BsFilm } from "react-icons/bs";
-import {FaThumbsUp} from "react-icons/fa";
 
-function Display({ auth  , id , modify}) {
+import { FaThumbsUp } from "react-icons/fa";
+import NoVideos from "./NoVideo";
+
+function Display({ auth = true, id, modify = true }) {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [visibleVideoId, setVisibleVideoId] = useState(null);
   const [isOpen, setIsOpen] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
@@ -39,16 +38,6 @@ function Display({ auth  , id , modify}) {
     };
   };
 
-  // useEffect(() => {
-  //   if (isDelete) {
-  //     // Prevent scrolling when DeleteVideo component is open
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     // Re-enable scrolling when DeleteVideo component is closed
-  //     document.body.style.overflow = "visible";
-  //   }
-  // }, [isDelete]);
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -71,17 +60,20 @@ function Display({ auth  , id , modify}) {
       // Re-enable scrolling when DeleteVideo component is closed
       document.body.style.overflow = "visible";
     }
-  }, [auth, isDelete , isVideo]);
+  }, [auth, isDelete, isVideo]);
 
   async function fetchVideos() {
     try {
       const response = await axios.get(`/api/v1/video/${id}/videos`);
-      setVideos(response.data.data); // Update here to access response.data.videos.docs
-      setIsVideo(true);
+      if (response.data.data !== "No videos available.") {
+        setVideos(response.data.data);
+        setIsVideo(true);
+      }
     } catch (error) {
-      setError(error.response.data.message);
+      console.log(error);
     } finally {
       setLoading(false);
+      console.log(isVideo);
     }
   }
 
@@ -103,14 +95,20 @@ function Display({ auth  , id , modify}) {
     );
   }
 
-  if (error) {
-    return <div className="text-center mt-4">Error: {error}</div>;
-  }
-
   return (
     <>
       {isVideo ? (
-        <div className="my-4">
+        <div className="my-4 h-full w-full">
+          <div className="flex w-full h-full md:items-start md:justify-normal 2xl:mb-10 xl:mb-8 lg:mb-6 items-center justify-center">
+            <h2 className="md:text-2xl text-xl font-bold text-cyan-900 text-center scale-75 sm:scale-90 md:scale-100 mb-2">
+              <span className=" bg-gradient-to-br hidden md:inline-block from-cyan-100 from-5%  to-gray-100 p-4 ring-1 ring-cyan-400 rounded-3xl shadow-blue-200 shadow-left-top">
+                Your Videos
+              </span>
+              <div className=" bg-gradient-to-br md:hidden from-cyan-100 from-5%  to-gray-100 p-4 rounded-3xl shadow-left-top">
+                Your Videos
+              </div>
+            </h2>
+          </div>
           <div className="flex sm:flex-wrap sm:flex-row flex-col w-full items-center gap-4">
             {Array.isArray(videos) &&
               videos.map((video) => (
@@ -121,7 +119,7 @@ function Display({ auth  , id , modify}) {
                   onMouseLeave={toggleDots(null)}
                 >
                   <Link to={`/videoplayer/${video._id}`}>
-                    <div className="p-4 bg-cyan-50 rounded-2xl z-0 bg-opacity-25 filter shadow-lg relative">
+                    <div className="p-4 bg-cyan-200 rounded-2xl z-0 filter mr-1 mt-2 shadow-left-top relative">
                       <div className="relative">
                         <img
                           src={video.thumbnail}
@@ -136,10 +134,14 @@ function Display({ auth  , id , modify}) {
                         {FirstCapital(video.title)}
                       </h2>
                       <div className="text-gray-700 flex font-mono">
-                        <div className="flex items-center mr-3 text-md"><IoMdEye className="mr-1"/> {video.views}</div>
-                        <div className="flex items-center mr-2 text-md"><FaThumbsUp className="text-md text-cyan-800 mr-1"/>{video.likes}</div>
+                        <div className="flex items-center mr-3 text-md">
+                          <IoMdEye className="mr-1" /> {video.views}
+                        </div>
+                        <div className="flex items-center mr-2 text-md">
+                          <FaThumbsUp className="text-md text-cyan-800 mr-1" />
+                          {video.likes}
+                        </div>
                       </div>
-                      {/* Add more video details here as needed */}
                     </div>
                   </Link>
 
@@ -190,35 +192,7 @@ function Display({ auth  , id , modify}) {
           )}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-10 space-x-4">
-          <div className="flex items-center text-xl space-x-2">
-            <p className=" text-zinc-700 underline font-extrabold">
-              No videos uploaded yet!
-            </p>
-          </div>
-          <div className="my-2 mb-6">
-            <h1 className="text-5xl font-bold text-slate-900">
-              Ready to share your Masterpiece?
-            </h1>
-          </div>
-          <div className="flex text-zinc-800 font-semibold text-xl items-center space-x-2 my-4 mb-7">
-            <BsFilm className="h-8 w-8" />
-            <p className="text-2xl font-semibold">
-              Upload your{" "}
-              <span className="text-emerald-600 font-bold">video</span> and let
-              the magic{" "}
-              <span className="text-emerald-600 font-bold">begin</span>.
-            </p>
-          </div>
-          <div className="">
-            <Link to="/videoupload">
-              <button className="bg-cyan-700 text-white text-md items-center px-2 flex py-2 rounded-lg shadow-md hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
-                <AiOutlineVideoCamera className="h-8 w-8 text-gray-100" />{" "}
-                &nbsp; Upload Video
-              </button>
-            </Link>
-          </div>
-        </div>
+        <NoVideos />
       )}
       {/* <ToastContainer /> */}
     </>

@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar({
   uploadbutton = true,
-  bg = "bg-cur",
+  bg = "",
   nosearchbar = true,
   onlyshowlogout = false,
   showSignInButton = true
@@ -97,10 +97,10 @@ function Navbar({
 
   return (
     <>
-     <TestingInfoBar message="This isn't the complete version. It is still in testing mode." />
+     {/* <TestingInfoBar message="This isn't the complete version. It is still in testing mode." /> */}
       <nav
         className={` ${
-          bg ? bg : "bg-cur"
+          bg
         } font-serif border-b-[0.1px] border-cyan-200 border-opacity-5 w-screen z-10`}
       >
         <div className={`flex items-center relative sm:w-full w-full md:h-20 sm:h-16 h-12 justify-between `}>
@@ -133,11 +133,11 @@ function Navbar({
           {uploadbutton && (
             <div className="w-1/12 sm:h-auto h-4/6 flex">
               <Link to="/videoupload">
-                <button className=" w-full h-full bg-gradient-to-br hover:from-cyan-300 hover:to-cyan-500 from-cyan-500 via-cyan-400 to-cyan-300 duration-500 hover:scale-105 text-white px-3 py-2 flex items-center sm:rounded-lg rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
+                <button className=" w-full h-full bg-gradient-to-br scale-75 xl:scale-90 2xl:scale-100 hover:from-cyan-300 hover:to-cyan-500 from-cyan-500 via-cyan-400 to-cyan-300 duration-500 hover:scale-105 text-white px-3 py-2 flex items-center sm:rounded-lg rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
                   <span className="sm:flex hidden lg:text-lg md:text-base sm:text-sm text-[8px] ">
                     Upload&nbsp;
                   </span>
-                  <RiVideoUploadFill className="lg:text-xl sm:text-lg text-[10px] sm:ml-1" />
+                  <RiVideoUploadFill className="lg:text-xl sm:text-lg text-base sm:ml-1" />
                 </button>
               </Link>
             </div>
@@ -164,7 +164,7 @@ function Navbar({
                 <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs tracking-[1px] font-semibold ">
                   {name}
                 </div>
-                <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs text-cyan-500 tracking-[1px] font-regular">
+                <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs text-cyan-400 tracking-[1px] font-regular">
                   {username}
                 </div>
               </div>
@@ -173,7 +173,7 @@ function Navbar({
             {showSignInButton ? (
               <Link to="/login">
                 <div className="justify-center flex hover:scale-105 transition-all duration-300">
-                  <div className="flex items-center justify-center  px-2 py-1 rounded-2xl text-cyan-500 ring-[1px] ring-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+                  <div className="flex items-center justify-center bg-gray-100 shadow-2xl shadow-red-800 bg-opacity-90 px-2 py-1 rounded-2xl text-cyan-700 ring-[1px] ring-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
                     <h3 className="md:text-3xl text-xl">
                       <RiAccountCircleFill />
                     </h3>
@@ -183,11 +183,11 @@ function Navbar({
               </Link>
             ) : (
               <div className="justify-center flex cursor-pointer">
-                <div className="flex items-center justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-500 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
-                  <h3 className="text-3xl ">
+                <div className="flex items-center md:scale-100 sm:scale-90 scale-75 bg-gray-100 bg-opacity-90 justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+                  <h3 className="md:text-3xl sm:text-2xl text-lg ">
                     <BiSupport/>
                   </h3>
-                  <span className="text-base mx-2 cursor-pointer">Need Help?</span>
+                  <span className="sm:text-base font-semibold text-xs mx-2 cursor-pointer">Need Help?</span>
                 
                 </div>
               </div>

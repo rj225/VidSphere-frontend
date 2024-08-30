@@ -80,11 +80,7 @@ function VideoUpload(){
 
   return (
     <>
-    {auth ?
       <Navbar uploadbutton={false} nospacebar={false} bg={'bg-gradient-to-l from-cyan-900 to-45% to-cur'}/>
-      :
-      <Navtest/>
-    }
     
     <div className='bg-gradient-to-l from-cyan-900 absolute right-0 to-45% to-[#0D141A] h-auto'>
     <div className="font-serif mb-6">
