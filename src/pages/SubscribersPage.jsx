@@ -4,10 +4,12 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Subscribers from "../components/Subscribers/Subscribers";
+import Loader from "../components/utils/Loader";
 
 function SubscribersPage() {
   const [auth, setAuth] = useState(false);
   const [currentUserid, setCurrentUserid] = useState("");
+  const [loader,setLoader] = useState(true)
 
   const fetchData = async () => {
     try {
@@ -18,10 +20,19 @@ function SubscribersPage() {
       console.error("Error:", error.response.data);
       console.warn("error Fetching Current User");
     }
+    finally{
+      setLoader(false);
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loader) {
+    return(
+      <Loader/>
+    )
+  }
 
   return (
     <div className="w-screen h-screen">

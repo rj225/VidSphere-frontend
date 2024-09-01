@@ -5,10 +5,12 @@ import AOS from 'aos';
 import { AiOutlineUser, AiFillPlayCircle, AiOutlineBell, AiFillBell } from 'react-icons/ai'; // Importing Icons from react-icons
 import { toast } from 'react-toastify'; // Import toast from react-toastify
 import { AiOutlineFrown } from 'react-icons/ai';
+import Loader from '../utils/Loader';
 
 function Subscribers({ currentUserid }) {
   const [subscriptions, setSubscriptions] = useState([]);
-  const [subscribedChannels, setSubscribedChannels] = useState({}); // Object to track subscription status
+  const [subscribedChannels, setSubscribedChannels] = useState({}); 
+  const [loader,setLoader] = useState(true)
 
   const fetchSubscribers = async (currentUserid) => {
     if (currentUserid) {
@@ -24,6 +26,9 @@ function Subscribers({ currentUserid }) {
         }
       } catch (error) {
         console.error(`Error fetching owner with ID ${currentUserid}:`, error);
+      }
+      finally{
+        setLoader(false);
       }
     }
   };
@@ -54,6 +59,10 @@ function Subscribers({ currentUserid }) {
     fetchSubscribers(currentUserid);
     AOS.init({ duration: 1200 });
   }, [currentUserid]);
+
+  if (loader) {
+    return(<Loader/>);
+  }
 
   return (
     <div className="w-full">

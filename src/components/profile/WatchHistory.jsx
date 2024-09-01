@@ -6,10 +6,10 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
 import { MdOutlineVideoLibrary } from "react-icons/md";
+import Loader from "../utils/Loader";
 
 const WatchHistory = ({ id }) => {
   const [history, setHistory] = useState([]);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,16 +24,17 @@ const WatchHistory = ({ id }) => {
           setHistory(removenull);
         } catch (error) {
           setLoading(false);
-          setError("Failed to fetch watch history");
         }
+
       }
     };
 
     fetchHistory();
   }, [id]);
 
-  if (error)
-    return <div className="text-center py-6 text-green-500">{error}</div>;
+  if (loading) {
+    return(<Loader/>);
+  }
 
   return (
     <div className="p-1 md:p-8">

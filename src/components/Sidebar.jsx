@@ -14,7 +14,7 @@ const Sidebar = ({ auth }) => {
 
   const tabs = [
     { name: "Home", icon: <HiHome />, path: "/" },
-    { name: "Watch History", icon: <FaHistory />, path: "/watchhistory" },
+    { name: "History", icon: <FaHistory />, path: "/history" },
     { name: "Subscriptions", icon: <MdSubscriptions />, path: "/subscriptions" },
     { name: "Your Videos", icon: <BiSolidVideos />, path: "/yourvideos" },
     { name: "Playlist", icon: <RiPlayList2Fill />, path: "/playlist" },

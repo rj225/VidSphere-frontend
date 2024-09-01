@@ -10,6 +10,7 @@ import { IoMdEye } from "react-icons/io";
 
 import { FaThumbsUp } from "react-icons/fa";
 import NoVideos from "./NoVideo";
+import Loader from "../utils/Loader";
 
 function Display({ auth = true, id, modify = true }) {
   const [videos, setVideos] = useState([]);
@@ -52,14 +53,14 @@ function Display({ auth = true, id, modify = true }) {
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     fetchVideos();
     if (isDelete) {
-      // Prevent scrolling when DeleteVideo component is open
       document.body.style.overflow = "hidden";
     } else {
-      // Re-enable scrolling when DeleteVideo component is closed
       document.body.style.overflow = "visible";
     }
+    setLoading(false)
   }, [auth, isDelete, isVideo]);
 
   async function fetchVideos() {
@@ -73,7 +74,6 @@ function Display({ auth = true, id, modify = true }) {
       console.log(error);
     } finally {
       setLoading(false);
-      console.log(isVideo);
     }
   }
 
@@ -87,11 +87,7 @@ function Display({ auth = true, id, modify = true }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <div className="w-16 h-16 border-t-8 border-b-8 border-t-cyan-500 border-r-[0.5px] border-r-red-400 border-l-[0.5px] border-l-red-400 border-b-cyan-500 rounded-full animate-spin"></div>
-        &nbsp;&nbsp;&nbsp;{" "}
-        <h3 className="text-2xl animate-pulse text-cyan-800">Loading...</h3>
-      </div>
+      <Loader/>
     );
   }
 

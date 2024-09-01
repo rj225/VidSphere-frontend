@@ -5,11 +5,13 @@ import axios from "axios";
 import DisplayAll from "./video/DisplayAll";
 import PreviousLocation from "./utils/PreviousLocation";
 import Sidebar from "./Sidebar";
+import Loader from "./utils/Loader";
 
 
 export default function Home() {
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
+  const [loader , setLoader] = useState("");
   const location = useLocation();
 
   const prevlocation = PreviousLocation.retrieve();
@@ -31,12 +33,17 @@ export default function Home() {
       console.error("Error:", error.response.data);
       console.warn("error at home.jsx");
     }
+    finally{
+      setLoader(false);
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
 
-
+if (loader) {
+  return(<Loader/>)
+}
   return (
     <div className="bg-gradient-to-l from-cyan-900 to-45% to-cur">
       <Navbar uploadbutton={auth} nosearchbar={true} />

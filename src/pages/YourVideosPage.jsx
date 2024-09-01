@@ -4,11 +4,13 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import MyVideos from "../components/profile/MyVideos";
+import Loader from "../components/utils/Loader";
 
 
 export default function YourVideosPage() {
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
+  const [loader,setLoader] = useState(true)
 
   const fetchData = async () => {
     try {
@@ -21,10 +23,17 @@ export default function YourVideosPage() {
       console.error("Error:", error.response.data);
       console.warn("error at home.jsx");
     }
+    finally{
+      setLoader(false);
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loader) {
+    return(<Loader/>)
+  }
 
   return (
     <div className="">

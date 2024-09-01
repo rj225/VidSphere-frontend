@@ -45,9 +45,9 @@ export default function App() {
           <Route path="/videoupload" element={<VideoUpload />} />
           <Route path="/displayall" element={<DisplayAll />} />
           <Route path="/videoplayer/:id" element={<VideoPlayer />} />
-          <Route path="/play" element={<Playlist />} />
+          {/* <Route path="/play" element={<Playlist />} /> */}
           <Route path="/comment" element={<Comments />} />
-          <Route path="/watchhistory" element={<WatchHistoryPage />} />
+          <Route path="/history" element={<WatchHistoryPage />} />
           <Route path="/subscriptions" element={<SubscribersPage />} />
           <Route path="/yourvideos" element={<YourVideosPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
