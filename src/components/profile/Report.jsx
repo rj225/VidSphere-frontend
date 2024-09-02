@@ -27,9 +27,11 @@ const Report = () => {
     console.log('Bug Description:', bugDescription);
     console.log('Feedback:', feedback);
     console.log('Selected Options:', options);
+    
     setBugDescription('');
     setFeedback('');
     setOptions([]);
+    window.open('https://www.linkedin.com', '_blank');
   };
 
   return (
@@ -87,7 +89,7 @@ const Report = () => {
             </div>
           )}
         </div>
-        <button type="submit" className="bg-cyan-600 text-white py-2 px-4 mt-4 rounded-md hover:bg-cyan-700 transition">Submit</button>
+        <button  className="bg-cyan-600 text-white py-2 px-4 mt-4 rounded-md hover:bg-cyan-700 transition">Submit</button>
       </form>
     </div>
     </div>

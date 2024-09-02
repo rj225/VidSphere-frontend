@@ -52,14 +52,14 @@ export default function Login() {
   return (
     <>
     <Navbar showSignInButton={false} uploadbutton={false}/>
-      <div className="min-h-full overflow-hidden py-4 flex flex-col justify-center items-center font-serif sm:py-12">
-        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-100 to-cyan-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-          <div className="relative px-4 py-10 bg-gradient-to-r from-teal-200 to-orange-100  shadow-lg sm:rounded-3xl sm:p-20">
+      <div className="min-h-full w-full overflow-hidden py-4 flex flex-col justify-center items-center font-serif sm:py-12">
+        <div className="relative md:w-full w-4/5 py-3 sm:max-w-xl sm:mx-auto">
+          <div className="absolute w-full md:h-full hidden md:block h-1/2 inset-0 bg-gradient-to-r from-red-100 to-cyan-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+          <div className="relative w-full md:h-full h-1/2 px-4 py-10 bg-gradient-to-r from-teal-200 to-orange-100  shadow-lg sm:rounded-3xl rounded-xl sm:p-20">
             <div className="max-w-md mx-auto">
               {/* <div>Are U Ready?</div> */}
               <div>
-                <h1 className="text-4xl font-extrabold">
+                <h1 className="md:text-4xl text-lg font-extrabold">
                 Login to&nbsp;
                   <LinearGradient
    					  gradient={['to left', 'rgb(8 145 178) , rgb(2,0,36)']}
@@ -81,7 +81,7 @@ export default function Login() {
 
               <form onSubmit={handleSubmit}>
               <div className="divide-y divide-gray-100">
-                <div className="py-6 mt-3 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7">
+                <div className="py-6 mt-3 md:text-base text-sm leading-6 text-gray-700 sm:text-lg sm:leading-7">
                   <div className="relative mb-7 ">
                     <input
                       autoComplete="on"
@@ -118,7 +118,7 @@ export default function Login() {
                       Password
                     </label>
                   </div>
-                  <div className="text-sm mb-4">
+                  <div className="md:text-sm italic text-xs mb-4">
                     Don't have an account?{" "}
                     
 					<Link to="/register" className="text-cyan-700 hover:underline hover:text-cyan-800 font-semibold">Register</Link>

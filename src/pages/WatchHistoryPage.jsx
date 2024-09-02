@@ -5,6 +5,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import WatchHistory from "../components/profile/WatchHistory";
 import Loader from "../components/utils/Loader";
+import Footer from "../components/Footer";
 
 function WatchHistoryPage() {
   const [auth, setAuth] = useState(false);
@@ -51,6 +52,7 @@ function WatchHistoryPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

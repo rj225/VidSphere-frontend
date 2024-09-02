@@ -21,6 +21,7 @@ import { RiVideoUploadFill } from "react-icons/ri";
 import Navtest from "../Navtest";
 import coverimage from './update/assets/cover.jpg'
 import { toast } from "react-toastify";
+import TestingInfoBar from "../testing";
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -271,8 +272,11 @@ function Dashboard() {
                       {/* </Link> */}
 
                       <button className="flex items-center shadow-lg bg-cyan-100 hover:bg-cyan-300 text-gray-800 px-4 sm:py-2 py-1 my-1 sm:my-0 rounded-lg sm:text-sm text-xs space-x-2 transition duration-500 hover:scale-105">
+                        <Link to="/report">
                         <FaBug />
                         <span>Report a problem</span>
+                        </Link>
+                        
                       </button>
                       {/* Dropdown Menu */}
                       {isOpen && (
@@ -309,14 +313,12 @@ function Dashboard() {
                 </div>
 
                 <div className="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
-                  <div className="w-full flex flex-col 2xl:w-1/3">
+                  <div className="w-full flex flex-col">
                     {/* My Videos */}
-
-                    <div className="flex flex-col w-full 2xl:w-2/3 mt-4 mb-4">
+                    <TestingInfoBar message={"Testing Mode(Dashboard PAge)"}/>
+                    <div className="flex flex-col w-full mt-4 mb-4">
                       <div className="flex-1 bg-gradient-to-tr from-cyan-400 to-cyan-100 rounded-lg shadow-xl p-8">
-                        <div className="flex items-center justify-between"><h4 className="sm:text-3xl text-sm text-gray-800 font-bold">
-                          My Videos
-                        </h4>
+                        <div className="flex items-center justify-between">
                         {modify && <Link to="/videoupload">
                           <button className="bg-cyan-600 sm:text-lg text-xs text-white px-1 py-1 flex items-center rounded-lg shadow-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
                             Upload Video&nbsp;
@@ -330,13 +332,13 @@ function Dashboard() {
                     </div>
 
                     {/* Watch Histoy */}
-                    {modify && (
+                    {/* {modify && (
                       <div className="flex flex-col w-full 2xl:w-2/3">
                         <div className="flex bg-gradient-to-tl from-cyan-400 to-red-50 rounded-lg shadow-xl sm:p-8">
                           <WatchHistory id={currentUserid} />
                         </div>
                       </div>
-                    )}
+                    )} */}
 
                     {/* Personal Info */}
                     {modify && (
@@ -395,7 +397,7 @@ function Dashboard() {
 
                     {/* Activity log */}
 
-                    <div className="flex-1 bg-gradient-to-tl from-cyan-400 to-red-50 rounded-lg shadow-xl mt-4 p-8">
+                   {modify && <div className="flex-1 bg-gradient-to-tl from-cyan-400 to-red-50 rounded-lg shadow-xl mt-4 p-8">
                       <h4 className="text-xl text-gray-900 font-bold">
                         Activity log(In testing)
                       </h4>
@@ -504,7 +506,7 @@ function Dashboard() {
                         </div>
                         {/* <!-- end::Timeline item --> */}
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>

@@ -95,9 +95,9 @@ function Display({ auth = true, id, modify = true }) {
     <>
       {isVideo ? (
         <div className="my-4 h-full w-full">
-          <div className="flex w-full h-full md:items-start md:justify-normal 2xl:mb-10 xl:mb-8 lg:mb-6 items-center justify-center">
+          <div className="flex w-full h-full md:items-start md:justify-normal 2xl:mb-6 xl:mb-4 lg:mb-3 items-center justify-center">
             <h2 className="md:text-2xl text-xl font-bold text-cyan-900 text-center scale-75 sm:scale-90 md:scale-100 mb-2">
-              <span className=" bg-gradient-to-br hidden md:inline-block from-cyan-100 from-5%  to-gray-100 p-4 ring-1 ring-cyan-400 rounded-3xl shadow-blue-200 shadow-left-top">
+              <span className="hidden md:inline-block text-cyan-500 text-3xl">
                 Your Videos
               </span>
               <div className=" bg-gradient-to-br md:hidden from-cyan-100 from-5%  to-gray-100 p-4 rounded-3xl shadow-left-top">

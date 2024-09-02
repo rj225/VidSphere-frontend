@@ -5,6 +5,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import MyVideos from "../components/profile/MyVideos";
 import Loader from "../components/utils/Loader";
+import Footer from "../components/Footer";
 
 
 export default function YourVideosPage() {
@@ -36,18 +37,19 @@ export default function YourVideosPage() {
   }
 
   return (
-    <div className="">
+    <div className="w-screen h-screen">
       <Navbar uploadbutton={auth} nosearchbar={true} />
-      <div className="w-screen flex items-start">
+      <div className="min-h-[90vh] flex items-start">
         <div
         className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
           <Sidebar auth={auth}/>
         </div>
 
-        <div className="md:full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
          <MyVideos auth={auth} id={currentUser}/>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }

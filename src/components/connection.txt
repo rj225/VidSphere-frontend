@@ -1,92 +1,116 @@
- <div class="bg-white rounded-lg shadow-xl p-8">
-            <div class="flex items-center justify-between">
-                <h4 class="text-xl text-gray-900 font-bold">Connections (532)</h4>
-                <a href="#" title="View All">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                    </svg>
-                </a>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-8 mt-8">
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection1.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Diane Aguilar</p>
-                    <p class="text-xs text-gray-500 text-center">UI/UX Design at Upwork</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection2.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Frances Mather</p>
-                    <p class="text-xs text-gray-500 text-center">Software Engineer at Facebook</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection3.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Carlos Friedrich</p>
-                    <p class="text-xs text-gray-500 text-center">Front-End Developer at Tailwind CSS</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection4.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Donna Serrano</p>
-                    <p class="text-xs text-gray-500 text-center">System Engineer at Tesla</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection5.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Randall Tabron</p>
-                    <p class="text-xs text-gray-500 text-center">Software Developer at Upwork</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection6.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">John McCleary</p>
-                    <p class="text-xs text-gray-500 text-center">Software Engineer at Laravel</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection7.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Amanda Noble</p>
-                    <p class="text-xs text-gray-500 text-center">Graphic Designer at Tailwind CSS</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection8.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Christine Drew</p>
-                    <p class="text-xs text-gray-500 text-center">Senior Android Developer at Google</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection9.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Lucas Bell</p>
-                    <p class="text-xs text-gray-500 text-center">Creative Writer at Upwork</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection10.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Debra Herring</p>
-                    <p class="text-xs text-gray-500 text-center">Co-Founder at Alpine.js</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection11.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Benjamin Farrior</p>
-                    <p class="text-xs text-gray-500 text-center">Software Engineer Lead at Microsoft</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection12.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Maria Heal</p>
-                    <p class="text-xs text-gray-500 text-center">Linux System Administrator at Twitter</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection13.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Edward Ice</p>
-                    <p class="text-xs text-gray-500 text-center">Customer Support at Instagram</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection14.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Jeffery Silver</p>
-                    <p class="text-xs text-gray-500 text-center">Software Engineer at Twitter</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection15.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Jennifer Schultz</p>
-                    <p class="text-xs text-gray-500 text-center">Project Manager at Google</p>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center text-gray-800 hover:text-blue-600" title="View Profile">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/connections/connection16.jpg" class="w-16 rounded-full" />
-                    <p class="text-center font-bold text-sm mt-1">Joseph Marlatt</p>
-                    <p class="text-xs text-gray-500 text-center">Team Lead at Facebook</p>
-                </a>
-            </div>
+import React, { useEffect } from 'react';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
+
+const AboutUs = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  }, []);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+  };
+
+  return (
+    <div className=" text-white min-h-screen">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center text-center py-24" data-aos="fade-up" style={{ minHeight: '80vh' }}>
+        <h1 className="text-5xl font-bold text-cyan-400 mb-6">Welcome to VidSphere</h1>
+        <p className="text-2xl max-w-3xl mx-auto mb-12 text-white">
+          VidSphere is a cutting-edge video platform built entirely on the MERN stack, offering seamless video streaming, efficient content management, and a dynamic user experience.
+        </p>
+        <div className="bg-cover bg-center w-full h-64 mb-12" style={{ backgroundImage: 'url("path/to/your/background-image.jpg")' }}>
+          {/* Background Image Placeholder */}
         </div>
+        <button className="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700">
+          Explore More
+        </button>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16">
+        <h2 className="text-3xl font-semibold text-center mb-8 text-cyan-400" data-aos="fade-up">Why Choose VidSphere?</h2>
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="accordion" data-aos="fade-up">
+            <details className="mb-4">
+              <summary className="cursor-pointer text-xl font-semibold text-cyan-400">High-Performance Video Streaming</summary>
+              <p className="text-gray-300 mt-2">VidSphere provides high-quality video streaming with minimal buffering, ensuring a smooth and engaging experience for all users.</p>
+            </details>
+            <details className="mb-4">
+              <summary className="cursor-pointer text-xl font-semibold text-cyan-400">Seamless User Interface</summary>
+              <p className="text-gray-300 mt-2">A sleek, responsive, and user-friendly interface that adapts to all devices, making video browsing and viewing a pleasure.</p>
+            </details>
+            <details className="mb-4">
+              <summary className="cursor-pointer text-xl font-semibold text-cyan-400">Built with MERN Stack</summary>
+              <p className="text-gray-300 mt-2">Leveraging MongoDB, Express.js, React, and Node.js to deliver a fast, scalable, and robust video platform for modern needs.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      {/* Image Carousel Section */}
+      <section className="py-16">
+        <h2 className="text-3xl font-semibold text-center mb-8 text-cyan-400" data-aos="fade-up">Our Vision and Journey</h2>
+        <div className="max-w-2xl mx-auto px-4">
+          <Slider {...settings}>
+            <div>
+              <div className="bg-cover bg-center h-64 rounded-lg" style={{ backgroundImage: 'url("path/to/your/background-image1.jpg")' }}>
+                <div className="bg-black bg-opacity-50 h-full w-full flex items-center justify-center rounded-lg">
+                  <p className="text-white text-lg px-8">"Transforming how you watch, share, and engage with video content."</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-cover bg-center h-64 rounded-lg" style={{ backgroundImage: 'url("path/to/your/background-image2.jpg")' }}>
+                <div className="bg-black bg-opacity-50 h-full w-full flex items-center justify-center rounded-lg">
+                  <p className="text-white text-lg px-8">"Empowering creators and viewers through a seamless digital experience."</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-cover bg-center h-64 rounded-lg" style={{ backgroundImage: 'url("path/to/your/background-image3.jpg")' }}>
+                <div className="bg-black bg-opacity-50 h-full w-full flex items-center justify-center rounded-lg">
+                  <p className="text-white text-lg px-8">"Innovating with the MERN stack to deliver superior performance."</p>
+                </div>
+              </div>
+            </div>
+          </Slider>
+        </div>
+      </section>
+
+      {/* About Me Section */}
+      <section className="py-16 bg-gray-900">
+        <h2 className="text-3xl font-semibold text-center mb-8 text-cyan-400" data-aos="fade-up">About the Creator</h2>
+        <div className="flex flex-col items-center md:flex-row md:justify-center gap-8 px-4">
+          <div className="w-64 h-64 rounded-full bg-cyan-700 mb-4 md:mb-0" data-aos="fade-right">
+            {/* Placeholder for Photo */}
+            <img src="path/to/your/photo.jpg" alt="Your Photo" className="w-full h-full object-cover rounded-full" />
+          </div>
+          <div className="max-w-lg text-center md:text-left" data-aos="fade-left">
+            <h3 className="text-2xl font-bold text-white mb-2">Your Name</h3>
+            <p className="text-gray-300 mb-4">A full-stack developer with expertise in the MERN stack. I developed VidSphere from scratch, building both the backend and frontend to create a seamless video streaming platform.</p>
+            <div className="flex gap-4 justify-center md:justify-start">
+              <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="text-white bg-cyan-600 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-cyan-700">
+                <FaLinkedin /> Contact Me on LinkedIn
+              </a>
+              <a href="https://github.com/your-profile" target="_blank" rel="noopener noreferrer" className="text-white bg-gray-800 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-gray-900">
+                <FaGithub /> View My GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default AboutUs;

@@ -5,6 +5,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Subscribers from "../components/Subscribers/Subscribers";
 import Loader from "../components/utils/Loader";
+import Footer from "../components/Footer";
 
 function SubscribersPage() {
   const [auth, setAuth] = useState(false);
@@ -44,7 +45,7 @@ function SubscribersPage() {
           <Sidebar auth={auth} />
         </div>
 
-        <div className="md:h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:min-h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
           <div className="flex h-full flex-col w-full">
             <div className="flex h-full sm:p-8">
               <Subscribers currentUserid={currentUserid} />
@@ -52,6 +53,7 @@ function SubscribersPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

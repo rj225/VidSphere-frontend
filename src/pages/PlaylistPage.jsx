@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 // import Playlist from '../components/profile/Playlist'
 import Playlist from '../components/profile/Playlist';
 import Loader from '../components/utils/Loader';
+import Footer from '../components/Footer';
 
 export default function PlaylistPage() {
 
@@ -40,17 +41,18 @@ export default function PlaylistPage() {
   return (
     <div className="w-screen h-screen">
       <Navbar uploadbutton={auth} nosearchbar={true} />
-      <div className="flex h-[90vh] items-start">
+      <div className="flex min-h-[90vh] items-start">
         <div
           className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}
         >
           <Sidebar auth={auth} />
         </div>
 
-        <div className="md:h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:min-h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
         <Playlist userId={currentUserid}/>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

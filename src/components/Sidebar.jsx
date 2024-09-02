@@ -14,15 +14,15 @@ const Sidebar = ({ auth }) => {
 
   const tabs = [
     { name: "Home", icon: <HiHome />, path: "/" },
-    { name: "History", icon: <FaHistory />, path: "/history" },
+    { name: "About us", icon: <AiOutlineCompass />, path: "/aboutus" },
+    { name: "Playlist", icon: <RiPlayList2Fill />, path: "/playlist" },
     { name: "Subscriptions", icon: <MdSubscriptions />, path: "/subscriptions" },
     { name: "Your Videos", icon: <BiSolidVideos />, path: "/yourvideos" },
-    { name: "Playlist", icon: <RiPlayList2Fill />, path: "/playlist" },
-    { name: "About us", icon: <AiOutlineCompass />, path: "/aboutus" },
+    { name: "History", icon: <FaHistory />, path: "/history" },
   ];
 
   const handleNavigation = (tab) => {
-    if (tab.path !== '/' && !auth) {
+    if (tab.path !== '/' && tab.path !== '/aboutus' && !auth) {
       toast.error("Authorization needed to access this section");
       return;
     }

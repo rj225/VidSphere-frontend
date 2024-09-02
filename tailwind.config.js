@@ -6,7 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      
       dropShadow: {
         '3xl': '0px 0px 4px rgb(148 163 184)',
         
@@ -26,6 +25,7 @@ export default {
       animation: {
         'spin-once': 'spin 1s ease-in-out 1',
         'ping-slow': 'ping 1.5s linear infinite',
+        // 'bounce-slow': 'bounce 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite',
       },
     
      colors: {
