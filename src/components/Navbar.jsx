@@ -241,17 +241,18 @@ function Navbar({
                 <div className="z-10 ">
                   {/* Menu Items */}
                  {!onlyshowlogout && <Link to={`/dashboard/${username}`}>
-                    <div className="block px-4 py-2 text-sm text-cyan-600 active:bg-cyan-100 rounded-t-2xl hover:text-cyan-800 cursor-pointer">
-                      Dashboard
+                    <div className="block px-4 py-2 text-base text-cyan-600 active:bg-cyan-100 rounded-t-2xl hover:text-cyan-800 cursor-pointer">
+                      Dashboard <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs mx-2">BETA</span>
                     </div>
                   </Link>}
                   {!onlyshowlogout && <Link to="/report">
-                    <div className="block px-4 py-2 text-sm text-cyan-600 text active:bg-cyan-100 hover:text-cyan-800 cursor-pointer">
-                      Report Bug
+                    <div className="block px-4 py-2 text-base text-cyan-600 text active:bg-cyan-100 hover:text-cyan-800 cursor-pointer">
+                      Report Bug <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs mx-2">BETA</span>
+
                     </div>
                   </Link>}
                  <div
-                    className="block px-4 py-2 text-sm text-cyan-600 text active:bg-cyan-100 rounded-b-2xl hover:text-cyan-800 cursor-pointer"
+                    className="block px-4 py-2 text-base text-cyan-600 text active:bg-cyan-100 rounded-b-2xl hover:text-cyan-800 cursor-pointer"
                     onClick={handleLogout}
                   >
                     <button disabled={isLoading}>
@@ -296,16 +297,18 @@ function Navbar({
                   to={`/dashboard/${username}`}
                   className="w-full text-center py-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-center"
                 >
-                  <RiDashboardLine className="mr-2 text-cyan-600" /> Dashboard
+                  <RiDashboardLine className="mr-2 text-cyan-600" /> Dashboard <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs md:mx-2 ml-4">BETA</span>
+
                 </Link>}
                 {!onlyshowlogout && <Link
                   to="/report"
                   className="w-full text-center hover:bg-slate-500 hover:opacity-10 py-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-center"
                 >
-                  <RiBugLine className="mr-2 text-cyan-600" /> Report Bug
+                  <RiBugLine className="mr-2 text-cyan-600" /> Report Bug <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs md:mx-2 ml-4">BETA</span>
+
                 </Link>}
                 <div
-                  className="w-full text-center hover:bg-slate-500 hover:opacity-10 pt-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-center"
+                  className="w-full hover:bg-slate-500 hover:opacity-10 pt-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-start pl-2"
                   onClick={handleLogout}
                 >
                   <button
@@ -313,7 +316,7 @@ function Navbar({
                     className="flex items-center justify-center"
                   >
                     <RiLogoutBoxRLine className="mr-2 text-cyan-600" />
-                    {isLoading ? "Logging out..." : "Logout"}
+                    {isLoading ? "Logging out..." : "Logout"} 
                   </button>
                 </div>
               </div>
