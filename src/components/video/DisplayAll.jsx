@@ -100,7 +100,16 @@ function DisplayAll({
         );
       }
       const shuffledVideos = shuffleVideos(filteredVideos);
-      setVideos(shuffledVideos);
+
+      const updatedVideos = shuffledVideos.map((video) => {
+        return {
+          ...video,
+          thumbnail: video.thumbnail.replace(/^http:\/\//i, 'https://')
+        };
+      });
+      console.log(updatedVideos);
+      
+      setVideos(updatedVideos);
       const ownerIds = shuffledVideos.map((video) => video.owner);
       const ownersData = await Promise.all(
         ownerIds.map((ownerId) => fetchOwner(ownerId))
