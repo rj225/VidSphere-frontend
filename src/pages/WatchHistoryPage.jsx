@@ -47,7 +47,7 @@ function WatchHistoryPage() {
 
         <div className="md:full sm:w-11/12 w-10/12 mt-1">
           <div className="flex h-full flex-col w-full">
-            <div className="flex h-full justify-center items-center bg-gradient-to-tl from-cyan-400 to-cyan-100 rounded-lg shadow-xl sm:p-8">
+            <div className="flex h-full justify-center items-center rounded-lg shadow-xl sm:p-8">
               <WatchHistory id={currentUserid} />
             </div>
           </div>

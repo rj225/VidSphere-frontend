@@ -73,7 +73,7 @@ const WatchHistory = ({ id }) => {
                 history.map((item) => (
                   <li
                     key={item?._id}
-                    className=" p-4 bg-cyan-100 w-10/12 hover:scale-105 hover:ring-1 transition-all duration-500 backdrop-blur-lg bg-opacity-50 hover:shadow-lg rounded-lg"
+                    className=" p-4 bg-cyan-100 w-10/12 hover:scale-105 hover:ring-1 transition-all duration-500 backdrop-blur-lg bg-opacity-90 shadow-left-top rounded-lg"
                   >
                     {item.video && (
                       <Link
