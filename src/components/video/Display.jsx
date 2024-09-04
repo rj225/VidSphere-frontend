@@ -105,12 +105,12 @@ function Display({ auth = true, id, modify = true }) {
               </div>
             </h2>
           </div>
-          <div className="flex sm:flex-wrap sm:flex-row flex-col w-full items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-4 items-center">
             {Array.isArray(videos) &&
               videos.map((video) => (
                 <div
                   key={video._id}
-                  className="relative hover:scale-105 duration-300 sm:w-1/4 w-full"
+                  className="relative hover:scale-105 duration-300 w-full"
                   onMouseEnter={toggleDots(video._id)}
                   onMouseLeave={toggleDots(null)}
                 >
