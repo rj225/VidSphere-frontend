@@ -46,7 +46,7 @@ export default function YourVideosPage() {
           <Sidebar auth={auth}/>
         </div>
 
-        <div className="md:h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:min-h-screen border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
          <MyVideos auth={auth} id={currentUser}/>
         </div>
       </div>

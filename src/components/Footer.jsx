@@ -5,8 +5,8 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from 'react-icons/fa';
 const Footer = () => {
   return (
     <footer className=" border-t-[1px] border-gray-800 text-white py-4 flex flex-col items-center">
-      <div className="text-sm mb-4">
-        © {new Date().getFullYear()} VidSphere. All rights reserved.
+      <div className="text-sm md:text-lg mb-4">
+        © {new Date().getFullYear()} <span className='text-cyan-600'>VidSphere</span>. All rights reserved.
       </div>
       <div className="flex space-x-4">
       <a

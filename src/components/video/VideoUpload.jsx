@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import Navbar from '../Navbar';
 import Navtest from '../Navtest';
+import UnauthorizedPage from '../UnauthorizedPage';
+import Loader from '../utils/Loader';
 
 function VideoUpload(){
   const [title, setTitle] = useState("");
@@ -13,15 +15,16 @@ function VideoUpload(){
   const [thumbnail, setThumbnail] = useState(null);
   const [video, setVideo] = useState(null);
   const [auth , setAuth] = useState(false)
+  const [loader , setLoader] = useState(true);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-    console.log(title);
+    // console.log(title);
   };
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
-    console.log(description);
+    // console.log(description);
   };
 
   const handleThumbnailChange = (e) => {
@@ -48,6 +51,9 @@ function VideoUpload(){
       } catch (error) {
         console.error("Error:", error.response.data);
       }
+      finally{
+        setLoader(false);
+      }
     };
 
     fetchData();
@@ -55,6 +61,11 @@ function VideoUpload(){
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!video || !thumbnail || !title.trim() || !description.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append('videoFile', video);
@@ -75,18 +86,28 @@ function VideoUpload(){
         }
       );
 
-      console.log(response);
+      setVideo(null)
+      setDescription("")
+      setThumbnail(null)
+      setTitle(null)
+      window.location.reload();
+      // console.log(response);
       // fetchVideos(); // Refresh the video list after successful upload - you need to define this function
     } catch (error) {
       console.error('Error uploading video:', error);
     }
   };
 
+  if(loader){
+    return(<Loader/>)
+  }
+
   return (
     <>
       <Navbar uploadbutton={false} nospacebar={false} bg={'bg-gradient-to-l from-cyan-900 to-45% to-cur'}/>
     
-    <div className='bg-gradient-to-l from-cyan-900 absolute right-0 to-45% to-[#0D141A] h-auto'>
+    { auth ? 
+      <div className='bg-gradient-to-l from-cyan-900 absolute right-0 to-45% to-[#0D141A] h-auto'>
     <div className="font-serif mb-6">
     <h1 className="text-white sm:text-6xl text-2xl text-center font-bold p-4 mt-4 z-10">Ready to Shine?</h1>
     <h1 className="text-neutral-400 sm:text-3xl text-lg text-center font-bold p-4 pt-1">Upload Your Video <span><strong className="text-cyan-500">Here!</strong></span></h1>
@@ -172,6 +193,8 @@ function VideoUpload(){
       </div>
     </div>
     </div>
+    
+  : <UnauthorizedPage/>}
     
     </>
   );

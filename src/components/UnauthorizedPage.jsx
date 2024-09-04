@@ -15,6 +15,13 @@ function UnauthorizedPage() {
           </Link>&nbsp;
            to access this page.
         </p>
+        <p className="text-lg text-gray-700 mb-8">
+          Go back to &nbsp;
+          <Link to="/" className="text-cyan-600 hover:text-cyan-700 hover:underline text-2xl transition duration-300" >
+          Home
+          </Link>&nbsp;
+           page.
+        </p>
         
       </div>
      

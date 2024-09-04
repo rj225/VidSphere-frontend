@@ -41,6 +41,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!avatar || !email.trim() || !fullname.trim()|| !password.trim() || !username.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
     const data = new FormData();
     data.append("fullname", fullname);
     data.append("username", username);
