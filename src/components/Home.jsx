@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import PreviousLocation from "./utils/PreviousLocation";
@@ -44,8 +44,7 @@ export default function Home() {
 
   if (loader) {
     return (
-      <Suspense fallback={<Loader/>}>
-      </Suspense>
+      <Loader/>
     );
   }
 
