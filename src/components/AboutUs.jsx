@@ -49,7 +49,7 @@ const AboutUs = () => {
       {/* Hero Section */}
       <section
         className="flex flex-col md:flex-row md:min-h-[80vh] md:gap-x-8 items-center md:justify-between md:py-24 py-3 pb-5 px-3 md:px-16">
-        <div data-aos="zoom-in" className="w-full md:h-96 md:w-7/12 flex flex-col">
+        <div data-aos="zoom-in" className="w-full md:h-96 md:w-7/12 md:mb-0 mb-8 flex flex-col">
           <h1 className="md:text-5xl text-xl font-bold text-cyan-100 md:mb-6 mb-3 text-left">
             Welcome to VidSphere
           </h1>

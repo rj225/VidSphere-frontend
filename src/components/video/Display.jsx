@@ -142,16 +142,15 @@ function Display({ auth = true, id, modify = true }) {
                   </Link>
 
                   <div className="z-10 cursor-pointer">
-                    {modify && visibleVideoId === video._id && (
+                    
                       <div
                         onClick={toggleMenu(video._id)}
-                        className="absolute top-1 right-1 cursor-pointer z-10 justify-center items-center flex flex-col h-12 w-3"
+                        className="absolute top-1 right-2 cursor-pointer z-10 justify-center items-center flex flex-col h-12 w-3"
                       >
                         <div className="w-1 h-1 mb-1 bg-gray-900 rounded-full"></div>
                         <div className="w-1 h-1 mb-1 bg-gray-900 rounded-full"></div>
                         <div className="w-1 h-1 mb-1 bg-gray-900 rounded-full"></div>
                       </div>
-                    )}
 
                     {isOpen === video._id && (
                       <div

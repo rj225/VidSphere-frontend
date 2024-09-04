@@ -31,6 +31,10 @@ function VideoUpload(){
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 50 * 1024 * 1024) {  // 50 MB
+      toast.error('Please upload a video less than 50 MB');
+      return; // Do not set the video file if it exceeds the size limit
+    }
     setVideo(file);
   };
 
@@ -145,7 +149,7 @@ function VideoUpload(){
               htmlFor="video"
               className="block sm:text-lg text-sm font-medium text-black"
             >
-              Video
+              Video<span className="text-red-800 text-xs font-extrabold italic ml-2">(Max Size: 50 mb)</span>
             </label>
             <input
               type="file"

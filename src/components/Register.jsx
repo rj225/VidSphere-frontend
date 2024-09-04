@@ -131,7 +131,7 @@ const Register = () => {
           data-aos="zoom-in-down"
           data-aos-delay="600"
         >
-          <h3 className="text-center md:text-4xl sm:text-3xl text-xl font-bold text-cyan-400 mt-4">
+          <h3 className="text-center md:text-4xl sm:text-3xl text-xl font-bold text-cyan-400 md:mb-10 mt-4">
             Welcome to{" "}
             <LinearGradient
               gradient={["to left", "rgb(8 145 178) , white"]}
@@ -142,7 +142,7 @@ const Register = () => {
             🚀
           </h3>
           <div className="nd:mt-8 mt-4 bg-gray-200 w-10/12 py-8 px-6 shadow sm:rounded-lg rounded-2xl">
-            <form className="space-y-2" onSubmit={handleSubmit}>
+            <form className="space-y-10" onSubmit={handleSubmit}>
               {/* Full Name and Username */}
               <div className="flex flex-col lg:flex-row lg:space-x-4">
                 <div className="flex-1">
@@ -150,7 +150,7 @@ const Register = () => {
                     htmlFor="fullname"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Full Name
+                    <span className="text-red-600 font-extrabold">*</span>Full Name
                   </label>
                   <div className="mt-1 relative rounded-md shadow">
                     <input
@@ -171,7 +171,7 @@ const Register = () => {
                     htmlFor="username"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Username
+                    <span className="text-red-600 font-extrabold">*</span>Username
                   </label>
                   <div className="mt-1 relative rounded-md shadow">
                     <input
@@ -196,7 +196,7 @@ const Register = () => {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Email address
+                    <span className="text-red-600 font-extrabold">*</span>Email address
                   </label>
                   <div className="mt-1 relative rounded-md shadow">
                     <input
@@ -217,7 +217,7 @@ const Register = () => {
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Password
+                    <span className="text-red-600 font-extrabold">*</span>Password
                   </label>
                   <div className="mt-1 relative rounded-md shadow">
                     <input
@@ -242,7 +242,7 @@ const Register = () => {
                     htmlFor="avatar"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Avatar
+                    <span className="text-red-600 font-extrabold">*</span>Avatar
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
                     <input
@@ -277,19 +277,21 @@ const Register = () => {
               </div>
 
               {/* Submit Button */}
+              <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="w-full flex justify-center md:mt-0 mt-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400"
+                className="w-full md:w-1/2 flex hover:text-black duration-300 items-center justify-center md:mt-0 mt-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400"
               >
                 <FaUserPlus className="mr-2" />
                 Register
               </button>
+              </div>
             </form>
 
             {/* Already have an account? */}
-            <p className="mt-6 text-center text-sm text-gray-600">
+            <p className="mt-6 text-center italic md:text-base text-sm text-gray-700">
               Already have an account?{" "}
-              <Link to="/login" className="text-cyan-500 hover:text-cyan-400">
+              <Link to="/login" className="text-cyan-700 font-bold hover:text-cyan-600">
                 Sign in
               </Link>
             </p>

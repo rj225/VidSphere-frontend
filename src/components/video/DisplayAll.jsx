@@ -139,7 +139,7 @@ import { Link } from "react-router-dom";
 import Dayago from "../utils/Dayago";
 import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import {
@@ -150,6 +150,13 @@ import { IoMdRemoveCircle } from "react-icons/io";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { FaTimes } from "react-icons/fa";
 import Loader from "../utils/Loader";
+import { FaPlus, FaSave } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
+import "animate.css"; 
+
+
+
+
 
 function DisplayAll({
   direction,
@@ -169,6 +176,9 @@ function DisplayAll({
   const [playlists, setPlaylists] = useState([]);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [newPlaylistDescription, setNewPlaylistDescription] = useState("");
+  const [creating, setCreating] = useState(false);
 
   function shuffleVideos(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -185,6 +195,31 @@ function DisplayAll({
   useEffect(() => {
     fetchUserPlaylists();
   }, [auth, id]);
+
+  const createPlaylist = () => {
+    if (newPlaylistName.trim() !== "" && newPlaylistDescription.trim() !== "") {
+      toast
+        .promise(
+          axios.post("/api/v1/playlist/createplaylist", {
+            name: newPlaylistName,
+            description: newPlaylistDescription,
+          }),
+          {
+            pending: "Creating playlist...",
+            success: "Playlist created successfully!",
+            error: "Failed to create playlist (Contact Admin).",
+          }
+        )
+        .then((response) => {
+          setPlaylists([...playlists, response.data.data]);
+          setNewPlaylistName("");
+          setNewPlaylistDescription("");
+          setCreating(false); // Hide the input fields after creating a playlist
+          fetchUserPlaylists();
+        })
+        .catch((error) => console.error("Error creating playlist:", error));
+    }
+  };
 
   const handleRefresh = () => {
     console.log("new video clicked");
@@ -224,12 +259,12 @@ function DisplayAll({
           `/api/v1/playlist/user/${currentUser._id}`
         );
         setPlaylists(response.data.data);
-        console.log("Playlists data:", response.data.data);
+        // console.log("Playlists data:", response.data.data);
         // playlists.forEach((playlist , index) =>
         //   console.log("Playlist Videos:", index , playlist.videos)
         // );
       } catch (error) {
-        console.error("Error fetching playlists:", error);
+        // console.error("Error fetching playlists:", error);
       }
     }
   }
@@ -239,7 +274,7 @@ function DisplayAll({
       const response = await axios.get(`/api/v1/user/${ownerId}`);
       return response.data.data;
     } catch (error) {
-      console.error(`Error fetching owner with ID ${ownerId}:`, error);
+      // console.error(`Error fetching owner with ID ${ownerId}:`, error);
       return null;
     }
   };
@@ -271,7 +306,7 @@ function DisplayAll({
       );
       await fetchUserPlaylists();
     } catch (error) {
-      console.error("Error adding video to playlist:", error);
+      // console.error("Error adding video to playlist:", error);
       // toast.error is already handled by toast.promise
     }
   };
@@ -288,15 +323,13 @@ function DisplayAll({
       );
       await fetchUserPlaylists();
     } catch (error) {
-      console.error("Error removing video from playlist:", error);
+      // console.error("Error removing video from playlist:", error);
       // toast.error is already handled by toast.promise
     }
   };
 
   if (loading) {
-    return (
-      <Loader/>
-    );
+    return <Loader />;
   }
 
   return (
@@ -381,9 +414,55 @@ function DisplayAll({
             >
               <FaTimes className="text-xl hover:animate-spin-once" />
             </button>
-            <h3 className="text-3xl text-cyan-200 text-center p-4 mb-4">
-              Manage Playlists
+            <h3 className="md:text-3xl text-xl text-cyan-200 p-4 md:mb-4">
+              My Playlists
             </h3>
+
+            {creating ? null : (
+              <button
+                onClick={() => setCreating(!creating)}
+                className="p-2 rounded bg-cyan-500 ring-1 md:my-0 my-2 md:w-auto md:scale-100 text-sm ring-cyan-400 text-black shadow-xl hover:shadow-3xl duration-300 shadow-cyan-950 hover:underline flex items-center"
+              >
+                <FaPlus className="mr-2 text-xs" />
+                Create New Playlist
+              </button>
+            )}
+
+            {creating && (
+              <div
+                className={`animate__animated md:space-x-3 space-y-2 animate__fadeIn flex md:flex-row flex-col items-center justify-start mb-4`}
+              >
+                <input
+                  type="text"
+                  value={newPlaylistName}
+                  onChange={(e) => setNewPlaylistName(e.target.value)}
+                  className=" p-2 rounded bg-gray-800 md:ring-0 ring-1 ring-cyan-600 text-white focus:outline-none"
+                  placeholder="Playlist name"
+                />
+                <input
+                  type="text"
+                  value={newPlaylistDescription}
+                  onChange={(e) => setNewPlaylistDescription(e.target.value)}
+                  className=" p-2 rounded bg-gray-800 md:ring-0 ring-1 ring-cyan-600 text-white focus:outline-none"
+                  placeholder="Playlist description"
+                />
+                <div className="flex items-center justify-evenly">
+                  <button
+                    onClick={createPlaylist}
+                    className="p-2 rounded hover:scale-110 hover:bg-cyan-600"
+                  >
+                    <FaSave className="duration-500 text-3xl text-cyan-400" />
+                  </button>
+                  <button
+                    onClick={() => setCreating(false)}
+                    className="ml-2 p-2 hover:scale-110  text-red-400 hover:text-red-500"
+                  >
+                    <MdCancel className=" duration-500 text-3xl" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             {playlists.map((playlist) => (
               <div
                 key={playlist._id}

@@ -7,6 +7,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import updatename from "./assets/full.png";
+import Navbar from "../../Navbar";
 
 function UpdateName() {
   const [fullName, setFullName] = useState("");
@@ -32,7 +33,7 @@ function UpdateName() {
       setOldFullName(fullName);
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating account:", error);
+      // console.error("Error updating account:", error);
       // Handle errors here
     }
   };
@@ -50,7 +51,9 @@ function UpdateName() {
         setFullName(response.data.data.fullname.toUpperCase());
         setEmail(response.data.data.email);
       } catch (error) {
-        console.error("Error:", error.response.data);
+        // console.error("Error:", error.response.data);
+        console.warn("update name error");
+        
         // Handle errors here
       }
     };
@@ -60,7 +63,8 @@ function UpdateName() {
 
   return (
     <>
-      <div className="flex sm:flex-row bg-cur sm:bg-gradient-to-r sm:from-cyan-900 sm:to-[#0D141A]">
+    <Navbar/>
+      <div className="flex sm:flex-row">
         <div className="w-full hidden sm:w-1/2 sm:min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-serif sm:flex items-center justify-center">
           <img src={updatename} alt="updateInfo" className="rounded-3xl shadow-4xl" />
         </div>

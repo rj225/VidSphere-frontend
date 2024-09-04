@@ -82,8 +82,8 @@ export default function Playlist({ userId }) {
   };
 
   const handleRemoveFromPlaylist = async (videoId, playlistId) => {
-    console.log("playlistId", playlistId);
-    console.log("videoId", videoId);
+    // console.log("playlistId", playlistId);
+    // console.log("videoId", videoId);
 
     try {
       await toast.promise(
@@ -96,7 +96,7 @@ export default function Playlist({ userId }) {
       );
       await getPlaylist();
     } catch (error) {
-      console.error("Error removing video from playlist:", error);
+      toast.error("Error removing video from playlist:");
       // toast.error is already handled by toast.promise
     }
   };
@@ -172,20 +172,20 @@ export default function Playlist({ userId }) {
       </div>
       {creating && (
         <div
-          className={`animate__animated space-x-3 animate__fadeIn flex items-center justify-start mb-4`}
+          className={`animate__animated md:space-x-3 space-y-2 animate__fadeIn flex md:flex-row flex-col items-center justify-start mb-4`}
         >
           <input
             type="text"
             value={newPlaylistName}
             onChange={(e) => setNewPlaylistName(e.target.value)}
-            className=" p-2 rounded bg-gray-800 text-white focus:outline-none"
+            className=" p-2 rounded md:ring-0 ring-1 ring-cyan-600 bg-gray-800 text-white focus:outline-none"
             placeholder="Playlist name"
           />
           <input
             type="text"
             value={newPlaylistDescription}
             onChange={(e) => setNewPlaylistDescription(e.target.value)}
-            className=" p-2 rounded bg-gray-800 text-white focus:outline-none"
+            className=" p-2 rounded md:ring-0 ring-1 ring-cyan-600 bg-gray-800 text-white focus:outline-none"
             placeholder="Playlist description"
           />
           <div className="flex items-center justify-evenly">

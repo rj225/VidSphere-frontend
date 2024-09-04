@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import MyVideos from "../components/profile/MyVideos";
 import Loader from "../components/utils/Loader";
 import Footer from "../components/Footer";
+import BackToTopButton from "../components/utils/BackToTop";
 
 
 export default function YourVideosPage() {
@@ -41,7 +42,7 @@ export default function YourVideosPage() {
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="min-h-[90vh] flex items-start">
         <div
-        className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
+        className={`md:w-2/12 sticky top-0 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
           <Sidebar auth={auth}/>
         </div>
 
@@ -50,6 +51,7 @@ export default function YourVideosPage() {
         </div>
       </div>
       <Footer/>
+      <BackToTopButton/>
     </div>
   )
 }

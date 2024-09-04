@@ -38,7 +38,7 @@ function UpdatePassword() {
         oldPassword: oldPassword,
         newPassword: newPassword
       });
-      console.log(response.data);
+      // console.log(response.data);
       toast.success(`successfully`, {
         position: "top-right",
         autoClose: 3000,
@@ -50,7 +50,7 @@ function UpdatePassword() {
     // console.log(oldPassword);
     } catch (error) {
       // Handle any errors that occur during the request
-      console.error('Error updating account:', error);
+      // console.error('Error updating account:', error);
       // You can also show a toast message or some other kind of error notification here
       toast.error(`Oops!! Wrong old password `, {
         position: "top-right",
@@ -64,7 +64,7 @@ function UpdatePassword() {
   return (
     <>
     <Navbar />
-      <div className="flex sm:flex-row bg-gradient-to-r from-cyan-900 to-[#0D141A]">
+      <div className="flex sm:flex-row">
         <div className="w-full hidden sm:w-1/2 sm:min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-serif sm:flex items-center justify-center">
           <img src={updatename} alt="updateInfo" className="rounded-3xl shadow-4xl" />
         </div>

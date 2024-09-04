@@ -7,6 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Playlist from '../components/profile/Playlist';
 import Loader from '../components/utils/Loader';
 import Footer from '../components/Footer';
+import BackToTopButton from '../components/utils/BackToTop';
 
 export default function PlaylistPage() {
 
@@ -43,7 +44,7 @@ export default function PlaylistPage() {
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="flex min-h-[90vh] items-start">
         <div
-          className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}
+          className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 sticky top-0 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}
         >
           <Sidebar auth={auth} />
         </div>
@@ -53,6 +54,7 @@ export default function PlaylistPage() {
         </div>
       </div>
       <Footer/>
+      <BackToTopButton/>
     </div>
   );
 }

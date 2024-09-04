@@ -6,6 +6,7 @@ import { IoIosSave } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import updatename from "./assets/cover.png";
+import Navbar from "../../Navbar";
 
 export default function UpdateImage() {
   const [cover, setCover] = useState(null);
@@ -140,7 +141,9 @@ export default function UpdateImage() {
 
   return (
     <>
-      <div className="flex sm:flex-row bg-gradient-to-r from-cyan-900 to-[#0D141A]">
+    <Navbar/>
+      <div className="flex sm:flex-row">
+        
         <div className="w-full hidden sm:w-1/2 sm:min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-serif sm:flex items-center justify-center">
           <img
             src={updatename}
@@ -163,10 +166,10 @@ export default function UpdateImage() {
 
             {/* Profile Picture */}
             <div className="my-4 flex ">
-            <div className="flex flex-col">
+            <div className="flex w-1/2 flex-col">
               <label
                 htmlFor="profilePicture"
-                className="block text-xl text-cyan-300 font-medium"
+                className="block md:text-xl text-base text-cyan-300 font-medium"
               >
                 Chosse a new Profile Picture
               </label>
@@ -183,9 +186,10 @@ export default function UpdateImage() {
                  onClick={authProfile}
                 />
               </div>
-              <div className="w-32 h-32 ">
+              <div className="w-1/2">
+              <div className="w-32 h-32">
                 <img src={avatar} alt="cover image" className="h-full w-full rounded-full shadow-3xl object-cover"/>
-              </div>
+              </div></div>
             </div>
 
             {avatarclicked? (
@@ -230,10 +234,10 @@ export default function UpdateImage() {
           >
             {/* Cover Image */}
             <div className="mb-4 flex items-center justify-center">
-            <div className=" flex flex-col">
+            <div className=" w-1/2 flex flex-col">
               <label
                 htmlFor="coverImage"
-                className="block text-xl mt-1 mb-2 text-cyan-300  font-medium"
+                className="block md:text-xl text-base mt-1 mb-2 text-cyan-300  font-medium"
               >
                 Choose a new cover image
               </label>
