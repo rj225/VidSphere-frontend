@@ -2,11 +2,11 @@ import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import PreviousLocation from "./utils/PreviousLocation";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import DisplayAll from "./video/DisplayAll";
+import Loader from "./utils/Loader";
 
-const Navbar = lazy(() => import("./Navbar"));
-const Sidebar = lazy(() => import("./Sidebar"));
-const DisplayAll = lazy(() => import("./video/DisplayAll"));
-const Loader = lazy(() => import("./utils/Loader"));
 
 
 export default function Home() {
@@ -44,7 +44,7 @@ export default function Home() {
 
   if (loader) {
     return (
-      <Suspense fallback={<div><Loader/></div>}>
+      <Suspense fallback={<Loader/>}>
       </Suspense>
     );
   }
