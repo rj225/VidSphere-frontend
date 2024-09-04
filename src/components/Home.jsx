@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Navbar from "./Navbar";
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-import DisplayAll from "./video/DisplayAll";
 import PreviousLocation from "./utils/PreviousLocation";
-import Sidebar from "./Sidebar";
-import Loader from "./utils/Loader";
+
+const Navbar = lazy(() => import("./Navbar"));
+const Sidebar = lazy(() => import("./Sidebar"));
+const DisplayAll = lazy(() => import("./video/DisplayAll"));
+const Loader = lazy(() => import("./utils/Loader"));
 
 
 export default function Home() {
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const [loader , setLoader] = useState("");
+  const [loader , setLoader] = useState(true);
   const location = useLocation();
 
   const prevlocation = PreviousLocation.retrieve();
@@ -41,15 +42,19 @@ export default function Home() {
     fetchData();
   }, []);
 
-if (loader) {
-  return(<Loader/>)
-}
+  if (loader) {
+    return (
+      <Suspense fallback={<div><Loader/></div>}>
+      </Suspense>
+    );
+  }
+
   return (
     <div className="bg-gradient-to-l from-cyan-900 to-45% to-cur">
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="w-screen flex items-start">
         <div
-        className={`md:w-2/12 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
+        className={`md:w-2/12 sticky top-0 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}>
           <Sidebar auth={auth}/>
         </div>
 

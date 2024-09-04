@@ -395,7 +395,7 @@ const VideoPlayer = () => {
 
   return (
     <div>
-      <Navbar uploadbutton={true} nospacebar={true} showuser={true} />
+      <Navbar uploadbutton={auth} nospacebar={true} showuser={true} />
       <div className="flex items-start">
         <div
           className={`md:w-2/12 sticky top-0 sm:w-1/12 w-2/12 px-1 md:px-0 text-white md:block flex items-center md:justify-normal justify-center lg:pl-5 mt-3 lg:ml-2 md:ml-1 overflow-hidden`}
@@ -414,7 +414,7 @@ const VideoPlayer = () => {
                       key={videoFile}
                       controls
                       height="auto"
-                      className="rounded-xl shadow-md shadow-cyan-900 ring-1 ring-cyan-700"
+                      className="rounded-xl shadow-md h-[250px] lg:h-[480px] md:h-[340px] sm:h-[250px] bg-cyan-950 xl:h-[550px] w-full shadow-cyan-900 ring-1 ring-cyan-700"
                     >
                       <source src={videoFile} type="video/mp4" />
                       Your browser does not support the video tag.
