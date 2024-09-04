@@ -107,7 +107,7 @@ const Register = () => {
             </h4>
             <ul className="list-disc list-inside text-white mt-1 space-y-2 text-base">
               <span className="text-white text-base border-b-2 border-cyan-300 ">
-                Why Login Here:
+                Why Register Here:
               </span>
               <li>
                 Like, comment, and share your favorite videos effortlessly
