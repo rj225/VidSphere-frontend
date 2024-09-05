@@ -40,12 +40,29 @@ To run VidSphere locally, follow these steps:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/yourusername/vidsphere.git
-   cd vidsphere ```
+   cd vidsphere
 
 2. **Install dependencies**:
    ```bash
-      npm i```
+    npm i
 
 3. **Run the development server**:
    ```bash
-   npm run dev```
+   npm run dev
+
+## Contributing
+
+We welcome contributions to enhance VidSphere! If you find any bugs or have ideas for new features, please feel free to contribute. Here’s how you can get involved:
+
+1. **Report Issues**: If you encounter any issues, please open a new issue on our [GitHub Issues page](https://github.com/yourusername/vidsphere/issues).
+
+2. **Submit Pull Requests**: To contribute code, fork the repository, make your changes, and submit a pull request. We review all pull requests and will provide feedback if necessary. Be sure to follow our coding guidelines and include tests where applicable.
+
+3. **Feature Requests**: If you have an idea for a new feature, open a feature request on our [GitHub Issues page](https://github.com/yourusername/vidsphere/issues). Provide as much detail as possible to help us understand your request.
+
+We appreciate your contributions and feedback!
+
+## License
+
+VidSphere is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
