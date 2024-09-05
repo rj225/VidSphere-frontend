@@ -35,8 +35,7 @@ function DisplayAll({
   currentUser,
 }) {
   const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [owners, setOwners] = useState({});
+  const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState([]);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
