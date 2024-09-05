@@ -12,7 +12,7 @@ import Loader from "./utils/Loader";
 export default function Home() {
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const [loader , setLoader] = useState(true);
+  const [loader , setLoader] = useState(false);
   const location = useLocation();
 
   const prevlocation = PreviousLocation.retrieve();
@@ -24,6 +24,7 @@ export default function Home() {
   }
 
   const fetchData = async () => {
+    setLoader(true)
     try {
       const response = await axios.get("/api/v1/user/current-user");
       console.log("Response:", response.data);
@@ -38,8 +39,8 @@ export default function Home() {
       setLoader(false);
     }
   };
-  useEffect(() => {
-    fetchData();
+  useEffect(async() => {
+    await fetchData();
   }, []);
 
   if (loader) {

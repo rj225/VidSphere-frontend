@@ -36,7 +36,6 @@ function DisplayAll({
 }) {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [owners, setOwners] = useState({});
   const [playlists, setPlaylists] = useState([]);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
@@ -53,12 +52,12 @@ function DisplayAll({
     return array;
   }
 
-  useEffect(() => {
-    fetchVideos();
+  useEffect(async() => {
+    await fetchVideos();
   }, [id]);
 
-  useEffect(() => {
-    fetchUserPlaylists();
+  useEffect(async() => {
+    await fetchUserPlaylists();
   }, [auth, id]);
 
   const createPlaylist = () => {
@@ -120,7 +119,7 @@ function DisplayAll({
       });
       setOwners(ownersMap);
     } catch (error) {
-      setError(error.response.data.message);
+      // setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
