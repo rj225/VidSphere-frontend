@@ -106,18 +106,7 @@ function DisplayAll({
           thumbnail: video.thumbnail.replace(/^http:\/\//i, 'https://')
         };
       });
-      // console.log(updatedVideos);
-      
       setVideos(updatedVideos);
-      const ownerIds = shuffledVideos.map((video) => video.owner);
-      const ownersData = await Promise.all(
-        ownerIds.map((ownerId) => fetchOwner(ownerId))
-      );
-      const ownersMap = {};
-      ownersData.forEach((owner) => {
-        ownersMap[owner._id] = owner;
-      });
-      setOwners(ownersMap);
     } catch (error) {
       // setError(error.response.data.message);
     } finally {
@@ -141,15 +130,6 @@ function DisplayAll({
       }
     }
   }
-
-  const fetchOwner = async (ownerId) => {
-    try {
-      const response = await axios.get(`/api/v1/user/${ownerId}`);
-      return response.data.data;
-    } catch (error) {
-      
-    }
-  };
 
   const openPlaylistModal = (video) => {
     if (auth) {
@@ -205,7 +185,7 @@ function DisplayAll({
   }
 
   return (
-    <div className=" w-full px-6 pt-0 pb-4">
+    <div className="min-h-full w-full px-6 pt-0 pb-4">
       <div className={direction}>
         {Array.isArray(videos) &&
           videos.map((video, index) => (
@@ -230,9 +210,9 @@ function DisplayAll({
                       {!channelOwnerShow && (
                         <div className="mr-2">
                           <img
-                            src={owners[video.owner]?.avatar}
+                            src={video.owner.avatar}
                             className="w-12 h-12 object-cover rounded-full"
-                            alt=""
+                            alt={video.owner.fullname}
                           />
                         </div>
                       )}
@@ -241,7 +221,7 @@ function DisplayAll({
                           {FirstCapital(video.title)}
                         </h2>
                         <p className="text-slate-300 text-sm text-wrap mb-1">
-                          {FirstCapital(owners[video.owner]?.fullname)}
+                          {FirstCapital(video.owner.fullname)}
                         </p>
                         <div className="flex space-x-3 font-sans text-slate-300 text-xs">
                           <p>{video.views} Views</p>
