@@ -5,8 +5,5 @@ import './index.css'
 import ErrorBoundary from '../ErrorBoundary.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <ErrorBoundary>
-    <App />
-  </ErrorBoundary>,
-  
+    <App /> 
 )

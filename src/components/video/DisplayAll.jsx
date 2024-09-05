@@ -139,6 +139,9 @@ function DisplayAll({
       } catch (error) {
         // console.error("Error fetching playlists:", error);
       }
+      finally {
+        setLoading(false);
+      }
     }
   }
 
@@ -201,9 +204,9 @@ function DisplayAll({
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return (<Loader />);
+  // }
 
   return (
     <div className=" w-full px-6 pt-0 pb-4">
