@@ -54,10 +54,12 @@ function DisplayAll({
 
   useEffect(() => {
    fetchVideos();
+   setLoading(false);
   }, [id]);
 
   useEffect(() => {
     fetchUserPlaylists();
+    setLoading(false);
   }, [auth, id]);
 
   const createPlaylist = () => {
