@@ -51,7 +51,7 @@ export default function Home() {
           <Sidebar auth={auth}/>
         </div>
 
-        <div className="md:full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
+        <div className="md:h-full border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
           <DisplayAll
             width={`sm:w-4/12 w-full `}
             direction={`flex flex-col sm:flex-row sm:flex-wrap`}

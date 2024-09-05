@@ -106,7 +106,7 @@ function DisplayAll({
           thumbnail: video.thumbnail.replace(/^http:\/\//i, 'https://')
         };
       });
-      console.log(updatedVideos);
+      // console.log(updatedVideos);
       
       setVideos(updatedVideos);
       const ownerIds = shuffledVideos.map((video) => video.owner);
@@ -204,9 +204,9 @@ function DisplayAll({
     }
   };
 
-  // if (loading) {
-  //   return (<Loader />);
-  // }
+  if (loading) {
+    return (<Loader />);
+  }
 
   return (
     <div className=" w-full px-6 pt-0 pb-4">
