@@ -54,12 +54,10 @@ function DisplayAll({
 
   useEffect(() => {
    fetchVideos();
-   setLoading(false);
   }, [id]);
 
   useEffect(() => {
     fetchUserPlaylists();
-    setLoading(false);
   }, [auth, id]);
 
   const createPlaylist = () => {
@@ -140,9 +138,6 @@ function DisplayAll({
         // );
       } catch (error) {
         // console.error("Error fetching playlists:", error);
-      }
-      finally {
-        setLoading(false);
       }
     }
   }
