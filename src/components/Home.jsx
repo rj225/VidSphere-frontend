@@ -30,7 +30,7 @@ export default function Home() {
       setCurrentUser(response.data.data);
      
     } catch (error) {
-      console.error("Error:", error.response.data);
+      // console.error("Error:", error.response.data);
       console.warn("error at home.jsx");
     }
     finally{
