@@ -5,7 +5,6 @@ import PreviousLocation from "./utils/PreviousLocation";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import DisplayAll from "./video/DisplayAll";
-import Loader from "./utils/Loader";
 
 
 
@@ -24,7 +23,6 @@ export default function Home() {
   }
 
   const fetchData = async () => {
-    setLoader(true)
     try {
       const response = await axios.get("/api/v1/user/current-user");
       console.log("Response:", response.data);
@@ -39,15 +37,10 @@ export default function Home() {
       setLoader(false);
     }
   };
-  useEffect(async() => {
-    await fetchData();
+  useEffect(() => {
+   fetchData();
   }, []);
 
-  if (loader) {
-    return (
-      <Loader/>
-    );
-  }
 
   return (
     <div className="bg-gradient-to-l from-cyan-900 to-45% to-cur">

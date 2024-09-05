@@ -52,12 +52,12 @@ function DisplayAll({
     return array;
   }
 
-  useEffect(async() => {
-    await fetchVideos();
+  useEffect(() => {
+   fetchVideos();
   }, [id]);
 
-  useEffect(async() => {
-    await fetchUserPlaylists();
+  useEffect(() => {
+    fetchUserPlaylists();
   }, [auth, id]);
 
   const createPlaylist = () => {
