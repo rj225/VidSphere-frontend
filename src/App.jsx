@@ -3,27 +3,28 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { lazy } from "react";
+import Home from "./components/Home";
+// import DisplayAll from "./components/video/DisplayAll";
 
 const YourVideosPage = lazy(() => import ("./pages/YourVideosPage"));
 const PlaylistPage = lazy(() => import ("./pages/PlaylistPage"));
 const AboutUsPage = lazy(() => import ("./pages/AboutUsPage"));
-const Home = React.lazy(() => import("./components/Home"));
-const Login = React.lazy(() => import("./components/Login"));
-const Register = React.lazy(() => import("./components/Register"));
-const Dashboard = React.lazy(() => import("./components/profile/Dashboard"));
-const UpdateName = React.lazy(() => import("./components/profile/update/UpdateName"));
-const UpdatePassword = React.lazy(() => import("./components/profile/update/UpdatePassword"));
-const UpdateImage = React.lazy(() => import("./components/profile/update/UpdateImage"));
-const Report = React.lazy(() => import("./components/profile/Report"));
-const Dropdown = React.lazy(() => import("./components/profile/Dropdown"));
-const EditVideoDetails = React.lazy(() => import("./components/video/update/EditVideoDetails"));
-const DeleteVideo = React.lazy(() => import("./components/video/update/DeleteVideo"));
-const VideoUpload = React.lazy(() => import("./components/video/VideoUpload"));
-const DisplayAll = React.lazy(() => import("./components/video/DisplayAll"));
-const VideoPlayer = React.lazy(() => import("./components/video/VideoPlayer"));
-const Playlist = React.lazy(() => import("./components/profile/Playlist"));
-const Comments = React.lazy(() => import("./components/Comments/Comments"));
-const WatchHistoryPage = React.lazy(() => import("./pages/WatchHistoryPage"));
+const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
+const Dashboard = lazy(() => import("./components/profile/Dashboard"));
+const UpdateName = lazy(() => import("./components/profile/update/UpdateName"));
+const UpdatePassword = lazy(() => import("./components/profile/update/UpdatePassword"));
+const UpdateImage = lazy(() => import("./components/profile/update/UpdateImage"));
+const Report = lazy(() => import("./components/profile/Report"));
+const Dropdown = lazy(() => import("./components/profile/Dropdown"));
+const EditVideoDetails = lazy(() => import("./components/video/update/EditVideoDetails"));
+const DeleteVideo = lazy(() => import("./components/video/update/DeleteVideo"));
+const VideoUpload = lazy(() => import("./components/video/VideoUpload"));
+// const DisplayAll = lazy(() => import("./components/video/DisplayAll"));
+const VideoPlayer = lazy(() => import("./components/video/VideoPlayer"));
+// const Playlist = lazy(() => import("./components/profile/Playlist"));
+const Comments = lazy(() => import("./components/Comments/Comments"));
+const WatchHistoryPage = lazy(() => import("./pages/WatchHistoryPage"));
 const SubscribersPage = lazy(() => import ("./pages/SubscribersPage"));
 
 export default function App() {
@@ -43,7 +44,7 @@ export default function App() {
           <Route path="/editvideo/:video" element={<EditVideoDetails />} />
           <Route path="/delete" element={<DeleteVideo />} />
           <Route path="/videoupload" element={<VideoUpload />} />
-          <Route path="/displayall" element={<DisplayAll />} />
+          {/* <Route path="/displayall" element={<DisplayAll />} /> */}
           <Route path="/videoplayer/:id" element={<VideoPlayer />} />
           {/* <Route path="/play" element={<Playlist />} /> */}
           <Route path="/comment" element={<Comments />} />

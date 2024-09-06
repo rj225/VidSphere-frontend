@@ -31,7 +31,7 @@ function DisplayAll({
   thumb_width,
   channelOwnerShow,
   id,
-  auth,
+  auth=false,
   currentUser,
 }) {
 
