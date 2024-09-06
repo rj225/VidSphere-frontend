@@ -9,7 +9,7 @@ import DisplayAll from "./video/DisplayAll";
 
 
 export default function Home() {
-  console.log("home.jsx");
+  // console.log("home.jsx");
   
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");

@@ -35,7 +35,7 @@ function DisplayAll({
   currentUser,
 }) {
 
-  console.log("in display.jsx");
+  // console.log("in display.jsx");
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState([]);
@@ -46,7 +46,7 @@ function DisplayAll({
   const [creating, setCreating] = useState(false);
 
   function shuffleVideos(array) {
-    console.log("now in shuffling");
+    // console.log("now in shuffling");
     
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
