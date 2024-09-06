@@ -35,7 +35,7 @@ function DisplayAll({
   currentUser,
 }) {
 
-  // console.log("in display.jsx");
+  console.log("welcome to video display");
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState([]);
