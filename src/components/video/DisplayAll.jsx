@@ -67,7 +67,7 @@ function DisplayAll({
     if (newPlaylistName.trim() !== "" && newPlaylistDescription.trim() !== "") {
       toast
         .promise(
-          axios.post("/api/v1/playlist/createplaylist", {
+          axios.post("https://vidsphere-backend.onrender.com/api/v1/playlist/createplaylist", {
             name: newPlaylistName,
             description: newPlaylistDescription,
           }),
@@ -94,7 +94,7 @@ function DisplayAll({
 
   async function fetchVideos() {
     try {
-      const response = await axios.get("/api/v1/video/get-all-videos");
+      const response = await axios.get("https://vidsphere-backend.onrender.com/api/v1/video/get-all-videos");
       let filteredVideos = response.data.data.docs;
       if (id) {
         filteredVideos = response.data.data.docs.filter(
@@ -121,7 +121,7 @@ function DisplayAll({
     if (auth) {
       try {
         const response = await axios.get(
-          `/api/v1/playlist/user/${currentUser._id}`
+          `https://vidsphere-backend.onrender.com/api/v1/playlist/user/${currentUser._id}`
         );
         setPlaylists(response.data.data);
         // console.log("Playlists data:", response.data.data);
@@ -152,7 +152,7 @@ function DisplayAll({
   const handleAddToPlaylist = async (playlistId, videoId) => {
     try {
       await toast.promise(
-        axios.patch(`/api/v1/playlist/add/${videoId}/${playlistId}`),
+        axios.patch(`https://vidsphere-backend.onrender.com/api/v1/playlist/add/${videoId}/${playlistId}`),
         {
           pending: "Adding video to playlist...",
           success: "Video added to playlist successfully!",
@@ -169,7 +169,7 @@ function DisplayAll({
   const handleRemoveFromPlaylist = async (playlistId, videoId) => {
     try {
       await toast.promise(
-        axios.patch(`/api/v1/playlist/remove/${videoId}/${playlistId}`),
+        axios.patch(`https://vidsphere-backend.onrender.com/api/v1/playlist/remove/${videoId}/${playlistId}`),
         {
           pending: "Removing video from playlist...",
           success: "Video removed from playlist successfully!",
