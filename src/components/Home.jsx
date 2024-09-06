@@ -9,9 +9,10 @@ import DisplayAll from "./video/DisplayAll";
 
 
 export default function Home() {
+  console.log("home.jsx");
+  
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const [loader , setLoader] = useState(false);
   const location = useLocation();
 
   const prevlocation = PreviousLocation.retrieve();
@@ -25,16 +26,13 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/v1/user/current-user");
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       setAuth(true);
       setCurrentUser(response.data.data);
      
     } catch (error) {
       // console.error("Error:", error.response.data);
       console.warn("error at home.jsx");
-    }
-    finally{
-      setLoader(false);
     }
   };
   useEffect(() => {
