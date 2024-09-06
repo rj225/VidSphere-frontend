@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { lazy } from "react";
 import Home from "./components/Home";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 // import DisplayAll from "./components/video/DisplayAll";
 
 const YourVideosPage = lazy(() => import ("./pages/YourVideosPage"));
