@@ -56,6 +56,7 @@ export default function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
         </Routes>
         <ToastContainer pauseOnHover={false} theme="colored" />
+        <SpeedInsights/>
       </Suspense>
     </BrowserRouter>
   );
