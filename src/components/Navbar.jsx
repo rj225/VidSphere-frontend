@@ -1,345 +1,258 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import logo from "../assets/logo1.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {
-  RiSearchLine,
-  RiVideoUploadFill,
-  RiDashboardLine,
-  RiBugLine,
-  RiLogoutBoxRLine,
-  RiCloseLine,
+import { 
+  RiSearchLine, 
+  RiVideoUploadFill, 
+  RiDashboardLine, 
+  RiBugLine, 
+  RiLogoutBoxRLine, 
+  RiCloseLine, 
+  RiAccountCircleFill 
 } from "react-icons/ri";
-import TestingInfoBar from "./testing";
-import { RiAccountCircleFill } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
-function Navbar({
+const Navbar = ({
   uploadbutton = true,
   bg = "",
   nosearchbar = true,
   onlyshowlogout = false,
   showSignInButton = true,
-}) {
-  const [name, setName] = useState("");
-  const [username, setUserame] = useState("");
-  const [profile, setProfile] = useState("");
-  const dropdownRef = useRef(null);
+}) => {
+  const [userData, setUserData] = useState({ name: "", username: "", profile: "" });
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [auth, setAuth] = useState(false);
-
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-  const toggleHamburgerMenu = () => {
-    setIsHamburgerOpen(!isHamburgerOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
 
-  const handleClickOutside = (event) => {
+  const toggleHamburgerMenu = useCallback(() => {
+    setIsHamburgerOpen((prev) => !prev);
+  }, []);
+
+  const handleClickOutside = useCallback((event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false);
     }
-  };
-  React.useEffect(() => {
+  }, []);
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await axios.post("/api/v1/user/logout");
       if (response.data.success) {
-        // navigate("/")
         window.location.reload();
       }
     } catch (error) {
-      toast.error("Error logging out");
-      // console.error("Error logging out:", error);
-      // Handle error, show an error toast message, or redirect
+      console.error("Error logging out:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/api/v1/user/current-user");
-        // console.log("Response:", response.data);
         setAuth(true);
-        setUserame(response.data.data.username);
-        setName(response.data.data.fullname.toUpperCase());
-        setProfile(response.data.data.avatar);
+        setUserData({
+          name: response.data.data.fullname.toUpperCase(),
+          username: response.data.data.username,
+          profile: response.data.data.avatar,
+        });
       } catch (error) {
-        // console.error("Error:", error.response.data);
+        console.error("Error fetching user data:", error);
       }
     };
-
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (isHamburgerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isHamburgerOpen ? "hidden" : "auto";
   }, [isHamburgerOpen]);
 
-  return (
-    <>
-      {/* <TestingInfoBar message="This isn't the complete version. It is still in testing mode." /> */}
-      <nav
-        className={` ${bg} font-serif border-b-[0.1px] border-cyan-200 border-opacity-5 w-screen z-10`}
-      >
-        <div
-          className={`flex items-center relative sm:w-full w-full md:h-20 sm:h-16 h-12 justify-between `}
-        >
-          {/* <!-- Logo --> */}
+  const renderSearchBar = useMemo(() => (
+    nosearchbar && (
+      <>
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-3/4 py-2 h-full md:text-base text-xs px-4 rounded-tl-full rounded-bl-full bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
+        />
+        <RiSearchLine className="text-gray-400 flex bg-gray-800 h-full w-10 rounded-tr-full border-l-[0.1px] border-gray-700 cursor-pointer sm:p-2 p-1 rounded-br-full " />
+      </>
+    )
+  ), [nosearchbar]);
 
-          <div className="flex justify-center items-center h-full w-2/12">
-            <Link to="/" className="cursor-pointer">
-              <img src={logo} alt="logo" className="lg:h-20 md:h-12 h-10 " />
+  const renderUserSection = useMemo(() => (
+    auth ? (
+      <div className="flex flex-col items-end md:mx-2 cursor-pointer text-white">
+        <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs tracking-[1px] font-semibold">
+          {userData.name}
+        </div>
+        <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs text-cyan-400 tracking-[1px] font-regular">
+          {userData.username}
+        </div>
+      </div>
+    ) : (
+      showSignInButton ? (
+        <Link to="/register">
+          <div className="justify-center flex hover:scale-105 transition-all duration-300">
+            <div className="flex items-center justify-center bg-gray-100 shadow-2xl shadow-red-800 bg-opacity-90 px-2 py-1 rounded-2xl text-cyan-700 ring-[1px] ring-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+              <h3 className="md:text-3xl text-xl">
+                <RiAccountCircleFill />
+              </h3>
+              <span className="md:block md:text-base hidden mx-2">
+                Sign Up
+              </span>
+            </div>
+          </div>
+        </Link>
+      ) : (
+        <div className="justify-center flex cursor-pointer">
+          <div className="flex items-center md:scale-100 sm:scale-90 scale-75 bg-gray-100 bg-opacity-90 justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
+            <h3 className="md:text-3xl sm:text-2xl text-lg ">
+              <BiSupport />
+            </h3>
+            <span className="sm:text-base font-semibold text-xs mx-2 cursor-pointer">
+              Need Help?
+            </span>
+          </div>
+        </div>
+      )
+    )
+  ), [auth, showSignInButton, userData.name, userData.username]);
+
+  return (
+    <nav className={`${bg} font-serif border-b-[0.1px] border-cyan-200 border-opacity-5 w-screen z-10`}>
+      <div className="flex items-center relative sm:w-full w-full md:h-20 sm:h-16 h-12 justify-between">
+        <div className="flex justify-center items-center h-full w-2/12">
+          <Link to="/" className="cursor-pointer">
+            <img src={logo} alt="logo" className="lg:h-20 md:h-12 h-10" />
+          </Link>
+        </div>
+
+        <div className="lg:w-6/12 md:5/12 w-5/12 h-3/6 flex justify-center">
+          {renderSearchBar}
+        </div>
+
+        {uploadbutton && (
+          <div className="w-1/12 sm:h-auto h-4/6 flex">
+            <Link to="/videoupload">
+              <button className="w-full h-full bg-gradient-to-br scale-75 xl:scale-90 2xl:scale-100 hover:from-cyan-300 hover:to-cyan-500 from-cyan-500 via-cyan-400 to-cyan-300 duration-500 hover:scale-105 text-white px-3 py-2 flex items-center sm:rounded-lg rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
+                <span className="sm:flex hidden lg:text-lg md:text-base sm:text-sm text-[8px]">
+                  Upload&nbsp;
+                </span>
+                <RiVideoUploadFill className="lg:text-xl sm:text-lg text-base sm:ml-1" />
+              </button>
             </Link>
           </div>
+        )}
 
-          {/* <!-- Search Bar --> */}
-          <div className="lg:w-6/12 md:5/12 w-5/12 h-3/6 flex justify-center">
-            {nosearchbar && (
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-3/4 py-2 h-full md:text-base text-xs px-4 rounded-tl-full rounded-bl-full bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
-              />
-            )}
-            {nosearchbar && (
-              <RiSearchLine className="text-gray-400 flex bg-gray-800 h-full w-10 rounded-tr-full border-l-[0.1px] border-gray-700 cursor-pointer sm:p-2 p-1 rounded-br-full " />
-            )}{" "}
-          </div>
+        <div className="flex justify-end w-3/12 p-1 pr-7">
+          {renderUserSection}
 
-          {uploadbutton && (
-            <div className="w-1/12 sm:h-auto h-4/6 flex">
-              <Link to="/videoupload">
-                <button className=" w-full h-full bg-gradient-to-br scale-75 xl:scale-90 2xl:scale-100 hover:from-cyan-300 hover:to-cyan-500 from-cyan-500 via-cyan-400 to-cyan-300 duration-500 hover:scale-105 text-white px-3 py-2 flex items-center sm:rounded-lg rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-opacity-50">
-                  <span className="sm:flex hidden lg:text-lg md:text-base sm:text-sm text-[8px] ">
-                    Upload&nbsp;
-                  </span>
-                  <RiVideoUploadFill className="lg:text-xl sm:text-lg text-base sm:ml-1" />
-                </button>
-              </Link>
-            </div>
-          )}
-
-          {/* user */}
-          <div className="flex justify-end w-3/12 p-1 pr-7">
-            {/* Notification Icon */}
-            {/* {auth && (
-              <div className="sm:relative hidden mr-2 cursor-pointer">
-                <RiNotification2Line className="text-cyan-500 xl:h-10 xl:w-10 lg:h-8 lg:w-8 h-6 w-6 " />
-                <div className="absolute top-0 right-0 lg:h-3 lg:w-3 h-2 w-2 bg-cyan-400 text-xs font-bold rounded-full flex items-center justify-center">
-                  <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-cyan-100 opacity-75"></span>
-                </div>
-              </div>
-            )} */}
-
-            {auth ? (
+          {auth && (
+            <>
               <div
-                className="md:flex hidden md:flex-col items-end md:mx-2 cursor-pointer text-white"
+                className="lg:h-12 lg:w-12 hidden sm:flex md:h-10 md:w-10 sm:h-8 sm:w-8 h-6 w-6 cursor-pointer"
                 onClick={toggleMenu}
               >
-                <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs tracking-[1px] font-semibold ">
-                  {name}
-                </div>
-                <div className="sm:text-sm lg:text-md xl:text-lg 2xl:text-xl text-xs text-cyan-400 tracking-[1px] font-regular">
-                  {username}
-                </div>
+                <img
+                  src={userData.profile}
+                  alt={userData.name}
+                  className="w-full h-full object-cover rounded-full border-2 border-cyan-400"
+                />
               </div>
-            ) : (
-              <div className="flex flex-col items-end md:mx-2 cursor-pointer text-white">
-                {showSignInButton ? (
-                  <Link to="/register">
-                    <div className="justify-center flex hover:scale-105 transition-all duration-300">
-                      <div className="flex items-center justify-center bg-gray-100 shadow-2xl shadow-red-800 bg-opacity-90 px-2 py-1 rounded-2xl text-cyan-700 ring-[1px] ring-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
-                        <h3 className="md:text-3xl text-xl">
-                          <RiAccountCircleFill />
-                        </h3>
-                        <span className="md:block md:text-base hidden mx-2">
-                          Sign Up
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ) : (
-                  <div className="justify-center flex cursor-pointer">
-                    <div className="flex items-center md:scale-100 sm:scale-90 scale-75 bg-gray-100 bg-opacity-90 justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
-                      <h3 className="md:text-3xl sm:text-2xl text-lg ">
-                        <BiSupport />
-                      </h3>
-                      <span className="sm:text-base font-semibold text-xs mx-2 cursor-pointer">
-                        Need Help?
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {auth && (
-              <>
-                {/* pc menu */}
-                <div
-                  className="lg:h-12 lg:w-12 hidden sm:flex md:h-10 md:w-10 sm:h-8 sm:w-8 h-6 w-6  cursor-pointer "
-                  onClick={toggleMenu}
-                >
-                  <img
-                    src={profile}
-                    alt={name}
-                    className="w-full h-full object-cover rounded-full border-2 border-cyan-400"
-                  />
-                </div>
-
-                {/* mobile hamburger Menu */}
-                <div
-                  className="lg:h-12 lg:w-12 md:h-10 sm:hidden md:w-10 sm:h-8 sm:w-8 h-8 w-8 cursor-pointer"
-                  onClick={toggleHamburgerMenu}
-                >
-                  {isHamburgerOpen ? null : (
-                    <img
-                      src={profile}
-                      alt={name}
-                      className="w-full h-full object-cover rounded-full border-2 border-cyan-400"
-                    />
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Dropdown Menu */}
-          {isOpen && (
-            <>
-              {/* triangle */}
-              {/* <div className="absolute right-10 top-16 z-0 w-0 h-0 border-l-[26px] border-l-transparent border-b-[40px] border-b-white border-r-[10px]  border-r-transparent"></div> */}
 
               <div
-                ref={dropdownRef}
-                className="absolute hidden sm:flex right-10 top-20 max-w-48 z-50 bg-white rounded-2xl shadow-md"
+                className="lg:h-12 lg:w-12 md:h-10 sm:hidden md:w-10 sm:h-8 sm:w-8 h-8 w-8 cursor-pointer"
+                onClick={toggleHamburgerMenu}
               >
-                <div className="z-10 ">
-                  {/* Menu Items */}
-                  {!onlyshowlogout && (
-                    <Link to={`/dashboard/${username}`}>
-                      <div className="block px-4 py-2 text-base text-cyan-600 active:bg-cyan-100 rounded-t-2xl hover:text-cyan-800 cursor-pointer">
-                        Dashboard{" "}
-                        <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs mx-2">
-                          BETA
-                        </span>
-                      </div>
-                    </Link>
-                  )}
-                  {!onlyshowlogout && (
-                    <Link to="/report">
-                      <div className="block px-4 py-2 text-base text-cyan-600 text active:bg-cyan-100 hover:text-cyan-800 cursor-pointer">
-                        Report Bug{" "}
-                        <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs mx-2">
-                          BETA
-                        </span>
-                      </div>
-                    </Link>
-                  )}
-                  <div
-                    className="block px-4 py-2 text-base text-cyan-600 text active:bg-cyan-100 rounded-b-2xl hover:text-cyan-800 cursor-pointer"
-                    onClick={handleLogout}
-                  >
-                    <button disabled={isLoading}>
-                      {isLoading ? "Logging out..." : "Logout"}
-                    </button>
-                  </div>
-                </div>
+                {isHamburgerOpen ? null : (
+                  <img
+                    src={userData.profile}
+                    alt={userData.name}
+                    className="w-full h-full object-cover rounded-full border-2 border-cyan-400"
+                  />
+                )}
               </div>
             </>
           )}
+        </div>
 
-          {isHamburgerOpen && (
-            <div className="fixed overflow-auto top-20 right-2 w-3/5 bg-gray-800 text-white z-50 sm:hidden">
-              <div className="flex flex-col items-center p-4 px-2 relative">
-                <RiCloseLine
-                  onClick={toggleHamburgerMenu}
-                  className=" absolute top-2 right-2 h-6 w-6 hover:animate-spin-once text-red-800 rounded-full"
-                />
-                <div className="flex flex-col justify-around w-full items-center">
-                  {/* <div className="relative mb-4">
-                      <RiNotification2Line className="text-cyan-500 h-6 w-6" />
-                      <div className="absolute top-0 right-0 h-3 w-3 bg-cyan-400 text-xs font-bold rounded-full flex items-center justify-center">
-                        <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-cyan-100 opacity-75"></span>
-                      </div>
-                    </div> */}
-                  <div className="h-12 w-12 mb-4 cursor-pointer">
-                    <img
-                      src={profile}
-                      alt={name}
-                      className="h-full w-full object-cover rounded-full border-2 border-cyan-400"
-                    />
-                  </div>
-                  <div className="text-center mb-2">
-                    <div className="text-xs tracking-[1px] font-semibold">
-                      {name}
-                    </div>
-                    <div className="text-xs text-cyan-500 tracking-[1px] font-regular">
-                      {username}
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full border-t hover:bg-slate-500 hover:opacity-10 border-cyan-400 mt-2"></div>
-                {!onlyshowlogout && (
-                  <Link
-                    to={`/dashboard/${username}`}
-                    className="w-full text-center py-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-center"
-                  >
-                    <RiDashboardLine className="mr-2 text-cyan-600" /> Dashboard{" "}
-                    <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs md:mx-2 ml-4">
-                      BETA
-                    </span>
-                  </Link>
+        {isOpen && (
+          <div ref={dropdownRef} className="absolute hidden sm:flex right-10 top-20 max-w-48 z-50 bg-white rounded-2xl shadow-md">
+            <div className="flex flex-col w-full p-5 gap-5 justify-between">
+              <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2">
+                <RiDashboardLine className="lg:text-xl sm:text-md text-base" />
+                <Link to="/dashboard" className="text-md">Dashboard</Link>
+              </div>
+              <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2">
+                <RiBugLine className="lg:text-xl sm:text-md text-base" />
+                <Link to="/bug-report" className="text-md">Report a Bug</Link>
+              </div>
+              <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2" onClick={handleLogout}>
+                {isLoading ? (
+                  <div>Logging Out...</div>
+                ) : (
+                  <>
+                    <RiLogoutBoxRLine className="lg:text-xl sm:text-md text-base" />
+                    <span>Logout</span>
+                  </>
                 )}
-                {!onlyshowlogout && (
-                  <Link
-                    to="/report"
-                    className="w-full text-center hover:bg-slate-500 hover:opacity-10 py-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-center"
-                  >
-                    <RiBugLine className="mr-2 text-cyan-600" /> Report Bug{" "}
-                    <span className=" text-cyan-900 shadow-right-top shadow-gray-500 rounded-3xl p-1 animate-ping-slow bg-cyan-200 text-xs md:mx-2 ml-4">
-                      BETA
-                    </span>
-                  </Link>
-                )}
-                <div
-                  className="w-full hover:bg-slate-500 hover:opacity-10 pt-2 text-cyan-200 hover:text-cyan-800 cursor-pointer flex items-center justify-start pl-2"
-                  onClick={handleLogout}
-                >
-                  <button
-                    disabled={isLoading}
-                    className="flex items-center justify-center"
-                  >
-                    <RiLogoutBoxRLine className="mr-2 text-cyan-600" />
-                    {isLoading ? "Logging out..." : "Logout"}
-                  </button>
-                </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
+      </div>
+
+      {isHamburgerOpen && (
+        <div className="absolute right-0 h-full w-full sm:w-80 bg-white bg-opacity-95 backdrop-blur-sm">
+          <div className="flex items-center px-10 py-7 justify-end">
+            <RiCloseLine
+              className="h-8 w-8 cursor-pointer text-black hover:text-gray-800 transition duration-500"
+              onClick={toggleHamburgerMenu}
+            />
+          </div>
+          <div className="flex items-center flex-col gap-10">
+            <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2">
+              <RiDashboardLine className="lg:text-xl sm:text-md text-base" />
+              <Link to="/dashboard" className="text-md">Dashboard</Link>
+            </div>
+            <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2">
+              <RiBugLine className="lg:text-xl sm:text-md text-base" />
+              <Link to="/bug-report" className="text-md">Report a Bug</Link>
+            </div>
+            <div className="cursor-pointer font-semibold hover:bg-gray-200 p-1.5 rounded flex items-center gap-2" onClick={handleLogout}>
+              {isLoading ? (
+                <div>Logging Out...</div>
+              ) : (
+                <>
+                  <RiLogoutBoxRLine className="lg:text-xl sm:text-md text-base" />
+                  <span>Logout</span>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </nav>
-    </>
+      )}
+    </nav>
   );
-}
+};
 
 export default Navbar;

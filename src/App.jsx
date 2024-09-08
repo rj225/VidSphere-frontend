@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { lazy } from "react";
 import Home from "./components/Home";
 import { SpeedInsights } from "@vercel/speed-insights/react"
+// import { SkeletonLoader } from "./components/utils/SkeletonLoader";
 // import DisplayAll from "./components/video/DisplayAll";
 
 const YourVideosPage = lazy(() => import ("./pages/YourVideosPage"));
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/yourvideos" element={<YourVideosPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
+          {/* <Route path="/load" element={<SkeletonLoader />} /> */}
         </Routes>
         <ToastContainer pauseOnHover={false} theme="colored" />
         <SpeedInsights/>

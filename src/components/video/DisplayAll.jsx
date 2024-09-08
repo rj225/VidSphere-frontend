@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Dayago from "../utils/Dayago";
@@ -18,6 +18,7 @@ import Loader from "../utils/Loader";
 import { FaPlus, FaSave } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import "animate.css"; 
+import SkeletonDisplayAll from "../utils/SkeletonLoader";
 
 
 
@@ -45,22 +46,22 @@ function DisplayAll({
   const [newPlaylistDescription, setNewPlaylistDescription] = useState("");
   const [creating, setCreating] = useState(false);
 
-  function shuffleVideos(array) {
-    // console.log("now in shuffling");
+  const shuffleVideos = useCallback((array) => {
+    console.log("inside Shuffle");
     
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
+  }, []);
 
   useEffect(() => {
    fetchVideos();
   }, [id]);
 
   useEffect(() => {
-    fetchUserPlaylists();
+    if(auth) fetchUserPlaylists();
   }, [auth, id]);
 
   const createPlaylist = () => {
@@ -93,6 +94,8 @@ function DisplayAll({
   };
 
   async function fetchVideos() {
+    console.log("inside fetchVideos");
+    
     try {
       const response = await axios.get("https://vidsphere-backend.onrender.com/api/v1/video/get-all-videos");
       let filteredVideos = response.data.data.docs;
@@ -184,8 +187,17 @@ function DisplayAll({
   };
 
   if (loading) {
-    return (<Loader />);
+    return (
+      <SkeletonDisplayAll 
+        direction={direction} 
+        width={width} 
+        thumb_width={thumb_width} 
+        height={height} 
+        channelOwnerShow={channelOwnerShow} 
+      />
+    );
   }
+  
 
   return (
     <div className="min-h-full w-full px-6 pt-0 pb-4">
