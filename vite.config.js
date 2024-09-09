@@ -15,6 +15,10 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',  // Output directory
+    sourcemap: false,  // Disable sourcemaps in production for better performance
+  },
 
   plugins: [react()],
 })
