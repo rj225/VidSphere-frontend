@@ -4,16 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite --port 5173",
-  "build": "vite build",      
-  "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-  "start": "vite preview --port $PORT --host 0.0.0.0"}
-,
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "start": "vite preview --port $PORT --host 0.0.0.0"
+  },
   "dependencies": {
     "@vercel/speed-insights": "^1.0.12",
     "animate.css": "^4.1.1",
     "aos": "^2.3.4",
     "axios": "^1.7.7",
+    "esbuild": "^0.23.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -36,9 +37,9 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.3",
-    "vite": "^5.1.4"
+    "vite": "^5.4.3"
   },
   "engines": {
-  "node": "20.15.1"
+    "node": "20.x"
   }
 }

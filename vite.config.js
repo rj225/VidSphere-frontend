@@ -16,8 +16,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',  // Output directory
-    sourcemap: false,  // Disable sourcemaps in production for better performance
+    chunkSizeWarningLimit: 1000, 
+    sourcemap: false,  
   },
 
   plugins: [react()],
