@@ -5,7 +5,6 @@ import Dayago from "../utils/Dayago";
 import Formattime from "../utils/Formattime";
 import FirstCapital from "../utils/FirstCapital";
 import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import {
   MdOutlinePlaylistAdd,
@@ -61,7 +60,7 @@ function DisplayAll({
   }, [id]);
 
   useEffect(() => {
-    if(auth) fetchUserPlaylists();
+    if(auth) {fetchUserPlaylists()}
   }, [auth, id]);
 
   const createPlaylist = () => {
@@ -97,7 +96,7 @@ function DisplayAll({
     console.log("inside fetchVideos");
     
     try {
-      const response = await axios.get("https://vidsphere-backend.onrender.com/api/v1/video/get-all-videos");
+      const response = await axios.get("/api/v1/video/get-all-videos");
       let filteredVideos = response.data.data.docs;
       if (id) {
         filteredVideos = response.data.data.docs.filter(
@@ -124,7 +123,7 @@ function DisplayAll({
     if (auth) {
       try {
         const response = await axios.get(
-          `https://vidsphere-backend.onrender.com/api/v1/playlist/user/${currentUser._id}`
+          `/api/v1/playlist/user/${currentUser._id}`
         );
         setPlaylists(response.data.data);
         // console.log("Playlists data:", response.data.data);
@@ -274,7 +273,7 @@ function DisplayAll({
 
       {showPlaylistModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-gray-800 p-4 w-full max-w-md h-auto max-h-[80vh] overflow-auto rounded shadow-lg text-white relative">
+          <div className="bg-gray-800 p-4 w-full max-w-2xl h-auto max-h-[80vh] overflow-auto rounded shadow-lg text-white relative">
             <button
               onClick={closePlaylistModal}
               className="absolute top-2 right-2 text-red-500 py-1 px-3 rounded"
@@ -297,20 +296,20 @@ function DisplayAll({
 
             {creating && (
               <div
-                className={`animate__animated md:space-x-3 space-y-2 animate__fadeIn flex md:flex-row flex-col items-center justify-start mb-4`}
+                className={`animate__animated md:space-x-3 md:space-y-0 space-y-2 animate__fadeIn flex md:flex-row flex-col items-center justify-start mb-4`}
               >
                 <input
                   type="text"
                   value={newPlaylistName}
                   onChange={(e) => setNewPlaylistName(e.target.value)}
-                  className=" p-2 rounded bg-gray-800 md:ring-0 ring-1 ring-cyan-600 text-white focus:outline-none"
+                  className=" p-2 rounded bg-gray-800 ring-1 ring-cyan-600 text-white"
                   placeholder="Playlist name"
                 />
                 <input
                   type="text"
                   value={newPlaylistDescription}
                   onChange={(e) => setNewPlaylistDescription(e.target.value)}
-                  className=" p-2 rounded bg-gray-800 md:ring-0 ring-1 ring-cyan-600 text-white focus:outline-none"
+                  className=" p-2 rounded bg-gray-800 ring-1 ring-cyan-600 text-white"
                   placeholder="Playlist description"
                 />
                 <div className="flex items-center justify-evenly">

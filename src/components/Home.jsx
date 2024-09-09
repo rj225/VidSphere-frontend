@@ -26,7 +26,7 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/v1/user/current-user");
-      // console.log("Response:", response.data);
+      console.log("Response:", response.data);
       setAuth(true);
       setCurrentUser(response.data.data);
      
