@@ -20,7 +20,7 @@ const SkeletonDisplayAll = ({
   channelOwnerShow,
 }) => {
   return (
-    <div className="min-h-full w-full px-6 pt-0 pb-4">
+    <div className="min-h-full bg-transparent w-full px-6 pt-0 pb-4">
       <div className={direction}>
         {Array.from({ length: 6 }).map((_, index) => (
           <div key={index} className={`${width}`}>

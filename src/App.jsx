@@ -4,7 +4,6 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { lazy } from "react";
 import Home from "./components/Home";
-import { SpeedInsights } from "@vercel/speed-insights/react"
 // import { SkeletonLoader } from "./components/utils/SkeletonLoader";
 // import DisplayAll from "./components/video/DisplayAll";
 
@@ -58,7 +57,6 @@ export default function App() {
           {/* <Route path="/load" element={<SkeletonLoader />} /> */}
         </Routes>
         <ToastContainer pauseOnHover={false} theme="colored" />
-        <SpeedInsights/>
       </Suspense>
     </BrowserRouter>
   );
