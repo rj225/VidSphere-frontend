@@ -41,7 +41,7 @@ export default function Home() {
 
 
   return (
-    <div className="bg-gradient-to-l from-cyan-900 to-45% to-cur">
+    <div className="">
       <Navbar uploadbutton={auth} nosearchbar={true} />
       <div className="w-screen flex items-start">
         <div
