@@ -35,7 +35,7 @@ function DisplayAll({
   currentUser,
 }) {
 
-  console.log("welcome to video display");
+  // console.log("welcome to video display");
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState([]);
@@ -44,9 +44,13 @@ function DisplayAll({
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [newPlaylistDescription, setNewPlaylistDescription] = useState("");
   const [creating, setCreating] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
+
 
   const shuffleVideos = useCallback((array) => {
-    console.log("inside Shuffle");
+    // console.log("inside Shuffle");
     
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -56,8 +60,8 @@ function DisplayAll({
   }, []);
 
   useEffect(() => {
-   fetchVideos();
-  }, [id]);
+    fetchVideos(currentPage);
+  }, [id,currentPage]);
 
   useEffect(() => {
     if(auth) {fetchUserPlaylists()}
@@ -92,12 +96,14 @@ function DisplayAll({
     console.log("new video clicked");
   };
 
-  async function fetchVideos() {
-    console.log("inside fetchVideos");
+  async function fetchVideos(page=1) {
+    // console.log("inside fetchVideos");
     
     try {
-      const response = await axios.get("/api/v1/video/get-all-videos");
+      const response = await axios.get(`/api/v1/video/get-all-videos?page=${page}&limit=12`);
       let filteredVideos = response.data.data.docs;
+      // console.log(response.data.data);
+      
       if (id) {
         filteredVideos = response.data.data.docs.filter(
           (video) => video._id !== id
@@ -112,10 +118,14 @@ function DisplayAll({
         };
       });
       setVideos(updatedVideos);
-      setLoading(false)
+      setCurrentPage(response.data.data.page);
+      setHasNextPage(response.data.data.hasNextPage);
+      setHasPrevPage(response.data.data.hasPrevPage);
     } catch (error) {
-      setLoading(false)
       // setError(error.response.data.message);
+    }
+    finally{
+      setLoading(false);
     }
   }
 
@@ -270,6 +280,28 @@ function DisplayAll({
             </div>
           ))}
       </div>
+
+      {/* controls for pagination */}
+
+      <div className="flex justify-center mt-6">
+      {hasPrevPage && (
+        <button
+          onClick={() => fetchVideos(currentPage - 1)}
+          className="p-2 mx-2 bg-cyan-500 text-white rounded hover:bg-cyan-600"
+        >
+          Previous
+        </button>
+      )}
+      
+      {hasNextPage && (
+        <button
+          onClick={() => fetchVideos(currentPage + 1)}
+          className="p-2 mx-2 bg-cyan-500 text-white rounded hover:bg-cyan-600"
+        >
+          Next
+        </button>
+      )}
+    </div>
 
       {showPlaylistModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4">

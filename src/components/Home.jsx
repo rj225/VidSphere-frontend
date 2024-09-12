@@ -9,7 +9,7 @@ import DisplayAll from "./video/DisplayAll";
 
 
 export default function Home() {
-  console.log("welcome to home");
+  // console.log("welcome to home");
   
   const [auth, setAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
@@ -26,13 +26,13 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/v1/user/current-user");
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       setAuth(true);
       setCurrentUser(response.data.data);
      
     } catch (error) {
       // console.error("Error:", error.response.data);
-      console.warn("error at home.jsx");
+      console.warn("Guest user");
     }
   };
   useEffect(() => {

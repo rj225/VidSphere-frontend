@@ -90,7 +90,9 @@ function VideoUpload(){
       setDescription("")
       setThumbnail(null)
       setTitle(null)
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       // console.log(response);
       // fetchVideos(); // Refresh the video list after successful upload - you need to define this function
     } catch (error) {

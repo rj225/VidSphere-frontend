@@ -8,7 +8,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://vidsphere-backend.onrender.com/', // Always remember to Replace your backend server URL http://localhost:3000/
+        target: 'https://vidsphere-backend-production.up.railway.app/', // Always remember to Replace your backend server URL http://localhost:3000/
         // target:'http://localhost:3000/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api'),

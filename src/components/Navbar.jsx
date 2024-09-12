@@ -11,7 +11,6 @@ import {
   RiCloseLine, 
   RiAccountCircleFill 
 } from "react-icons/ri";
-import { BiSupport } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({
@@ -123,16 +122,18 @@ const Navbar = ({
           </div>
         </Link>
       ) : (
+        <Link to='/login'>
         <div className="justify-center flex cursor-pointer">
           <div className="flex items-center md:scale-100 sm:scale-90 scale-75 bg-gray-100 bg-opacity-90 justify-center px-2 py-1 rounded-2xl ring-[1px] ring-cyan-700 text-cyan-700 transition duration-300 hover:ring-1 hover:ring-cyan-300 hover:shadow-3xl">
             <h3 className="md:text-3xl sm:text-2xl text-lg ">
-              <BiSupport />
+            <RiAccountCircleFill />
             </h3>
             <span className="sm:text-base font-semibold text-xs mx-2 cursor-pointer">
-              Need Help?
+              Login
             </span>
           </div>
         </div>
+        </Link>
       )
     )
   ), [auth, showSignInButton, userData.name, userData.username]);

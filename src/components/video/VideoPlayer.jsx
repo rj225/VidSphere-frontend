@@ -8,6 +8,7 @@ import {
   FaComment,
   FaRegComment,
   FaRegThumbsUp,
+  FaPlus
 } from "react-icons/fa";
 import { BiSolidBellRing } from "react-icons/bi";
 import { IoMdArrowDropupCircle, IoMdArrowDropdownCircle } from "react-icons/io";
@@ -53,6 +54,9 @@ const VideoPlayer = () => {
   const [playlists, setPlaylists] = useState([]);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [inPlaylist, setInPlaylist] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [newPlaylistDescription, setNewPlaylistDescription] = useState("");
+  const [creating, setCreating] = useState(false);
   const videoRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,13 +81,16 @@ const VideoPlayer = () => {
           const response = await axios.post(`/api/v1/view/${id}/view`);
           setViews((pview) => pview + 1);
           setView(true);
-        } catch (error) {}
+        } catch (error) {
+          // console.log(error);
+          
+        }
       }
     };
 
     timer = setTimeout(() => {
       postView();
-    }, 10000); // 10 seconds
+    }, 5000);
 
     return () => {
       clearTimeout(timer);
@@ -726,53 +733,110 @@ const VideoPlayer = () => {
           </div>
 
           {showPlaylistModal && (
-            <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center">
-              <div className="bg-gray-800 p-4 w-4/12 h-3/6 overflow-auto rounded shadow-lg text-white relative">
-                <button
-                  onClick={closePlaylistModal}
-                  className="absolute top-1 right-1 text-red-500 py-1 px-3 rounded"
-                >
-                  <FaTimes className="sm:text-xl text-base hover:animate-spin-once" />
-                </button>
-                <h3 className="text-3xl text-cyan-200 text-center p-4 mb-4">
-                  Manage Playlists
-                </h3>
-                {playlists.map((playlist) => (
-                  <div
-                    key={playlist._id}
-                    className="flex items-center w-full pl-2 mb-2"
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-gray-800 p-4 w-full max-w-2xl h-auto max-h-[80vh] overflow-auto rounded shadow-lg text-white relative">
+            <button
+              onClick={closePlaylistModal}
+              className="absolute top-2 right-2 text-red-500 py-1 px-3 rounded"
+            >
+              <FaTimes className="text-xl hover:animate-spin-once" />
+            </button>
+            <h3 className="md:text-3xl text-xl text-cyan-200 p-4 md:mb-4">
+              My Playlists
+            </h3>
+
+            {creating ? null : (
+              <button
+                onClick={() => setCreating(!creating)}
+                className="p-2 rounded bg-cyan-500 ring-1 md:my-0 my-2 md:w-auto md:scale-100 text-sm ring-cyan-400 text-black shadow-xl hover:shadow-3xl duration-300 shadow-cyan-950 hover:underline flex items-center"
+              >
+                <FaPlus className="mr-2 text-xs" />
+                Create New Playlist
+              </button>
+            )}
+
+            {creating && (
+              <div
+                className={`animate__animated md:space-x-3 md:space-y-0 space-y-2 animate__fadeIn flex md:flex-row flex-col items-center justify-start mb-4`}
+              >
+                <input
+                  type="text"
+                  value={newPlaylistName}
+                  onChange={(e) => setNewPlaylistName(e.target.value)}
+                  className=" p-2 rounded bg-gray-800 ring-1 ring-cyan-600 text-white"
+                  placeholder="Playlist name"
+                />
+                <input
+                  type="text"
+                  value={newPlaylistDescription}
+                  onChange={(e) => setNewPlaylistDescription(e.target.value)}
+                  className=" p-2 rounded bg-gray-800 ring-1 ring-cyan-600 text-white"
+                  placeholder="Playlist description"
+                />
+                <div className="flex items-center justify-evenly">
+                  <button
+                    onClick={createPlaylist}
+                    className="p-2 rounded hover:scale-110 hover:bg-cyan-600"
                   >
-                    <span className="w-2/4 text-xl">
-                      {FirstCapital(playlist.name)}
-                    </span>
-                    {playlist.videos.includes(id) ? (
-                      <button
-                        onClick={() => handleRemoveFromPlaylist(playlist._id)}
-                        className=" flex items-center cursor-default w-2/4 mb-2 mx-4 rounded"
-                      >
-                        <IoCheckmarkCircleSharp className="text-xl shadow-inner shadow-green-700 rounded-full text-green-400 text-opacity-55 mr-1" />
-                        <span className="text-sm text-slate-500 italic mr-3">
-                          Added!
-                        </span>
-                        <IoMdRemoveCircle className="hover:text-red-600 text-2xl text-red-500 mr-2 cursor-pointer" />
-                        <span className="text-base text-slate-100">Remove</span>
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleAddToPlaylist(playlist._id)}
-                        className="cursor-default flex items-center w-2/4 mb-2  mx-4 rounded"
-                      >
-                        <IoAddCircleSharp className="hover:text-cyan-600 text-2xl mr-2 text-cyan-500 cursor-pointer" />
-                        <span className="text-base text-slate-100">
-                          Add to playlist
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                ))}
+                    <FaSave className="duration-500 text-3xl text-cyan-400" />
+                  </button>
+                  <button
+                    onClick={() => setCreating(false)}
+                    className="ml-2 p-2 hover:scale-110  text-red-400 hover:text-red-500"
+                  >
+                    <MdCancel className=" duration-500 text-3xl" />
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {playlists.map((playlist) => (
+              <div
+                key={playlist._id}
+                className="flex md:flex-row flex-col items-start md:items-center w-full pl-2 mb-2"
+              >
+                <span className="w-2/4 md:text-xl text-lg">
+                  {FirstCapital(playlist.name)}
+                </span>
+                {playlist.videos.some(
+                  (videos) => videos._id == id
+                ) ? (
+                  <div className="flex items-center cursor-default w-2/4 mb-2 md:mx-4 mt-2 sm:mt-0 rounded">
+                    <span className="text-sm flex items-center text-slate-500 italic mr-3">
+                      <IoCheckmarkCircleSharp className="md:text-xl text-lg shadow-inner shadow-green-700 rounded-full text-green-400 text-opacity-55 mr-1" />
+                      Added!
+                    </span>
+                    <span
+                      onClick={() =>
+                        handleRemoveFromPlaylist(
+                          playlist._id,
+                          id
+                        )
+                      }
+                      className="md:text-base text-sm flex items-center text-slate-100"
+                    >
+                      <IoMdRemoveCircle className="hover:text-red-600 md:text-2xl text-sm text-red-500 mr-2 cursor-pointer" />{" "}
+                      Remove
+                    </span>
+                  </div>
+                ) : (
+                  <button className="cursor-default flex items-center md:w-2/4 w-full mb-2 md:mx-4 mt-2 sm:mt-0 rounded">
+                    <span
+                      onClick={() =>
+                        handleAddToPlaylist(playlist._id, id)
+                      }
+                      className="text-base flex items-center text-slate-100"
+                    >
+                      <IoAddCircleSharp className="hover:text-cyan-600 text-2xl mr-2 text-cyan-500 cursor-pointer" />{" "}
+                      Add to playlist
+                    </span>
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
         </div>
       </div>
     </div>

@@ -51,7 +51,7 @@ export default function Login() {
 
   return (
     <>
-    <Navbar showSignInButton={false} uploadbutton={false}/>
+    <Navbar showSignInButton={true} uploadbutton={false}/>
       <div className="min-h-full w-full overflow-hidden py-4 flex flex-col justify-center items-center font-serif sm:py-12">
         <div className="relative md:w-full w-4/5 py-3 sm:max-w-xl sm:mx-auto">
           <div className="absolute w-full md:h-full hidden md:block h-1/2 inset-0 bg-gradient-to-r from-red-100 to-cyan-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
@@ -121,7 +121,7 @@ export default function Login() {
                   <div className="md:text-sm italic text-xs mb-4">
                     Don't have an account?{" "}
                     
-					<Link to="/register" className="text-cyan-700 hover:underline hover:text-cyan-800 font-semibold">Register</Link>
+					<Link to="/register" className="text-cyan-700 hover:underline hover:text-cyan-800 font-semibold">Sign Up / Register</Link>
                 
                   </div>
                   <div className="mt-8 text-center mb-4">
