@@ -57,7 +57,7 @@ function Navbar({
       setIsLoading(true);
       const response = await axios.post("/api/v1/user/logout");
       if (response.data.success) {
-        navigate("/")
+        window.location.reload();
       }
     } catch (error) {
       toast.error("Error logging out");

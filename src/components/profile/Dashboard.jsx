@@ -324,7 +324,7 @@ function Dashboard() {
                           </button>
                         </Link>}</div>
                          {email ? (
-                          <Display auth={modify} id={id} modify={modify} />
+                          <Display auth={modify} id={id} modify={false} />
                         ) : null}
                       </div>
                     </div>
