@@ -13,12 +13,10 @@ import { FaUserEdit, FaLock, FaImage, FaBug } from "react-icons/fa";
 import Display from "../video/Display";
 import { FaRegBell } from "react-icons/fa6";
 import { IoIosArrowDropdownCircle, IoIosArrowDropupCircle } from "react-icons/io";
-import WatchHistory from "./WatchHistory";
 import Count from "../utils/Count";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Navbar from "../Navbar";
 import { RiVideoUploadFill } from "react-icons/ri";
-import Navtest from "../Navtest";
 import coverimage from './update/assets/cover.jpg'
 import { toast } from "react-toastify";
 import TestingInfoBar from "../testing";
@@ -203,7 +201,7 @@ function Dashboard() {
         <>
           {email ? (
             <>
-            {currentUserid ? <Navbar showuser={true} uploadbutton={false} onlyshowlogout={true} nospacebar={false} /> : <Navtest/>}
+            {currentUserid ? <Navbar uploadbutton={true} onlyshowlogout={true} nospacebar={false} /> : <Navbar uploadbutton={true} onlyshowlogout={true} nospacebar={false} />}
               <div className="h-full w-screen bg-cur font-serif p-8">
                 <div className="bg-slate-100 w-full rounded-lg shadow-xl pb-8 ">
                   <div className="w-full sm:h-72 h-48">
