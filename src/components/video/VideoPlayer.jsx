@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar";
-import Navtest from "../Navtest";
 import {
   FaThumbsUp,
   FaComment,
@@ -12,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { BiSolidBellRing } from "react-icons/bi";
 import { IoMdArrowDropupCircle, IoMdArrowDropdownCircle } from "react-icons/io";
-import { MdSlowMotionVideo, MdReadMore } from "react-icons/md";
+import { MdSlowMotionVideo} from "react-icons/md";
 import Dayago from "../utils/Dayago";
 import FirstCapital from "../utils/FirstCapital";
 import { FaSave, FaTimes } from "react-icons/fa";

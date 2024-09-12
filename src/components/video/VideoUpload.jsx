@@ -5,7 +5,6 @@ import bg from "./assets/videoUpload.png"
 import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import Navbar from '../Navbar';
-import Navtest from '../Navtest';
 import UnauthorizedPage from '../UnauthorizedPage';
 import Loader from '../utils/Loader';
 
