@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
-      "destination": "https://vidsphere-backend.onrender.com/api/v1/$1"
+      "destination": "https://vidsphere-backend-production.up.railway.app/api/v1/$1"
     },
     {
       "source": "/(.*)",
