@@ -4,8 +4,6 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { lazy } from "react";
 import Home from "./components/Home";
-// import { SkeletonLoader } from "./components/utils/SkeletonLoader";
-// import DisplayAll from "./components/video/DisplayAll";
 
 const YourVideosPage = lazy(() => import ("./pages/YourVideosPage"));
 const PlaylistPage = lazy(() => import ("./pages/PlaylistPage"));
@@ -54,7 +52,6 @@ export default function App() {
           <Route path="/yourvideos" element={<YourVideosPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
-          {/* <Route path="/load" element={<SkeletonLoader />} /> */}
         </Routes>
         <ToastContainer pauseOnHover={false} theme="colored" />
       </Suspense>
