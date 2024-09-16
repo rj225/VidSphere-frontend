@@ -28,6 +28,8 @@ import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { IoMdRemoveCircle } from "react-icons/io";
 import { IoAddCircleSharp } from "react-icons/io5";
 import Sidebar from "../Sidebar";
+import VideoLoader from "../utils/VideoLoader";
+import Loader from "../utils/Loader";
 
 const VideoPlayer = () => {
   const [videoFile, setVideoFile] = useState(null);
@@ -45,6 +47,7 @@ const VideoPlayer = () => {
   const [ownerId, setOwnerId] = useState("");
   const [currentuser, setCurrentUser] = useState("");
   const [loading, setLoading] = useState(true);
+  const [videoloaded, setVideoLoaded] = useState(false);
   const textareaRef = useRef(null);
   const [commentContent, setCommentContent] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -237,15 +240,17 @@ const VideoPlayer = () => {
       setAuth(true);
       setCurrentUser(response.data.data);
     } catch (error) {
-      console.error("Error:", error.response.data);
+      // console.error("Error:", error.response.data);
       console.warn("No user At Videoplaer.jsx");
+    }finally {
+      setLoading(false);
     }
   };
 
   const fetchVideo = async () => {
     try {
       const response = await axios.get(`/api/v1/video/${id}`);
-      // console.log("Response:", response.data);
+      console.log("Response:", response.data);
       const videoFilePath = response.data.data.videoFile;
       setVideoFile(videoFilePath);
       const heading = response.data.data.title;
@@ -260,8 +265,6 @@ const VideoPlayer = () => {
       await fetchSubscribers(response.data.data.owner);
     } catch (error) {
       console.error("Error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -274,6 +277,8 @@ const VideoPlayer = () => {
       } catch (error) {
         console.error(`Error fetching owner with ID ${ownerId}:`, error);
         return null;
+      }finally {
+        setVideoLoaded(true);
       }
     }
   };
@@ -390,13 +395,7 @@ const VideoPlayer = () => {
   // }, [commentClicked]);
 
   if (loading) {
-    return (
-      <div className=" h-screen w-screen flex justify-center items-center">
-        <div className="w-64 h-64 border-t-8 border-b-8 border-t-cyan-500 border-r-[0.1px] border-r-red-400 border-l-[0.1px] border-l-red-400 border-b-cyan-500 rounded-full animate-spin"></div>
-        &nbsp;&nbsp;&nbsp;
-        <h3 className="text-2xl animate-pulse text-cyan-500">Loading...</h3>
-      </div>
-    );
+    return ( <Loader/> );
   }
 
   return (
@@ -410,6 +409,7 @@ const VideoPlayer = () => {
         </div>
         <div className="md:min-h-screen border-l-[1px] border-gray-800 sm:w-11/12 w-10/12 mt-1">
           <div className="flex flex-col w-full sm:flex-row">
+          {videoloaded ? (<>
             {videoFile ? (
               <div className="sm:px-7 px-3 pt-5 sm:w-8/12 w-full">
                 <div>
@@ -715,7 +715,7 @@ const VideoPlayer = () => {
                   Please try again later.
                 </p>
               </div>
-            )}
+            )}</>) : <VideoLoader/>}
             <div className="sm:w-4/12 w-full mt-2">
               <DisplayAll
                 direction={`flex flex-col`}

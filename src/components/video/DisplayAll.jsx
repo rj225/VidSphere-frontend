@@ -224,6 +224,7 @@ function DisplayAll({
                         src={video.thumbnail}
                         alt={FirstCapital(video.title)}
                         className={`w-full object-cover z-10 rounded-md relative mb-2 ${height}`}
+                        loading="lazy"
                       />
                       <p className="text-gray-50 font-sans bg-black px-[4px] font-semibold py-[1.5px] sm:text-sm text-xs bg-opacity-55 rounded-lg absolute bottom-3 z-20 right-2">
                         {Formattime(video.duration)}
